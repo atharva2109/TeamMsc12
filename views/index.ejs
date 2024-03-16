@@ -2,10 +2,47 @@
 <html>
   <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/homepage/home.css' />
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+  <%- include('./partials/navbar'); %>
+  <div class="card" style="width: 100%;">
+    <div class="card-body" style="background-color: #eaf3d8;color: #575757">
+     <div class="row text-center">
+       <div class="col-12">
+         <h3>Discover, Learn, Connect</h3>
+       </div>
+     </div>
+      <div class="row">
+        <div class="col-6" >
+          <h2>Add Plants</h2>
+        </div>
+        <div class="col-6">
+          <h2>Real-time chat</h2>
+        </div>
+      </div>
+        <div class="row">
+            <div class="col-6">
+                <p>Add new plants to your collection with ease</p>
+            </div>
+            <div class="col-6">
+                <p>Engage in real-time chat about specific plants</p>
+            </div>
+        </div>
+      <div class="row">
+        <div class="col-6">
+          <h2>View Information</h2>
+        </div>
+      </div>
+        <div class="row">
+            <div class="col-6">
+                <p>View detailed information on any plant at your fingertips</p>
+            </div>
+        </div>
+    </div>
+  </div>
+  <%- include('./partials/footer'); %>
   </body>
 </html>
