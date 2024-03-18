@@ -2,12 +2,56 @@
 <html>
   <head>
     <title><%= title %></title>
+      <link rel="stylesheet" href="/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel='stylesheet' href='/stylesheets/homepage/home.css' />
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
   </head>
   <body>
   <%- include('./partials/navbar'); %>
+
+  <!--Carousel -->
+  <div id="plantCarousels" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+          <button type="button" data-bs-target="#plantCarousels" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#plantCarousels" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#plantCarousels" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      </div>
+      <div class="carousel-inner">
+          <div class="carousel-item active">
+              <img src="../images/marigold.jpg" class="d-block w-100" alt="Marigold Flower">
+              <div class="carousel-caption d-none d-md-block">
+                  <h5>MariGold Flower</h5>
+                  <p>These plants are native to Mexico, growing naturally from Mexico's valley down to the south and even reaching several other Latinamerican countries, but some species have become naturalized around the world.</p>
+              </div>
+          </div>
+          <div class="carousel-item">
+              <img src="../images/pink-rose.jpg" class="d-block w-100" alt="Pink Rose">
+              <div class="carousel-caption d-none d-md-block">
+                  <h5>Pink Rose</h5>
+                  <p>A rose is either a woody perennial flowering plant of the genus Rosa in the family Rosaceae or the flower it bears. </p>
+              </div>
+          </div>
+          <div class="carousel-item">
+              <img src="../images/white-daisies.jpg" class="d-block w-100" alt="White Daisies">
+              <div class="carousel-caption d-none d-md-block">
+                  <h5>White Daisies</h5>
+                  <p>A well known wild flower with lovely, large, white daisy flowers. Also known as the Dog Daisy, Ox-Eye daisy, moon daisy, or field daisy. Often seen in meadows and on roadsides.</p>
+              </div>
+          </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#plantCarousels" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#plantCarousels" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+      </button>
+  </div>
+
+  <!-- Marketing Banner -->
   <div class="card" style="width: 100%;">
     <div class="card-body" style="background-color: #eaf3d8;color: #575757">
      <div class="row text-center">
@@ -16,15 +60,23 @@
        </div>
      </div>
       <div class="row">
-        <div class="col-6" >
-          <h2>Add Plants</h2>
-        </div>
-        <div class="col-6">
+          <div class="col-6 d-flex align-items-center ">
+              <div class="text-center">
+            <i class="fa-sharp fa-solid fa-plus"></i>
+
+              <h2>Add Plants</h2>
+              </div>
+          </div>
+        <div class="col-6 d-flex align-items-center">
+            <div class="text-center">
+            <i class="fa-solid fa-comment"></i>
           <h2>Real-time chat</h2>
+            </div>
         </div>
       </div>
         <div class="row">
             <div class="col-6">
+
                 <p>Add new plants to your collection with ease</p>
             </div>
             <div class="col-6">
@@ -32,8 +84,11 @@
             </div>
         </div>
       <div class="row">
-        <div class="col-6">
+        <div class="col-6 d-flex align-items-center">
+            <div class="text-center">
+                <i class="fa-solid fa-circle-info"></i>
           <h2>View Information</h2>
+            </div>
         </div>
       </div>
         <div class="row">
@@ -44,5 +99,10 @@
     </div>
   </div>
   <%- include('./partials/footer'); %>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
   </body>
+
+
 </html>
