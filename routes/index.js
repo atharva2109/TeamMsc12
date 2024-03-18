@@ -110,4 +110,8 @@ router.get('/sightingdetails', function (req, res, next) {
     res.render('sightingdetails', {title: 'Plant Details', sighting: plantData });
 });
 
+router.get('/addplant', function(req, res, next) {
+  res.render('addplant', { title: 'Add Plant' }); // Use 'addplant' as the EJS template file name
+});
+
 module.exports = router;
