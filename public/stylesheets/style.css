@@ -3,3 +3,75 @@
     background-clip: text;
     color: transparent;
 }
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden; /* Prevent horizontal scrollbar for the whole page */
+}
+
+a {
+  color: #00B7FF;
+}
+
+.title {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#subtitles {
+  list-style-type: none;
+  padding: 0;
+  display: flex; /* Make the list horizontal */
+  justify-content: center; /* Center the items horizontally */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  white-space: nowrap; /* Keep items in one line */
+  margin: 20px auto; /* Center the list and add some vertical space */
+  width: 100%; /* Full width */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on touch devices */
+}
+
+#subtitles li {
+  opacity: 0.3;
+  transition: opacity 0.5s ease;
+  display: inline-block; /* Align items horizontally */
+  margin: 0 10px; /* Space between items */
+  padding: 5px 10px; /* Add some padding */
+  border-radius: 5px; /* Optional: rounded corners */
+}
+
+#subtitles .active {
+  opacity: 1;
+  font-weight: bold;
+  background-color: #4CAF50; /* Highlight color for active item */
+  color: white; /* Text color for better contrast */
+}
+
+.input-area {
+  margin-top: 20px;
+  text-align: center; /* Center align the content of the input area */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-field {
+  width: 90%; /* Adjusted width for input boxes */
+  margin-bottom: 20px; /* Space below the input boxes */
+  display: block; /* Ensure input fields are block-level elements */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn {
+  margin-top: 10px; /* Space above the buttons */
+  display: block; /* Ensure buttons are block-level elements for proper spacing */
+  width: 70%; /* Button width matching input field width */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#plantDescriptionInput {
+  width: 600px; /* Make the textarea span the full width of its container */
+  height: 400px; /* Let the height grow based on the content, or set a fixed height if preferred */
+}
