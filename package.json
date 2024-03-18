@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "nodemon ./bin/www",
     "test": "jest"
   },
   "dependencies": {
@@ -14,5 +14,8 @@
     "http-errors": "~1.6.3",
     "jest": "^29.7.0",
     "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   }
 }
