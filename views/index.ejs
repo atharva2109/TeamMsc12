@@ -1,79 +1,128 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title><%= title %></title>
-      <link rel="stylesheet" href="/css/bootstrap.min.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel='stylesheet' href='/stylesheets/homepage/home.css' />
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <script src='/javascripts/API.js'></script>
+    <script>
+        API();
+    </script>
+</head>
+<body>
+<%- include('./partials/navbar'); %>
+<!--Carousel -->
+<div id="plantCarousel" class="carousel slide p-3 p-md-5 m-md-3 bg-light rounded" data-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#plantCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#plantCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#plantCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <div class="row">
+                <div class="col-md-2">
+                    <h4 class="display-7">Florida hopbush.
+                    </h4>
+                    <img src="/images/Dodonaea_viscosa_image.png" class="carousel-image">
 
-  </head>
-  <body>
-  <%- include('./partials/navbar'); %>
+                </div>
+                <div class="col-md-3" style="margin-top: 5%">
+                    <p style="font-size: 18px">Family: Sapindaceae</p>
+                    <p style="font-size: 18px">Kingdom: Plantae</p>
+                    <p style="font-size: 18px">Genus: Dodonaea</p>
+                    <p style="font-size: 18px">Continent: Asia</p>
+                    <p style="font-size: 18px">Country: India</p>
+                    <p style="font-size: 18px">Creator: nazir nani</p>
+                </div>
+                <div class="col-md-7 " id="map">
 
-  <!--Carousel -->
-  <div id="plantCarousels" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-indicators">
-          <button type="button" data-bs-target="#plantCarousels" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-          <button type="button" data-bs-target="#plantCarousels" data-bs-slide-to="1" aria-label="Slide 2"></button>
-          <button type="button" data-bs-target="#plantCarousels" data-bs-slide-to="2" aria-label="Slide 3"></button>
-      </div>
-      <div class="carousel-inner">
-          <div class="carousel-item active">
-              <img src="../images/marigold.jpg" class="d-block w-100" alt="Marigold Flower">
-              <div class="carousel-caption d-none d-md-block">
-                  <h5>MariGold Flower</h5>
-                  <p>These plants are native to Mexico, growing naturally from Mexico's valley down to the south and even reaching several other Latinamerican countries, but some species have become naturalized around the world.</p>
-              </div>
-          </div>
-          <div class="carousel-item">
-              <img src="../images/pink-rose.jpg" class="d-block w-100" alt="Pink Rose">
-              <div class="carousel-caption d-none d-md-block">
-                  <h5>Pink Rose</h5>
-                  <p>A rose is either a woody perennial flowering plant of the genus Rosa in the family Rosaceae or the flower it bears. </p>
-              </div>
-          </div>
-          <div class="carousel-item">
-              <img src="../images/white-daisies.jpg" class="d-block w-100" alt="White Daisies">
-              <div class="carousel-caption d-none d-md-block">
-                  <h5>White Daisies</h5>
-                  <p>A well known wild flower with lovely, large, white daisy flowers. Also known as the Dog Daisy, Ox-Eye daisy, moon daisy, or field daisy. Often seen in meadows and on roadsides.</p>
-              </div>
-          </div>
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#plantCarousels" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#plantCarousels" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-      </button>
-  </div>
-
-  <!-- Marketing Banner -->
-  <div class="card" style="width: 100%;">
-    <div class="card-body" style="background-color: #eaf3d8;color: #575757">
-     <div class="row text-center">
-       <div class="col-12">
-         <h3>Discover, Learn, Connect</h3>
-       </div>
-     </div>
-      <div class="row">
-          <div class="col-6 d-flex align-items-center ">
-              <div class="text-center">
-            <i class="fa-sharp fa-solid fa-plus"></i>
-
-              <h2>Add Plants</h2>
-              </div>
-          </div>
-        <div class="col-6 d-flex align-items-center">
-            <div class="text-center">
-            <i class="fa-solid fa-comment"></i>
-          <h2>Real-time chat</h2>
+                </div>
             </div>
         </div>
-      </div>
+
+        <div class="carousel-item">
+            <div class="row">
+                <div class="col-md-2">
+                    <h4 class="display-7">Erythrina crista-galli L
+                    </h4>
+                    <br>
+                    <img src="/images/Erythrina_crista_galli_L_image.png" class="carousel-image">
+
+                </div>
+                <div class="col-md-3" style="margin-top: 5%">
+                    <p style="font-size: 18px">Family: Fabaceae</p>
+                    <p style="font-size: 18px">Kingdom: Plantae</p>
+                    <p style="font-size: 18px">Genus: Erythrina</p>
+                    <p style="font-size: 18px">Continent: Ocenia</p>
+                    <p style="font-size: 18px">Country: Australia</p>
+                    <p style="font-size: 18px">Creator: Scott Johnson</p>
+                </div>
+                <div class="col-md-7" id="second-map">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="carousel-item">
+            <div class="row">
+                <div class="col-md-2">
+                    <h4 class="display-7">Erigeron philadelphicus L.
+                    </h4>
+                    <br>
+                    <img src="/images/Erigeron_philadelphicus_L.png" class="carousel-image">
+
+                </div>
+                <div class="col-md-3" style="margin-top: 5%">
+                    <p style="font-size: 18px">Family: Asteraceae</p>
+                    <p style="font-size: 18px">Kingdom: Plantae</p>
+                    <p style="font-size: 18px">Genus: Erigeron</p>
+                    <p style="font-size: 18px">Continent: Europe</p>
+                    <p style="font-size: 18px">Country: France</p>
+                    <p style="font-size: 18px">Creator: Gilles Istin</p>
+                </div>
+                <div class="col-md-7" id="third-map">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#plantCarousel" data-bs-slide="prev" style="margin-right: 2%">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#plantCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<!-- Marketing Banner -->
+<div class="card" style="width: 100%;">
+    <div class="card-body" style="background-color: #eaf3d8;color: #575757">
+        <div class="row text-center">
+            <div class="col-12">
+                <h3>Discover, Learn, Connect</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6 d-flex align-items-center ">
+                <div class="text-center">
+                    <i class="fa-sharp fa-solid fa-plus"></i>
+
+                    <h2>Add Plants</h2>
+                </div>
+            </div>
+            <div class="col-6 d-flex align-items-center">
+                <div class="text-center">
+                    <i class="fa-solid fa-comment"></i>
+                    <h2>Real-time chat</h2>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-6">
 
@@ -83,26 +132,77 @@
                 <p>Engage in real-time chat about specific plants</p>
             </div>
         </div>
-      <div class="row">
-        <div class="col-6 d-flex align-items-center">
-            <div class="text-center">
-                <i class="fa-solid fa-circle-info"></i>
-          <h2>View Information</h2>
+        <div class="row">
+            <div class="col-6 d-flex align-items-center">
+                <div class="text-center">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <h2>Interactive Plant Catalog</h2>
+                </div>
+            </div>
+            <div class="col-6 d-flex align-items-center">
+                <div class="text-center">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <h2>Filter Plants</h2>
+                </div>
             </div>
         </div>
-      </div>
         <div class="row">
             <div class="col-6">
-                <p>View detailed information on any plant at your fingertips</p>
+                <p>Interactive catalog of plants with detailed information, images, and categorization to engage users and help them explore different plant options easily.</p>
+            </div>
+
+            <div class="col-6">
+                <p>Filter plants according to specific criteria</p>
             </div>
         </div>
-    </div>
-  </div>
-  <%- include('./partials/footer'); %>
 
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-  </body>
+    </div>
+
+    <!-- Filter and Main Section -->
+    <div class="min-vh-50 mt-4 w-50 m-auto">
+        <div class="input-group">
+            <label class="input-group-text" for=""><i class="bi bi-funnel"></i></label>
+            <select class="form-select" aria-label="Filter select">
+                <option disabled hidden selected><i class="bi bi-funnel"></i> Filter Plants By.. </option>
+                <option value="1">Flowers</option>
+                <option value="2">Without Flowers</option>
+            </select>
+        </div>
+    </div>
+    <div class="display-plants d-flex flex-column justify-content-center align-items-center vh-100">
+        <h4 class="text-muted mt-1">Sorry there are currently no plants to display...</h4>
+            <button class="btn btn-success">Add Plant</button>
+    </div>
+
+    <%- include('./partials/footer'); %>
+
+
+    <script>
+        function initMap(){
+            createMapWithMarker(15.380074, 78.983592, "map");
+            createMapWithMarker(-28.221163, 153.372328, "second-map");
+            createMapWithMarker(48.017952, 7.334534, "third-map");
+        }
+        function createMapWithMarker(latitude, longitude, mapElementId) {
+            let mapOptions = {
+                zoom: 5,
+                center: { lat: latitude, lng: longitude }
+            };
+            let map = new google.maps.Map(document.getElementById(mapElementId), mapOptions);
+
+            let markerOptions = {
+                position: new google.maps.LatLng(latitude, longitude),
+                map: map
+            };
+            let marker = new google.maps.Marker(markerOptions);
+        }
+
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+</body>
 
 
 </html>
