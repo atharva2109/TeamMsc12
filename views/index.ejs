@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><%= title %></title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel='stylesheet' href='/stylesheets/homepage/home.css' />
@@ -12,7 +11,7 @@
     </script>
 </head>
 <body>
-<%- include('./partials/navbar'); %>
+<%- include('./partials/header', { title: 'Homepage' }); %>
 <!--Carousel -->
 <div id="plantCarousel" class="carousel slide p-3 p-md-5 m-md-3 bg-light rounded" data-ride="carousel">
     <div class="carousel-indicators">
