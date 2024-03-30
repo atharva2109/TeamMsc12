@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Plant</title>
-    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="./stylesheets/addplant/style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
@@ -20,96 +20,97 @@
     <li id="uploadImageSection">Upload Image</li>
     <li id="submitSection">Submit</li>
 </ul>
-
-<div class="input-area text-center" style="margin-top: 20px;">
-    <!-- User ID Input and Next/Back Button -->
-    <div id="userIdInputSection">
-        <input type="text" id="userIdInput" class="input-field form-control" placeholder="Enter your User ID">
-        <button id="nextUserId" class="btn btn-primary">Next</button>
+<form action="/addplant" method="post" enctype="multipart/form-data">
+    <div class="input-area text-center" style="margin-top: 20px;">
+        <!-- User ID Input and Next/Back Button -->
+        <div id="userIdInputSection">
+            <input type="text" id="userIdInput" class="input-field form-control" placeholder="Enter your User ID">
+            <button id="nextUserId" class="btn btn-primary">Next</button>
     </div>
 
-    <!-- Plant Name Input and Next/Back Button -->
-    <div id="plantNameInputSection" style="display: none;">
-        <input type="text" id="plantNameInput" class="input-field form-control" placeholder="Enter Plant Name">
-        <button id="nextPlantName" class="btn btn-primary">Next</button>
-        <button id="backPlantName" class="btn btn-secondary">Back</button>
-    </div>
+        <!-- Plant Name Input and Next/Back Button -->
+        <div id="plantNameInputSection" style="display: none;">
+            <input type="text" id="plantNameInput" class="input-field form-control" placeholder="Enter Plant Name">
+            <button id="nextPlantName" class="btn btn-primary">Next</button>
+            <button id="backPlantName" class="btn btn-secondary">Back</button>
+         </div>
 
-    <!-- Plant Description Input and Next/Back Button -->
-    <div id="plantDescriptionInputSection" style="display: none;">
-        <textarea id="plantDescriptionInput" class="form-control" placeholder="Enter Plant Description" rows="4"></textarea>
-        <button id="nextPlantDescription" class="btn btn-primary">Next</button>
-        <button id="backPlantDescription" class="btn btn-secondary">Back</button>
-    </div>
-
-    <!-- Category Dropdown menu and Next/Back Button -->
-    <div id="categoryInputSection" style="display: none;">
-        <label for="plantCategory">Category:</label>
-        <select id="plantCategory" class="form-control">
-            <option value="">Select a Category</option>
-            <option value="herb">Herb</option>
-            <option value="shrub">Shrub</option>
-            <option value="tree">Tree</option>
-            <option value="flower">Flower</option>
-        </select>
-        <button id="nextCategorySection" class="btn btn-primary">Next</button>
-        <button id="backCategorySection" class="btn btn-secondary">Back</button>
-    </div>
-
-    <!--    Choose Date menu and Next/Back Button-->
-    <div id="chooseDateInputSection" style="display: none;">
-        <label for="chooseDate">Choose Date:</label>
-        <input type="date" id="chooseDate" name="chooseDate" class="form-control">
-        <button id="nextChooseDateSection" class="btn btn-primary">Next</button>
-        <button id="backChooseDateSection" class="btn btn-secondary">Back</button>
-    </div>
-
-    <!--    Pick Location(map API) and Next/Back Button-->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPwovx_RfcG7uV-3MrFSiyz2ChuQU62NM&callback=initMap" async defer></script>
-    <script>
-        let map, marker;
-
-        function initMap() {
-            const defaultLocation = { lat: 53.3817639, lng: -1.4826869 }; // Default location: The Diamond
-            map = new google.maps.Map(document.getElementById("map"), {
-                center: defaultLocation,
-                zoom: 15,
-            });
-
-            // Allow user to place a marker on the map
-            map.addListener("click", (e) => {
-                if (marker) marker.setMap(null); // Remove the previous marker, if any
-
-                marker = new google.maps.Marker({
-                    position: e.latLng,
-                    map: map,
-                });
-            });
-        }
-    </script>
-    <div id="pickLocationInputSection" style="display: none;">
-        <label for="pickLocation">Please Pick a Location:</label>
-        <div id="map" style="height: 400px; width: 600px;"></div>
-        <button id="nextPickLocationSection" class="btn btn-primary">Next</button>
-        <button id="backPickLocationSection" class="btn btn-secondary">Back</button>
-    </div>
-
-    <!--    Upload Image and Next/Back Button-->
-    <div id="uploadImageInputSection" style="display: none;">
-        <label for="uploadImage">Please Upload Image:</label>
-        <input type="file" id="uploadImage" name="uploadImage" accept="image/*">
-        <button id="nextUploadImageSection" class="btn btn-primary">Next</button>
-        <button id="backUploadImageSection" class="btn btn-secondary">Back</button>
-    </div>
-    <!--    Submit section and Back Button-->
-    <div id="submitInputSection" style="display:none;">
-        <div id="summary">
-            <!--display the details-->
+        <!-- Plant Description Input and Next/Back Button -->
+        <div id="plantDescriptionInputSection" style="display: none;">
+            <textarea id="plantDescriptionInput" class="form-control" placeholder="Enter Plant Description" rows="4"></textarea>
+            <button id="nextPlantDescription" class="btn btn-primary">Next</button>
+            <button id="backPlantDescription" class="btn btn-secondary">Back</button>
         </div>
-        <button id="backSubmitSection" class="btn btn-primary">Back</button>
-        <button type="submit" class="btn btn-success">Add Plant</button>
+
+        <!-- Category Dropdown menu and Next/Back Button -->
+        <div id="categoryInputSection" style="display: none;">
+            <label for="plantCategory">Category:</label>
+            <select id="plantCategory" class="form-control">
+                <option value="">Select a Category</option>
+                <option value="herb">Herb</option>
+                <option value="shrub">Shrub</option>
+                <option value="tree">Tree</option>
+                <option value="flower">Flower</option>
+            </select>
+            <button id="nextCategorySection" class="btn btn-primary">Next</button>
+            <button id="backCategorySection" class="btn btn-secondary">Back</button>
+        </div>
+
+        <!--    Choose Date menu and Next/Back Button-->
+        <div id="chooseDateInputSection" style="display: none;">
+            <label for="chooseDate">Choose Date:</label>
+            <input type="date" id="chooseDate" name="chooseDate" class="form-control">
+            <button id="nextChooseDateSection" class="btn btn-primary">Next</button>
+            <button id="backChooseDateSection" class="btn btn-secondary">Back</button>
+        </div>
+
+        <!--    Pick Location(map API) and Next/Back Button-->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPwovx_RfcG7uV-3MrFSiyz2ChuQU62NM&callback=initMap" async defer></script>
+        <script>
+            let map, marker;
+
+            function initMap() {
+                const defaultLocation = { lat: 53.3817639, lng: -1.4826869 }; // Default location: The Diamond
+                map = new google.maps.Map(document.getElementById("map"), {
+                    center: defaultLocation,
+                    zoom: 15,
+                });
+
+                // Allow user to place a marker on the map
+                map.addListener("click", (e) => {
+                    if (marker) marker.setMap(null); // Remove the previous marker, if any
+
+                    marker = new google.maps.Marker({
+                        position: e.latLng,
+                        map: map,
+                    });
+                });
+            }
+        </script>
+        <div id="pickLocationInputSection" style="display: none;">
+            <label for="pickLocation">Please Pick a Location:</label>
+            <div id="map" style="height: 400px; width: 600px;"></div>
+            <button id="nextPickLocationSection" class="btn btn-primary">Next</button>
+            <button id="backPickLocationSection" class="btn btn-secondary">Back</button>
+        </div>
+
+        <!--    Upload Image and Next/Back Button-->
+        <div id="uploadImageInputSection" style="display: none;">
+            <label for="uploadImage">Please Upload Image:</label>
+            <input type="file" id="uploadImage" name="uploadImage" accept="image/*">
+            <button id="nextUploadImageSection" class="btn btn-primary">Next</button>
+            <button id="backUploadImageSection" class="btn btn-secondary">Back</button>
+        </div>
+        <!--    Submit section and Back Button-->
+        <div id="submitInputSection" style="display:none;">
+            <div id="summary">
+                <!--display the details-->
+            </div>
+            <button id="backSubmitSection" class="btn btn-primary">Back</button>
+            <button type="submit" class="btn btn-success">Add Plant</button>
+        </div>
     </div>
-</div>
+</form>
 
 <script>
     const userIdInputSection = document.getElementById('userIdInputSection');
