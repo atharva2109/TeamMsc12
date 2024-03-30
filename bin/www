@@ -89,3 +89,23 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+app.post('/addplant', (req, res) => {
+  const newPlant = new Plant({
+    userId: req.body.userId,
+    plantName: req.body.plantName,
+    plantDescription: req.body.plantDescription,
+    category: req.body.category,
+    chooseDate: req.body.chooseDate,
+    pickedLocation: req.body.pickedLocation,
+    uploadedImage: req.body.uploadedImage
+  });
+
+  // Save the new plant to the database
+  newPlant.save()
+      .then(() => res.send('success page')) // send a success message
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error saving plant');
+      });
+});

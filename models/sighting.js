@@ -3,6 +3,22 @@ let mongoose = require('mongoose');
 // Create an instance of schema class for mongoose
 let Schema = mongoose.Schema;
 
+let SightingSchema = new mongoose.Schema({
+    user: {
+        id: { type: String, required: null },
+    },
+    plant: {
+        name: { type: String, required: null },
+        description: { type: String, required: null },
+        category: { type: String, required: null },
+    },
+    date: { type: Date, required: null },
+    location: { type: String, required: null },
+    image:{ type: [String], required: null }
+
+
+});
+
 // Define the schema for plant sightings
 let SightingSchema = new Schema(
     {
@@ -62,6 +78,7 @@ let SightingSchema = new Schema(
         }
     }
 );
+
 
 // Configure the 'toObject' option for the schema to include getters and virtuals convert to an object.
 SightingSchema.set('toObject', { getters: true, virtuals: true });
