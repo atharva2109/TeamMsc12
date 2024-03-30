@@ -12,22 +12,21 @@
 .carousel-item{
     height: 400px;
 }
-.carousel-item img{
-    height: 400px;
-}
-.carousel-image {
-    background-size: contain;
-    background-repeat: no-repeat; /* Do not repeat the image */
-    border-radius: 5px;
-    width: 100%;
-    height: 100%;
-}
+
 .carousel-control-prev-icon {
-    margin-right: 60%;
+    margin-right: 70%;
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
 }
 
 .carousel-control-next-icon {
-    margin-left: 60%;
+    margin-left: 70%;
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000000' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
 }
+
+.map-info {
+    position: relative;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
+    color: #fff;
+}
+
+

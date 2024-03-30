@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel='stylesheet' href='/stylesheets/homepage/home.css' />
+    <link rel='stylesheet' href='/stylesheets/homepage/index.css'/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
     <script src='/javascripts/API.js'></script>
     <script>
@@ -12,84 +12,99 @@
 </head>
 <body>
 <%- include('./partials/header', { title: 'Homepage' }); %>
+
 <!--Carousel -->
 <div id="plantCarousel" class="carousel slide p-3 p-md-5 m-md-3 bg-light rounded" data-ride="carousel">
     <div class="carousel-indicators">
-        <button type="button" data-bs-target="#plantCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#plantCarousel" data-bs-slide-to="0" class="active" aria-current="true"
+                aria-label="Slide 1"></button>
         <button type="button" data-bs-target="#plantCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
         <button type="button" data-bs-target="#plantCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
     </div>
     <div class="carousel-inner">
+
         <div class="carousel-item active">
             <div class="row">
-                <div class="col-md-2">
-                    <h4 class="display-7">Florida hopbush.
-                    </h4>
-                    <img src="/images/Dodonaea_viscosa_image.png" class="carousel-image">
-
+                <div class="col-md-6" style="background-image: url('/images/Dodonaea_viscosa_image.png'); background-size: cover; background-position: center;">
+                    <div class="map-info p-5">
+                        <h4 class="display-7">Florida hopbush</h4>
+                        <p style="font-size: 18px">Family: Sapindaceae</p>
+                        <p style="font-size: 18px">Kingdom: Plantae</p>
+                        <p style="font-size: 18px">Genus: Dodonaea</p>
+                        <p style="font-size: 18px">Continent: Asia</p>
+                        <p style="font-size: 18px">Country: India</p>
+                        <p style="font-size: 18px">Creator: nazir nani</p>
+                    </div>
                 </div>
-                <div class="col-md-3" style="margin-top: 5%">
-                    <p style="font-size: 18px">Family: Sapindaceae</p>
-                    <p style="font-size: 18px">Kingdom: Plantae</p>
-                    <p style="font-size: 18px">Genus: Dodonaea</p>
-                    <p style="font-size: 18px">Continent: Asia</p>
-                    <p style="font-size: 18px">Country: India</p>
-                    <p style="font-size: 18px">Creator: nazir nani</p>
-                </div>
-                <div class="col-md-7 " id="map">
-
-                </div>
-            </div>
-        </div>
-
-        <div class="carousel-item">
-            <div class="row">
-                <div class="col-md-2">
-                    <h4 class="display-7">Erythrina crista-galli L
-                    </h4>
-                    <br>
-                    <img src="/images/Erythrina_crista_galli_L_image.png" class="carousel-image">
-
-                </div>
-                <div class="col-md-3" style="margin-top: 5%">
-                    <p style="font-size: 18px">Family: Fabaceae</p>
-                    <p style="font-size: 18px">Kingdom: Plantae</p>
-                    <p style="font-size: 18px">Genus: Erythrina</p>
-                    <p style="font-size: 18px">Continent: Ocenia</p>
-                    <p style="font-size: 18px">Country: Australia</p>
-                    <p style="font-size: 18px">Creator: Scott Johnson</p>
-                </div>
-                <div class="col-md-7" id="second-map">
-
+                <div class="col-md-6" id="map">
+                    <div class="map-container h-100">
+                        <div class="map-header">
+                            <h2>Map</h2>
+                        </div>
+                        <div class="map-body h-100">
+                            <div id="map-canvas" class="h-100"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="carousel-item">
             <div class="row">
-                <div class="col-md-2">
-                    <h4 class="display-7">Erigeron philadelphicus L.
-                    </h4>
-                    <br>
-                    <img src="/images/Erigeron_philadelphicus_L.png" class="carousel-image">
-
+                <div class="col-md-6" style="background-image: url('/images/Erythrina_crista_galli_L_image.png'); background-size: cover; background-position: center;">
+                    <div class="map-info p-5">
+                        <h4 class="display-7">Erythrina crista-galli L</h4>
+                        <p style="font-size: 18px">Family: Fabaceae</p>
+                        <p style="font-size: 18px">Kingdom: Plantae</p>
+                        <p style="font-size: 18px">Genus: Erythrina</p>
+                        <p style="font-size: 18px">Continent: Ocenia</p>
+                        <p style="font-size: 18px">Country: Australia</p>
+                        <p style="font-size: 18px">Creator: Scott Johnson</p>
+                    </div>
                 </div>
-                <div class="col-md-3" style="margin-top: 5%">
-                    <p style="font-size: 18px">Family: Asteraceae</p>
-                    <p style="font-size: 18px">Kingdom: Plantae</p>
-                    <p style="font-size: 18px">Genus: Erigeron</p>
-                    <p style="font-size: 18px">Continent: Europe</p>
-                    <p style="font-size: 18px">Country: France</p>
-                    <p style="font-size: 18px">Creator: Gilles Istin</p>
-                </div>
-                <div class="col-md-7" id="third-map">
-
+                <div class="col-md-6" id="second-map">
+                    <div class="map-container h-100">
+                        <div class="map-header">
+                            <h2>Map</h2>
+                        </div>
+                        <div class="map-body h-100">
+                            <div id="map-canvas" class="h-100"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="carousel-item">
+            <div class="row">
+                <div class="col-md-6" style="background-image: url('/images/Erigeron_philadelphicus_L.png'); background-size: cover; background-position: center;">
+                    <div class="map-info p-5">
+                        <h4 class="display-7">Erigeron philadelphicus L.</h4>
+                        <p style="font-size: 18px">Family: Asteraceae</p>
+                        <p style="font-size: 18px">Kingdom: Plantae</p>
+                        <p style="font-size: 18px">Genus: Erigeron</p>
+                        <p style="font-size: 18px">Continent: Europe</p>
+                        <p style="font-size: 18px">Country: France</p>
+                        <p style="font-size: 18px">Creator: Gilles Istin</p>
+                    </div>
+                </div>
+                <div class="col-md-6" id="third-map">
+                    <div class="map-container h-100">
+                        <div class="map-header">
+                            <h2>Map</h2>
+                        </div>
+                        <div class="map-body h-100">
+                            <div id="map-canvas" class="h-100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#plantCarousel" data-bs-slide="prev" style="margin-right: 2%">
+    <button class="carousel-control-prev" type="button" data-bs-target="#plantCarousel" data-bs-slide="prev"
+            style="margin-right: 2%">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
     </button>
@@ -147,7 +162,8 @@
         </div>
         <div class="row">
             <div class="col-6">
-                <p>Interactive catalog of plants with detailed information, images, and categorization to engage users and help them explore different plant options easily.</p>
+                <p>Interactive catalog of plants with detailed information, images, and categorization to engage users
+                    and help them explore different plant options easily.</p>
             </div>
 
             <div class="col-6">
@@ -162,7 +178,7 @@
         <div class="input-group">
             <label class="input-group-text" for=""><i class="bi bi-funnel"></i></label>
             <select class="form-select" aria-label="Filter select">
-                <option disabled hidden selected><i class="bi bi-funnel"></i> Filter Plants By.. </option>
+                <option disabled hidden selected><i class="bi bi-funnel"></i> Filter Plants By..</option>
                 <option value="1">Flowers</option>
                 <option value="2">Without Flowers</option>
             </select>
@@ -170,22 +186,23 @@
     </div>
     <div class="display-plants d-flex flex-column justify-content-center align-items-center vh-100">
         <h4 class="text-muted mt-1">Sorry there are currently no plants to display...</h4>
-            <button class="btn btn-success">Add Plant</button>
+        <button class="btn btn-success">Add Plant</button>
     </div>
 
     <%- include('./partials/footer'); %>
 
 
     <script>
-        function initMap(){
+        function initMap() {
             createMapWithMarker(15.380074, 78.983592, "map");
             createMapWithMarker(-28.221163, 153.372328, "second-map");
             createMapWithMarker(48.017952, 7.334534, "third-map");
         }
+
         function createMapWithMarker(latitude, longitude, mapElementId) {
             let mapOptions = {
                 zoom: 5,
-                center: { lat: latitude, lng: longitude }
+                center: {lat: latitude, lng: longitude}
             };
             let map = new google.maps.Map(document.getElementById(mapElementId), mapOptions);
 
@@ -199,9 +216,12 @@
     </script>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+            integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+            crossorigin="anonymous"></script>
+</div>
 </body>
-
-
 </html>
