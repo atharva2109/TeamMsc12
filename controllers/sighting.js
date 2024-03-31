@@ -10,7 +10,13 @@ exports.create = function (data) {
 
         date: data.date,
         location: data.location,
-        address: data.address,
+        address: {
+            line: data.line,
+            city: data.city,
+            state: data.status,
+            country: data.country,
+            pinCode: data.pinCode
+        },
         altitude: data.altitude,
         status: data.status,
 
