@@ -9,13 +9,14 @@ let SightingSchema = new Schema(
 
         // Sighting Fields
         date: { type: Date, required: true },                               // Date of sighting
-        location: { type: Location, required: true },                       // Location of the sighting
+        location: { type: String, required: true },                       // Location of the sighting
         address: {
             line: String,
             city: String,
             state: String,
             country: String,
-            pincode: Number
+            pinCode: Number,
+            required: true
         },                                                                  // Address in words
         altitude: Number,                                                   // Altitude of the sighting
         status: {
