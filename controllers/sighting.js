@@ -10,40 +10,46 @@ exports.create = function (data) {
 
         date: data.date,
         location: data.location,
-        address: data.address,
+        address: {
+            line: data.line,
+            city: data.city,
+            state: data.status,
+            country: data.country,
+            pinCode: data.pinCode
+        },
         altitude: data.altitude,
         status: data.status,
 
         plant: {
-            name: data.plant.name,
-            commonName: data.plant.commonName,
-            scientificName: data.plant.scientificName,
-            family: data.plant.family,
-            genus: data.plant.genus,
-            species: data.plant.species,
-            description: data.plant.description,
+            name: data.plant_name,
+            commonName: data.plant_commonName,
+            scientificName: data.plant_scientificName,
+            family: data.plant_family,
+            genus: data.plant_genus,
+            species: data.plant_species,
+            description: data.plant_description,
             size: {
-                length: data.plant.size.length,
-                height: data.plant.size.height,
-                width: data.plant.size.width
+                length: data.plant_length,
+                height: data.plant_height,
+                width: data.plant_width
             },
             characteristics: {
-                flowering: data.plant.characteristics.flowering,
-                hasLeaves: data.plant.characteristics.hasLeaves,
-                fruitBearing: data.plant.characteristics.fruitBearing,
-                sunExposure: data.plant.characteristics.sunExposure,
-                flowerColor: data.plant.characteristics.flowerColor
+                flowering: data.isFlowering,
+                hasLeaves: data.hasLeaves,
+                fruitBearing: data.isFruitBearing,
+                sunExposure: data.sunExposure,
+                flowerColor: data.flowerColor
             },
-            identificationLink: data.plant.identificationLink,
-            photos: data.plant.photos
+            identificationLink: data.plant_identification_link,
+            photos: data.plant_photos
         },
 
         user: {
-            id: data.user.id,
-            name: data.user.name,
+            id: data.user_id,
+            name: data.user_name,
             contactDetails: {
-                email: data.user.contactDetails.email,
-                phoneNumber: data.user.contactDetails.phoneNumber
+                email: data.user_email,
+                phoneNumber: data.user_phoneNumber
             }
         }
     });

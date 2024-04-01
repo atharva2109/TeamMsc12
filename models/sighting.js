@@ -8,20 +8,19 @@ let SightingSchema = new Schema(
     {
 
         // Sighting Fields
-        date: { type: Date, required: true },                               // Date of sighting
-        location: { type: Location, required: true },                       // Location of the sighting
+        date: { type: Date },                               // Date of sighting
+        location: { type: String},                       // Location of the sighting
         address: {
             line: String,
             city: String,
             state: String,
             country: String,
-            pincode: Number
+            pinCode: String
         },                                                                  // Address in words
         altitude: Number,                                                   // Altitude of the sighting
         status: {
             type: String,
-            enum: ['Verified', 'Verification in Progress'],
-            required: true
+            enum: ['Verified', 'Verification in Progress']
         },                                                                  // Status of the sighting
 
         // Plant Fields
@@ -32,12 +31,11 @@ let SightingSchema = new Schema(
             family: String,                                                 // Plant family
             genus: String,                                                  // Plant Genus
             species: String,                                                // Plant species
-            description: { type: String, required: true },                  // Plant/Environment Description
+            description: { type: String },                  // Plant/Environment Description
             size: {
                 length: String,
                 height: String,
-                width: String,
-                required: true
+                width: String
             },                                                              // Plant size
             characteristics: {
                 flowering: Boolean,
@@ -55,7 +53,7 @@ let SightingSchema = new Schema(
 
         // User Fields
         user: {
-            id: { type: Number, required: true, unique: true },             // user id
+            id: { type: Number, unique: true },             // user id
             name: String,                                                   // user name
             contactDetails: {
                 email: String,

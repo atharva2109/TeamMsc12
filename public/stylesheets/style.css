@@ -1,0 +1,5 @@
+.gradient-text {
+    -webkit-background-clip: text; /* For Safari */
+    background-clip: text;
+    color: transparent;
+}
