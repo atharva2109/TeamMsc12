@@ -3,22 +3,6 @@ let mongoose = require('mongoose');
 // Create an instance of schema class for mongoose
 let Schema = mongoose.Schema;
 
-let SightingSchema = new mongoose.Schema({
-    user: {
-        id: { type: String, required: null },
-    },
-    plant: {
-        name: { type: String, required: null },
-        description: { type: String, required: null },
-        category: { type: String, required: null },
-    },
-    date: { type: Date, required: null },
-    location: { type: String, required: null },
-    image:{ type: [String], required: null }
-
-
-});
-
 // Define the schema for plant sightings
 let SightingSchema = new Schema(
     {
@@ -69,7 +53,7 @@ let SightingSchema = new Schema(
 
         // User Fields
         user: {
-            id: { type: Number, unique: true },             // user id
+            id: { type: Number },             // user id
             name: String,                                                   // user name
             contactDetails: {
                 email: String,

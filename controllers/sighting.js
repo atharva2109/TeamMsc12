@@ -45,7 +45,6 @@ exports.create = function (data) {
         },
 
         user: {
-            id: data.user_id,
             name: data.user_name,
             contactDetails: {
                 email: data.user_email,
