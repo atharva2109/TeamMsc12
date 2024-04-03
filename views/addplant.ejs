@@ -5,261 +5,288 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Plant</title>
     <link rel="stylesheet" href="./stylesheets/addplant/style.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src='/javascripts/API.js'></script>
+    <script>
+        API();
+    </script>
+    <%- include('./partials/base'); %>
 </head>
-<body>
-<h1 class="title">Add Plant</h1>
+<body style="overflow-y: hidden !important;">
+<%- include('./partials/header', { title: 'Add Plant',visibility:'hidden' }); %>
 
-<ul id="subtitles">
-    <li id="userIdSection">User ID</li>
-    <li id="plantNameSection">Plant Name</li>
-    <li id="plantDescriptionSection">Plant Description</li>
-    <li id="categorySection">Category</li>
-    <li id="chooseDateSection">Choose Date</li>
-    <li id="pickLocationSection">Pick Location</li>
-    <li id="uploadImageSection">Upload Image</li>
-    <li id="submitSection">Submit</li>
-</ul>
-<form action="/addplant" method="post" enctype="multipart/form-data">
-    <div class="input-area text-center" style="margin-top: 20px;">
-        <!-- User ID Input and Next/Back Button -->
-        <div id="userIdInputSection">
-            <input type="text" id="userIdInput" class="input-field form-control" placeholder="Enter your User ID">
-            <button id="nextUserId" class="btn btn-primary">Next</button>
+<!--Add Plant Form-->
+<section class="vh-10">
+    <div class="container-fluid" >
+<div class="row">
+    <div class="col-sm-6 text-black" >
+        <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5" >
+<form  style="width: 60rem;max-height: 60vh;overflow-y: auto;overflow-x: hidden" method="post" action="/addplant" >
+    <fieldset  class="border p-2">
+        <legend  class="float-none w-auto">User Details: </legend>
+    <div class="form-outline mb-4">
+        <label for="username" class="form-label">UserName<span style="color: red;margin-right: 1px; font-size: 20px;">*</span>: </label>
+        <input type="text" class="form-control" id="username" required name="username">
+    </div>
+    <div class="form-outline mb-4">
+        <label for="email" class="form-label">Email: </label>
+        <input type="email" class="form-control" id="email" name="email">
+    </div>
+    <div class="form-outline mb-4">
+        <label for="phone" class="form-label">Phone: </label>
+        <input type="string" class="form-control" id="phone" name="phone">
+    </div>
+    </fieldset>
+    <div class="form-outline mb-4">
+        <label for="plantName" class="form-label">Plant Name<span style="color: red;margin-right: 1px; font-size: 20px;">*</span>: </label>
+        <input type="text" class="form-control" id="plantName" required name="plantName">
     </div>
 
-        <!-- Plant Name Input and Next/Back Button -->
-        <div id="plantNameInputSection" style="display: none;">
-            <input type="text" id="plantNameInput" class="input-field form-control" placeholder="Enter Plant Name">
-            <button id="nextPlantName" class="btn btn-primary">Next</button>
-            <button id="backPlantName" class="btn btn-secondary">Back</button>
-         </div>
+    <div class="form-outline mb-4">
+        <label for="plantCommonName" class="form-label">Plant Common Name: </label>
+        <input type="text" class="form-control" id="plantCommonName" name="plantCommonName">
+    </div>
 
-        <!-- Plant Description Input and Next/Back Button -->
-        <div id="plantDescriptionInputSection" style="display: none;">
-            <textarea id="plantDescriptionInput" class="form-control" placeholder="Enter Plant Description" rows="4"></textarea>
-            <button id="nextPlantDescription" class="btn btn-primary">Next</button>
-            <button id="backPlantDescription" class="btn btn-secondary">Back</button>
-        </div>
+    <div class="form-outline mb-4">
+        <label for="plantScientificName" class="form-label">Plant Scientific Name: </label>
+        <input type="text" class="form-control" id="plantScientificName" name="plantScientificName">
+    </div>
 
-        <!-- Category Dropdown menu and Next/Back Button -->
-        <div id="categoryInputSection" style="display: none;">
-            <label for="plantCategory">Category:</label>
-            <select id="plantCategory" class="form-control">
-                <option value="">Select a Category</option>
-                <option value="herb">Herb</option>
-                <option value="shrub">Shrub</option>
-                <option value="tree">Tree</option>
-                <option value="flower">Flower</option>
-            </select>
-            <button id="nextCategorySection" class="btn btn-primary">Next</button>
-            <button id="backCategorySection" class="btn btn-secondary">Back</button>
-        </div>
+    <div class="form-outline mb-4">
+        <label for="plantFamily" class="form-label">Plant Family: </label>
+        <input type="text" class="form-control" id="plantFamily" name="plantFamily">
+    </div>
 
-        <!--    Choose Date menu and Next/Back Button-->
-        <div id="chooseDateInputSection" style="display: none;">
-            <label for="chooseDate">Choose Date:</label>
-            <input type="date" id="chooseDate" name="chooseDate" class="form-control">
-            <button id="nextChooseDateSection" class="btn btn-primary">Next</button>
-            <button id="backChooseDateSection" class="btn btn-secondary">Back</button>
-        </div>
+    <div class="form-outline mb-4">
+        <label for="plantGenus" class="form-label">Plant Genus: </label>
+        <input type="text" class="form-control" id="plantGenus" name="plantGenus">
+    </div>
 
-        <!--    Pick Location(map API) and Next/Back Button-->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPwovx_RfcG7uV-3MrFSiyz2ChuQU62NM&callback=initMap" async defer></script>
-        <script>
-            let map, marker;
-
-            function initMap() {
-                const defaultLocation = { lat: 53.3817639, lng: -1.4826869 }; // Default location: The Diamond
-                map = new google.maps.Map(document.getElementById("map"), {
-                    center: defaultLocation,
-                    zoom: 15,
-                });
-
-                // Allow user to place a marker on the map
-                map.addListener("click", (e) => {
-                    if (marker) marker.setMap(null); // Remove the previous marker, if any
-
-                    marker = new google.maps.Marker({
-                        position: e.latLng,
-                        map: map,
-                    });
-                });
-            }
-        </script>
-        <div id="pickLocationInputSection" style="display: none;">
-            <label for="pickLocation">Please Pick a Location:</label>
-            <div id="map" style="height: 400px; width: 600px;"></div>
-            <button id="nextPickLocationSection" class="btn btn-primary">Next</button>
-            <button id="backPickLocationSection" class="btn btn-secondary">Back</button>
-        </div>
-
-        <!--    Upload Image and Next/Back Button-->
-        <div id="uploadImageInputSection" style="display: none;">
-            <label for="uploadImage">Please Upload Image:</label>
-            <input type="file" id="uploadImage" name="uploadImage" accept="image/*">
-            <button id="nextUploadImageSection" class="btn btn-primary">Next</button>
-            <button id="backUploadImageSection" class="btn btn-secondary">Back</button>
-        </div>
-        <!--    Submit section and Back Button-->
-        <div id="submitInputSection" style="display:none;">
-            <div id="summary">
-                <!--display the details-->
+    <div class="form-outline mb-4">
+        <label for="plantSpecies" class="form-label">Plant Species: </label>
+        <input type="text" class="form-control" id="plantSpecies" name="plantSpecies">
+    </div>
+    <div class="form-outline mb-4">
+        <label for="plantDescription" class="form-label">Plant Description: </label>
+        <textarea class="form-control" id="plantDescription" rows="10" cols="10" name="plantDescription"></textarea>
+    </div>
+    <div class="form-outline mb-4">
+        <label for="plantDescription" class="form-label">Plant Size: </label>
+        <div class="row">
+            <div class="col">
+                <label for="plantLength" class="form-label">Length<span style="color: red;margin-right: 1px; font-size: 20px;">*</span>:</label>
+                <input type="number" class="form-control" id="plantLength" required name="plantLength">
             </div>
-            <button id="backSubmitSection" class="btn btn-primary">Back</button>
-            <button type="submit" class="btn btn-success">Add Plant</button>
+            <div class="col">
+                <label for="plantWidth" class="form-label">Width<span style="color: red;margin-right: 1px; font-size: 20px;">*</span>:</label>
+                <input type="number" class="form-control" id="plantWidth" required name="plantWidth">
+            </div>
+            <div class="col">
+                <label for="plantHeight" class="form-label">Height<span style="color: red;margin-right: 1px; font-size: 20px;">*</span>:</label>
+                <input type="number" class="form-control" id="plantHeight" required name="plantHeight">
+            </div>
         </div>
     </div>
+
+    <div class="form-outline mb-4">
+        <fieldset  class="border p-2">
+        <legend  class="float-none w-auto">Characteristics: </legend>
+            <input type="hidden" name="leavesValue" id="leavesValue">
+            <input type="hidden" name="floweringValue" id="floweringValue">
+            <input type="hidden" name="fruitValue" id="fruitValue">
+                <label for="flowering" class="form-label">Flowering:</label>
+            <input class="form-check-input" type="radio" name="flowering" id="floweringYes" value="Yes">
+            <label class="form-check-label" for="floweringYes">
+                Yes
+            </label>
+
+            <input class="form-check-input" type="radio" name="flowering" id="floweringNo" value="No">
+            <label class="form-check-label" for="floweringNo">
+                No
+            </label>
+
+            <div class="row">
+                <div class="col">
+                    <label for="leaves" class="form-label">Leaves:</label>
+                    <input class="form-check-input" type="radio" name="leaves" id="leavesYes" value="Yes">
+                    <label class="form-check-label" for="leavesYes">
+                        Yes
+                    </label>
+
+                    <input class="form-check-input" type="radio" name="leaves" id="leavesNo" value="No">
+                    <label class="form-check-label" for="leavesNo">
+                        No
+                    </label>
+            </div>
+            </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="leaves" class="form-label">Fruit Bearing:</label>
+                <input class="form-check-input" type="radio" name="fruitBearing" id="fruitsYes" value="Yes">
+                <label class="form-check-label" for="fruitsYes">
+                    Yes
+                </label>
+
+                <input class="form-check-input" type="radio" name="fruitBearing" id="fruitsNo" value="No">
+                <label class="form-check-label" for="fruitsNo">
+                    No
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="sunexposure" class="form-label">Sun Exposure:</label>
+                <select id="sunexposure" name="sunexposure">
+                                    <option value="Shade">Shade</option>
+                                    <option value="Partial Sun">Partial Sun</option>
+                                    <option value="Full Sun">Full Sun</option>
+                                </select>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="flowerColor" class="form-label">Flower Color:</label>
+               <input type="text" class="form-control" id="flowerColor" name="flowerColor"/>
+            </div>
+        </div>
+        </fieldset>
+    </div>
+
+    <div class="form-outline mb-4">
+        <label for="idLink" class="form-label">Identification Link: </label>
+        <input type="text" class="form-control" id="idLink" name="idLink">
+    </div>
+
+    <div class="form-outline mb-4">
+                    <label for="uploadImage">Please Upload Image:</label>
+                    <input type="file" id="uploadImage" name="uploadImage" accept="image/*">
+    </div>
+
+    <div class="form-outline mb-4">
+        <label for="datePicker" class="form-label">Date<span style="color: red;margin-right: 1px; font-size: 20px;">*</span>: </label>
+        <input type="date" id="datePicker" class="form-control" required name="datePicker"/>
+    </div>
+
+    <div class="form-outline mb-4 form-switch form-check form-switch form-check-reverse d-flex flex-row " style="text-align: start !important;">
+        <input type="hidden" id="verificationStatus" name="verificationStatus" value="">
+
+        <label class="form-check-label" for="verificationStatus">Verification in Progress</label>
+            <input class="form-check-input" type="checkbox" id="verificationToggle" style="float: none !important; margin-top: 0; margin-left: 1em; height: 20px; width: 50px;">
+            <label class="form-check-label" for="verificationStatus" style="margin-left: 3em;">Verified</label>
+
+    </div>
+    <div class="form-outline mb-4">
+    <label for="altitude" class="form-label">Altitude: </label>
+    <input type="number" class="form-control" id="altitude" >
+    </div>
+
+    <div class="form-outline mb-4">
+        <label for="pickLocation">Please Pick a Location:</label>
+        <input type="hidden" id="location" name="location" value="">
+        <div id="map" style="height: 400px; width: 600px;">
+
+                    </div>
+    </div>
+    <div class="form-outline mb-4">
+    <fieldset  class="border p-2">
+        <legend  class="float-none w-auto">Address of Plant: </legend>
+        <label for="addressLine" class="form-label">Address Line:</label>
+        <textarea class="form-control" id="addressLine" rows="5" cols="10" name="addressLine"></textarea>
+        <label for="city" class="form-label">City:</label>
+        <input class="form-control" id="city" type="text" name="city"/>
+        <label for="state" class="form-label">State:</label>
+        <input class="form-control" id="state" type="text" name="state"/>
+        <label for="country" class="form-label">Country:</label>
+        <input class="form-control" id="country" type="text" name="country"/>
+        <label for="pincode" class="form-label">PinCode:</label>
+        <input class="form-control" id="pincode" type="text" name="pincode"/>
+    </fieldset>
+    </div>
+    <button type="submit" class="btn btn-success btn-md btn-block">Add Plant</button>
 </form>
 
+        </div>
+
+    </div>
+
+    <div class="col-sm-6 px-0 d-none d-sm-block" style="height: 100vh;">
+        <img src="../images/add-plant.svg"
+             alt="Login image" class="w-100 vh-70"
+             style="object-fit: cover; object-position: left;height: 80%">
+    </div>
+</div>
+    </div>
+</section>
+<%- include('./partials/footer'); %>
+
 <script>
-    const userIdInputSection = document.getElementById('userIdInputSection');
-    const plantNameInputSection = document.getElementById('plantNameInputSection');
-    const plantDescriptionInputSection = document.getElementById('plantDescriptionInputSection');
-    const categoryInputSection = document.getElementById('categoryInputSection');
-    const chooseDateInputSection = document.getElementById('chooseDateInputSection');
-    const pickLocationInputSection = document.getElementById('pickLocationInputSection');
-    const uploadImageInputSection = document.getElementById('uploadImageInputSection');
-    const submitInputSection = document.getElementById('submitInputSection')
+    function initMap() {
+        createMapWithMarker(15.380074, 78.983592, "map");
+    }
 
-    const nextUserIdButton = document.getElementById('nextUserId');
-    const nextPlantNameButton = document.getElementById('nextPlantName');
-    const nextPlantDescriptionButton = document.getElementById('nextPlantDescription');
-    const nextCategorySectionButton = document.getElementById('nextCategorySection');
-    const nextChooseDateSectionButton = document.getElementById('nextChooseDateSection');
-    const nextPickLocationSectionButton = document.getElementById('nextPickLocationSection');
-    const nextUploadImageSectionButton = document.getElementById('nextUploadImageSection');
+    function createMapWithMarker(latitude, longitude, mapElementId) {
+        let mapOptions = {
+            zoom: 5,
+            center: {lat: latitude, lng: longitude}
+        };
+        let map = new google.maps.Map(document.getElementById(mapElementId), mapOptions);
 
-    const backPlantNameButton = document.getElementById('backPlantName');
-    const backPlantDescriptionButton = document.getElementById('backPlantDescription');
-    const backCategorySectionButton = document.getElementById('backCategorySection');
-    const backChooseDateSectionButton = document.getElementById('backChooseDateSection');
-    const backPickLocationSectionButton = document.getElementById('backPickLocationSection');
-    const backUploadImageSectionButton = document.getElementById('backUploadImageSection');
-    const backSubmitSectionButton = document.getElementById('backSubmitSection');
+        let markerOptions = {
+            position: new google.maps.LatLng(latitude, longitude),
+            map: map
+        };
+        let marker = new google.maps.Marker(markerOptions);
 
-    const subtitles = document.querySelectorAll('#subtitles li');
-    let activeIndex = 0;
+        map.addListener("click", (e) => {
+            if (marker) marker.setMap(null); // Remove the previous marker, if any-->
 
-    function highlightCurrent() {
-        userIdInputSection.style.display = 'none';
-        plantNameInputSection.style.display = 'none';
-        plantDescriptionInputSection.style.display = 'none';
-        categoryInputSection.style.display = 'none';
-        chooseDateInputSection.style.display = 'none';
-        pickLocationInputSection.style.display = 'none';
-        uploadImageInputSection.style.display = 'none';
-        submitInputSection.style.display = 'none';
-
-        if (activeIndex === 0) {
-            userIdInputSection.style.display = 'block';
-        } else if (activeIndex === 1) {
-            plantNameInputSection.style.display = 'block';
-        } else if (activeIndex === 2) {
-            plantDescriptionInputSection.style.display = 'block';
-        } else if (activeIndex === 3) {
-            categoryInputSection.style.display = 'block';
-        } else if (activeIndex === 4) {
-            chooseDateInputSection.style.display = 'block';
-        } else if (activeIndex === 5) {
-            pickLocationInputSection.style.display = 'block';
-        } else if (activeIndex === 6) {
-            uploadImageInputSection.style.display = 'block';
-        } else if (activeIndex === 7) {
-            submitInputSection.style.display = 'block';
-        }
-
-        subtitles.forEach((item, index) => {
-            item.classList.remove('active');
-            if (index === activeIndex) {
-                item.classList.add('active');
-            }
+            marker = new google.maps.Marker({
+                position: e.latLng,
+                map: map,
+            });
+            document.getElementById("location").value = `${e.latLng.lat()},${e.latLng.lng()}`;
         });
     }
 
-    nextUserIdButton.addEventListener('click', () => {
-        activeIndex = 1; // Move to Plant Name section
-        highlightCurrent();
-    });
-    nextPlantNameButton.addEventListener('click', () => {
-        activeIndex = 2; // Move to Plant Description section
-        highlightCurrent();
-    });
-    nextPlantDescriptionButton.addEventListener('click', () =>{
-        activeIndex = 3; // Move to Category section
-        highlightCurrent();
-    });
-    nextCategorySectionButton.addEventListener('click', () =>{
-        activeIndex = 4; // Move to Choose Date section
-        highlightCurrent();
-    });
-    nextChooseDateSectionButton.addEventListener('click', () =>{
-        activeIndex = 5; //Move to Pick Location section
-        highlightCurrent();
-    });
-    nextPickLocationSectionButton.addEventListener('click', () =>{
-        activeIndex = 6; //Move to Upload Image section
-        highlightCurrent();
-    });
-    nextUploadImageSectionButton.addEventListener('click', () =>{
-        activeIndex = 7; // Move to Submit section
-        updateSummary(); // Update summary with the latest details
-        highlightCurrent();
-    })
+    const verificationToggle = document.getElementById("verificationToggle");
+    const verificationStatusInput = document.getElementById("verificationStatus");
 
-    backPlantNameButton.addEventListener('click', () => {
-        activeIndex = Math.max(activeIndex - 1, 0); // Go back to User ID section
-        highlightCurrent();
-    });
-    backPlantDescriptionButton.addEventListener('click', () => {
-        activeIndex = 1; // Go back to Plant Name section
-        highlightCurrent();
-    });
-    backCategorySectionButton.addEventListener('click', () => {
-        activeIndex = 2; // Go back to Plant Description section
-        highlightCurrent();
-    });
-    backChooseDateSectionButton.addEventListener('click', () => {
-        activeIndex = 3; // Go back to Category section
-        highlightCurrent();
-    });
-    backPickLocationSectionButton.addEventListener('click', () => {
-        activeIndex = 4; // Go back to Choose Date section
-        highlightCurrent();
-    });
-    backUploadImageSectionButton.addEventListener('click', () => {
-        activeIndex = 5; // Go back to Pick Location section
-        highlightCurrent();
-    });
-    backSubmitSectionButton.addEventListener('click', () =>{
-        activeIndex = 6; // Go back to Upload Image section
-        highlightCurrent();
-    })
-
-    document.addEventListener('DOMContentLoaded', () => {
-        highlightCurrent(); // Initially set the correct visibility and highlight
-    });
-
-
-    function updateSummary() {
-        const userId = document.getElementById('userIdInput').value;
-        const plantName = document.getElementById('plantNameInput').value;
-        const plantDescription = document.getElementById('plantDescriptionInput').value;
-        const category = document.getElementById('plantCategory').value;
-        const chooseDate = document.getElementById('chooseDate').value;
-        const pickedLocation = marker ? marker.getPosition().toUrlValue() : 'No location selected';
-        const uploadedImage = document.getElementById('uploadImage').files[0] ? document.getElementById('uploadImage').files[0].name : 'No image uploaded';
-
-        document.getElementById('summary').innerHTML = `
-                        <p><strong>User ID:</strong> ${userId}</p>
-                        <p><strong>Plant Name:</strong> ${plantName}</p>
-                        <p><strong>Plant Description:</strong> ${plantDescription}</p>
-                        <p><strong>Category:</strong> ${category}</p>
-                        <p><strong>Choose Date:</strong> ${chooseDate}</p>
-                        <p><strong>Picked Location:</strong> ${pickedLocation}</p>
-                        <p><strong>Uploaded Image:</strong> ${uploadedImage}</p>
-                    `;
+    //Initial State checking
+    if (verificationToggle.checked) {
+        verificationStatusInput.value = "Verified";
+    } else {
+        verificationStatusInput.value = "Verification in Progress";
     }
+
+    verificationToggle.addEventListener("change", function() {
+        if (verificationToggle.checked) {
+            verificationStatusInput.value = "Verified";
+        } else {
+            verificationStatusInput.value = "Verification in Progress";
+        }
+    });
+
+    function updateRadioButttons() {
+        const selectedFlowering = document.querySelector('input[name="flowering"]:checked');
+        const floweringValue = selectedFlowering ? selectedFlowering.value : null;
+
+        const selectedLeaves = document.querySelector('input[name="leaves"]:checked');
+        const leavesValue = selectedLeaves ? selectedLeaves.value : null;
+
+        const selectedFruits = document.querySelector('input[name="fruitBearing"]:checked');
+        const fruitsValue = selectedFruits ? selectedFruits.value : null;
+
+        // Set the values to the hidden input fields
+        document.getElementById('leavesValue').value = leavesValue=="Yes"?true:false;
+        document.getElementById('floweringValue').value = floweringValue=="Yes"?true:false;
+        document.getElementById('fruitValue').value = fruitsValue=="Yes"?true:false;
+    }
+
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.addEventListener('change', updateRadioButttons);
+    });
 </script>
+
 </body>
 </html>
