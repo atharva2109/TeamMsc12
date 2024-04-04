@@ -16,206 +16,227 @@
 
 <!--Add Plant Form-->
 <section class="vh-10">
-    <div class="container-fluid" >
-<div class="row">
-    <div class="col-sm-6 text-black" >
-        <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5" >
-<form  style="width: 60rem;max-height: 60vh;overflow-y: auto;overflow-x: hidden" method="post" action="/addplant" >
-    <fieldset  class="border p-2">
-        <legend  class="float-none w-auto">User Details: </legend>
-    <div class="form-outline mb-4">
-        <label for="username" class="form-label">UserName<span style="color: red;margin-right: 1px; font-size: 20px;">*</span>: </label>
-        <input type="text" class="form-control" id="username" required name="username">
-    </div>
-    <div class="form-outline mb-4">
-        <label for="email" class="form-label">Email: </label>
-        <input type="email" class="form-control" id="email" name="email">
-    </div>
-    <div class="form-outline mb-4">
-        <label for="phone" class="form-label">Phone: </label>
-        <input type="string" class="form-control" id="phone" name="phone">
-    </div>
-    </fieldset>
-    <div class="form-outline mb-4">
-        <label for="plantName" class="form-label">Plant Name<span style="color: red;margin-right: 1px; font-size: 20px;">*</span>: </label>
-        <input type="text" class="form-control" id="plantName" required name="plantName">
-    </div>
-
-    <div class="form-outline mb-4">
-        <label for="plantCommonName" class="form-label">Plant Common Name: </label>
-        <input type="text" class="form-control" id="plantCommonName" name="plantCommonName">
-    </div>
-
-    <div class="form-outline mb-4">
-        <label for="plantScientificName" class="form-label">Plant Scientific Name: </label>
-        <input type="text" class="form-control" id="plantScientificName" name="plantScientificName">
-    </div>
-
-    <div class="form-outline mb-4">
-        <label for="plantFamily" class="form-label">Plant Family: </label>
-        <input type="text" class="form-control" id="plantFamily" name="plantFamily">
-    </div>
-
-    <div class="form-outline mb-4">
-        <label for="plantGenus" class="form-label">Plant Genus: </label>
-        <input type="text" class="form-control" id="plantGenus" name="plantGenus">
-    </div>
-
-    <div class="form-outline mb-4">
-        <label for="plantSpecies" class="form-label">Plant Species: </label>
-        <input type="text" class="form-control" id="plantSpecies" name="plantSpecies">
-    </div>
-    <div class="form-outline mb-4">
-        <label for="plantDescription" class="form-label">Plant Description: </label>
-        <textarea class="form-control" id="plantDescription" rows="10" cols="10" name="plantDescription"></textarea>
-    </div>
-    <div class="form-outline mb-4">
-        <label for="plantDescription" class="form-label">Plant Size: </label>
+    <div class="container-fluid">
         <div class="row">
-            <div class="col">
-                <label for="plantLength" class="form-label">Length<span style="color: red;margin-right: 1px; font-size: 20px;">*</span>:</label>
-                <input type="number" class="form-control" id="plantLength" required name="plantLength">
+            <div class="col-sm-6 text-black">
+                <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
+                    <form style="width: 60rem;max-height: 60vh;overflow-y: auto;overflow-x: hidden" method="post"
+                          action="/addplant">
+                        <fieldset class="border p-2">
+                            <legend class="float-none w-auto">User Details:</legend>
+                            <div class="form-outline mb-4">
+                                <label for="username" class="form-label">UserName<span
+                                            style="color: red;margin-right: 1px; font-size: 20px;">*</span>: </label>
+                                <input type="text" class="form-control" id="username" required name="username">
+                            </div>
+                            <div class="form-outline mb-4">
+                                <label for="email" class="form-label">Email: </label>
+                                <input type="email" class="form-control" id="email" name="email">
+                            </div>
+                            <div class="form-outline mb-4">
+                                <label for="phone" class="form-label">Phone: </label>
+                                <input type="string" class="form-control" id="phone" name="phone">
+                            </div>
+                        </fieldset>
+                        <div class="form-outline mb-4">
+                            <label for="plantName" class="form-label">Plant Name<span
+                                        style="color: red;margin-right: 1px; font-size: 20px;">*</span>: </label>
+                            <input type="text" class="form-control" id="plantName" required name="plantName">
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <label for="plantCommonName" class="form-label">Plant Common Name: </label>
+                            <input type="text" class="form-control" id="plantCommonName" name="plantCommonName">
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <label for="plantScientificName" class="form-label">Plant Scientific Name: </label>
+                            <input type="text" class="form-control" id="plantScientificName" name="plantScientificName">
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <label for="plantFamily" class="form-label">Plant Family: </label>
+                            <input type="text" class="form-control" id="plantFamily" name="plantFamily">
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <label for="plantGenus" class="form-label">Plant Genus: </label>
+                            <input type="text" class="form-control" id="plantGenus" name="plantGenus">
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <label for="plantSpecies" class="form-label">Plant Species: </label>
+                            <input type="text" class="form-control" id="plantSpecies" name="plantSpecies">
+                        </div>
+                        <div class="form-outline mb-4">
+                            <label for="plantDescription" class="form-label">Plant Description: </label>
+                            <textarea class="form-control" id="plantDescription" rows="10" cols="10"
+                                      name="plantDescription"></textarea>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <label for="plantDescription" class="form-label">Plant Size: </label>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="plantLength" class="form-label">Length<span
+                                                style="color: red;margin-right: 1px; font-size: 20px;">*</span>:</label>
+                                    <input type="number" class="form-control" id="plantLength" required
+                                           name="plantLength">
+                                </div>
+                                <div class="col">
+                                    <label for="plantWidth" class="form-label">Width<span
+                                                style="color: red;margin-right: 1px; font-size: 20px;">*</span>:</label>
+                                    <input type="number" class="form-control" id="plantWidth" required
+                                           name="plantWidth">
+                                </div>
+                                <div class="col">
+                                    <label for="plantHeight" class="form-label">Height<span
+                                                style="color: red;margin-right: 1px; font-size: 20px;">*</span>:</label>
+                                    <input type="number" class="form-control" id="plantHeight" required
+                                           name="plantHeight">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <fieldset class="border p-2">
+                                <legend class="float-none w-auto">Characteristics:</legend>
+                                <input type="hidden" name="leavesValue" id="leavesValue">
+                                <input type="hidden" name="floweringValue" id="floweringValue">
+                                <input type="hidden" name="fruitValue" id="fruitValue">
+                                <label for="flowering" class="form-label">Flowering:</label>
+                                <input class="form-check-input" type="radio" name="flowering" id="floweringYes"
+                                       value="Yes">
+                                <label class="form-check-label" for="floweringYes">
+                                    Yes
+                                </label>
+
+                                <input class="form-check-input" type="radio" name="flowering" id="floweringNo"
+                                       value="No">
+                                <label class="form-check-label" for="floweringNo">
+                                    No
+                                </label>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="leaves" class="form-label">Leaves:</label>
+                                        <input class="form-check-input" type="radio" name="leaves" id="leavesYes"
+                                               value="Yes">
+                                        <label class="form-check-label" for="leavesYes">
+                                            Yes
+                                        </label>
+
+                                        <input class="form-check-input" type="radio" name="leaves" id="leavesNo"
+                                               value="No">
+                                        <label class="form-check-label" for="leavesNo">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="leaves" class="form-label">Fruit Bearing:</label>
+                                        <input class="form-check-input" type="radio" name="fruitBearing" id="fruitsYes"
+                                               value="Yes">
+                                        <label class="form-check-label" for="fruitsYes">
+                                            Yes
+                                        </label>
+
+                                        <input class="form-check-input" type="radio" name="fruitBearing" id="fruitsNo"
+                                               value="No">
+                                        <label class="form-check-label" for="fruitsNo">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="sunexposure" class="form-label">Sun Exposure:</label>
+                                        <select id="sunexposure" name="sunexposure">
+                                            <option value="Shade">Shade</option>
+                                            <option value="Partial Sun">Partial Sun</option>
+                                            <option value="Full Sun">Full Sun</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="flowerColor" class="form-label">Flower Color:</label>
+                                        <input type="text" class="form-control" id="flowerColor" name="flowerColor"/>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <label for="idLink" class="form-label">Identification Link: </label>
+                            <input type="text" class="form-control" id="idLink" name="idLink">
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <label for="uploadImage">Please Upload Image:</label>
+                            <input type="file" id="uploadImage" name="uploadImage" accept="image/*">
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <label for="datePicker" class="form-label">Date<span
+                                        style="color: red;margin-right: 1px; font-size: 20px;">*</span>: </label>
+                            <input type="date" id="datePicker" class="form-control" required name="datePicker"/>
+                        </div>
+
+                        <div class="form-outline mb-4 form-switch form-check form-switch form-check-reverse d-flex flex-row "
+                             style="text-align: start !important;">
+                            <input type="hidden" id="verificationStatus" name="verificationStatus" value="">
+
+                            <label class="form-check-label" for="verificationStatus">Verification in Progress</label>
+                            <input class="form-check-input" type="checkbox" id="verificationToggle"
+                                   style="float: none !important; margin-top: 0; margin-left: 1em; height: 20px; width: 50px;">
+                            <label class="form-check-label" for="verificationStatus"
+                                   style="margin-left: 3em;">Verified</label>
+
+                        </div>
+                        <div class="form-outline mb-4">
+                            <label for="altitude" class="form-label">Altitude: </label>
+                            <input type="number" class="form-control" id="altitude">
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <label for="pickLocation">Please Pick a Location:</label>
+                            <input type="hidden" id="location" name="location" value="">
+                            <div id="map" style="height: 400px; width: 600px;">
+
+                            </div>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <fieldset class="border p-2">
+                                <legend class="float-none w-auto">Address of Plant:</legend>
+                                <label for="addressLine" class="form-label">Address Line:</label>
+                                <textarea class="form-control" id="addressLine" rows="5" cols="10"
+                                          name="addressLine"></textarea>
+                                <label for="city" class="form-label">City:</label>
+                                <input class="form-control" id="city" type="text" name="city"/>
+                                <label for="state" class="form-label">State:</label>
+                                <input class="form-control" id="state" type="text" name="state"/>
+                                <label for="country" class="form-label">Country:</label>
+                                <input class="form-control" id="country" type="text" name="country"/>
+                                <label for="pincode" class="form-label">PinCode:</label>
+                                <input class="form-control" id="pincode" type="text" name="pincode"/>
+                            </fieldset>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-md btn-block">Add Plant</button>
+                    </form>
+
+                </div>
+
             </div>
-            <div class="col">
-                <label for="plantWidth" class="form-label">Width<span style="color: red;margin-right: 1px; font-size: 20px;">*</span>:</label>
-                <input type="number" class="form-control" id="plantWidth" required name="plantWidth">
-            </div>
-            <div class="col">
-                <label for="plantHeight" class="form-label">Height<span style="color: red;margin-right: 1px; font-size: 20px;">*</span>:</label>
-                <input type="number" class="form-control" id="plantHeight" required name="plantHeight">
+
+            <div class="col-sm-6 px-0 d-none d-sm-block" style="height: 100vh;">
+                <img src="../images/add-plant.svg"
+                     alt="Login image" class="w-100 vh-70"
+                     style="object-fit: cover; object-position: left;height: 80%">
             </div>
         </div>
-    </div>
-
-    <div class="form-outline mb-4">
-        <fieldset  class="border p-2">
-        <legend  class="float-none w-auto">Characteristics: </legend>
-            <input type="hidden" name="leavesValue" id="leavesValue">
-            <input type="hidden" name="floweringValue" id="floweringValue">
-            <input type="hidden" name="fruitValue" id="fruitValue">
-                <label for="flowering" class="form-label">Flowering:</label>
-            <input class="form-check-input" type="radio" name="flowering" id="floweringYes" value="Yes">
-            <label class="form-check-label" for="floweringYes">
-                Yes
-            </label>
-
-            <input class="form-check-input" type="radio" name="flowering" id="floweringNo" value="No">
-            <label class="form-check-label" for="floweringNo">
-                No
-            </label>
-
-            <div class="row">
-                <div class="col">
-                    <label for="leaves" class="form-label">Leaves:</label>
-                    <input class="form-check-input" type="radio" name="leaves" id="leavesYes" value="Yes">
-                    <label class="form-check-label" for="leavesYes">
-                        Yes
-                    </label>
-
-                    <input class="form-check-input" type="radio" name="leaves" id="leavesNo" value="No">
-                    <label class="form-check-label" for="leavesNo">
-                        No
-                    </label>
-            </div>
-            </div>
-
-        <div class="row">
-            <div class="col">
-                <label for="leaves" class="form-label">Fruit Bearing:</label>
-                <input class="form-check-input" type="radio" name="fruitBearing" id="fruitsYes" value="Yes">
-                <label class="form-check-label" for="fruitsYes">
-                    Yes
-                </label>
-
-                <input class="form-check-input" type="radio" name="fruitBearing" id="fruitsNo" value="No">
-                <label class="form-check-label" for="fruitsNo">
-                    No
-                </label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <label for="sunexposure" class="form-label">Sun Exposure:</label>
-                <select id="sunexposure" name="sunexposure">
-                                    <option value="Shade">Shade</option>
-                                    <option value="Partial Sun">Partial Sun</option>
-                                    <option value="Full Sun">Full Sun</option>
-                                </select>
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <label for="flowerColor" class="form-label">Flower Color:</label>
-               <input type="text" class="form-control" id="flowerColor" name="flowerColor"/>
-            </div>
-        </div>
-        </fieldset>
-    </div>
-
-    <div class="form-outline mb-4">
-        <label for="idLink" class="form-label">Identification Link: </label>
-        <input type="text" class="form-control" id="idLink" name="idLink">
-    </div>
-
-    <div class="form-outline mb-4">
-                    <label for="uploadImage">Please Upload Image:</label>
-                    <input type="file" id="uploadImage" name="uploadImage" accept="image/*">
-    </div>
-
-    <div class="form-outline mb-4">
-        <label for="datePicker" class="form-label">Date<span style="color: red;margin-right: 1px; font-size: 20px;">*</span>: </label>
-        <input type="date" id="datePicker" class="form-control" required name="datePicker"/>
-    </div>
-
-    <div class="form-outline mb-4 form-switch form-check form-switch form-check-reverse d-flex flex-row " style="text-align: start !important;">
-        <input type="hidden" id="verificationStatus" name="verificationStatus" value="">
-
-        <label class="form-check-label" for="verificationStatus">Verification in Progress</label>
-            <input class="form-check-input" type="checkbox" id="verificationToggle" style="float: none !important; margin-top: 0; margin-left: 1em; height: 20px; width: 50px;">
-            <label class="form-check-label" for="verificationStatus" style="margin-left: 3em;">Verified</label>
-
-    </div>
-    <div class="form-outline mb-4">
-    <label for="altitude" class="form-label">Altitude: </label>
-    <input type="number" class="form-control" id="altitude" >
-    </div>
-
-    <div class="form-outline mb-4">
-        <label for="pickLocation">Please Pick a Location:</label>
-        <input type="hidden" id="location" name="location" value="">
-        <div id="map" style="height: 400px; width: 600px;">
-
-                    </div>
-    </div>
-    <div class="form-outline mb-4">
-    <fieldset  class="border p-2">
-        <legend  class="float-none w-auto">Address of Plant: </legend>
-        <label for="addressLine" class="form-label">Address Line:</label>
-        <textarea class="form-control" id="addressLine" rows="5" cols="10" name="addressLine"></textarea>
-        <label for="city" class="form-label">City:</label>
-        <input class="form-control" id="city" type="text" name="city"/>
-        <label for="state" class="form-label">State:</label>
-        <input class="form-control" id="state" type="text" name="state"/>
-        <label for="country" class="form-label">Country:</label>
-        <input class="form-control" id="country" type="text" name="country"/>
-        <label for="pincode" class="form-label">PinCode:</label>
-        <input class="form-control" id="pincode" type="text" name="pincode"/>
-    </fieldset>
-    </div>
-    <button type="submit" class="btn btn-success btn-md btn-block">Add Plant</button>
-</form>
-
-        </div>
-
-    </div>
-
-    <div class="col-sm-6 px-0 d-none d-sm-block" style="height: 100vh;">
-        <img src="../images/add-plant.svg"
-             alt="Login image" class="w-100 vh-70"
-             style="object-fit: cover; object-position: left;height: 80%">
-    </div>
-</div>
     </div>
 </section>
 <%- include('./partials/footer'); %>
@@ -259,7 +280,7 @@
         verificationStatusInput.value = "Verification in Progress";
     }
 
-    verificationToggle.addEventListener("change", function() {
+    verificationToggle.addEventListener("change", function () {
         if (verificationToggle.checked) {
             verificationStatusInput.value = "Verified";
         } else {
@@ -278,9 +299,9 @@
         const fruitsValue = selectedFruits ? selectedFruits.value : null;
 
         // Set the values to the hidden input fields
-        document.getElementById('leavesValue').value = leavesValue=="Yes"?true:false;
-        document.getElementById('floweringValue').value = floweringValue=="Yes"?true:false;
-        document.getElementById('fruitValue').value = fruitsValue=="Yes"?true:false;
+        document.getElementById('leavesValue').value = leavesValue == "Yes" ? true : false;
+        document.getElementById('floweringValue').value = floweringValue == "Yes" ? true : false;
+        document.getElementById('fruitValue').value = fruitsValue == "Yes" ? true : false;
     }
 
     document.querySelectorAll('input[type="radio"]').forEach(radio => {
