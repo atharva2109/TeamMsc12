@@ -4,52 +4,52 @@ const sightingModel = require('../models/sighting');
 // Helper Methods
 
 // Create new sightings
-exports.create = function (data) {
+exports.create = function (req) {
 
     let sighting = new sightingModel({
 
-        date: data.date,
-        location: data.location,
+        date: req.body.datePicker,
+        location: req.body.location,
         address: {
-            line: data.line,
-            city: data.city,
-            state: data.status,
-            country: data.country,
-            pinCode: data.pinCode
+            line: req.body.addressLine,
+            city: req.body.city,
+            state: req.body.state,
+            country: req.body.country,
+            pinCode: req.body.pincode
         },
-        altitude: data.altitude,
-        status: data.status,
+        altitude: req.body.altitude,
+        status: req.body.verificationStatus,
 
         plant: {
-            name: data.plant_name,
-            commonName: data.plant_commonName,
-            scientificName: data.plant_scientificName,
-            family: data.plant_family,
-            genus: data.plant_genus,
-            species: data.plant_species,
-            description: data.plant_description,
+            name: req.body.plantName,
+            commonName: req.body.plantCommonName,
+            scientificName: req.body.plantScientificName,
+            family: req.body.plantFamily,
+            genus: req.body.plantGenus,
+            species: req.body.plantSpecies,
+            description: req.body.plantDescription,
             size: {
-                length: data.plant_length,
-                height: data.plant_height,
-                width: data.plant_width
+                length: req.body.plantLength,
+                height: req.body.plantHeight,
+                width: req.body.plantWidth
             },
             characteristics: {
-                flowering: data.isFlowering,
-                hasLeaves: data.hasLeaves,
-                fruitBearing: data.isFruitBearing,
-                sunExposure: data.sunExposure,
-                flowerColor: data.flowerColor
+                flowering: req.body.floweringValue,
+                hasLeaves: req.body.leavesValue,
+                fruitBearing: req.body.fruitValue,
+                sunExposure: req.body.sunexposure,
+                flowerColor: req.body.flowerColor
             },
-            identificationLink: data.plant_identification_link,
-            photos: data.plant_photos
+            identificationLink: req.body.idLink,
+            photos: req.body.uploadImage
         },
 
         user: {
-            id: data.user_id,
-            name: data.user_name,
+            id: req.body.user_id,
+            name: req.body.username,
             contactDetails: {
-                email: data.user_email,
-                phoneNumber: data.user_phoneNumber
+                email: req.body.email,
+                phoneNumber: req.body.phone
             }
         }
     });
