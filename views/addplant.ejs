@@ -21,7 +21,7 @@
             <div class="col-sm-6 text-black">
                 <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
                     <form style="width: 60rem;max-height: 60vh;overflow-y: auto;overflow-x: hidden" method="post"
-                          action="/addplant">
+                          action="/addplant" enctype="multipart/form-data">
                         <fieldset class="border p-2">
                             <legend class="float-none w-auto">User Details:</legend>
                             <div class="form-outline mb-4">
@@ -105,13 +105,13 @@
                                 <input type="hidden" name="fruitValue" id="fruitValue">
                                 <label for="flowering" class="form-label">Flowering:</label>
                                 <input class="form-check-input" type="radio" name="flowering" id="floweringYes"
-                                       value="Yes">
+                                       value="Yes" >
                                 <label class="form-check-label" for="floweringYes">
                                     Yes
                                 </label>
 
                                 <input class="form-check-input" type="radio" name="flowering" id="floweringNo"
-                                       value="No">
+                                       value="No" checked>
                                 <label class="form-check-label" for="floweringNo">
                                     No
                                 </label>
@@ -126,7 +126,7 @@
                                         </label>
 
                                         <input class="form-check-input" type="radio" name="leaves" id="leavesNo"
-                                               value="No">
+                                               value="No" checked>
                                         <label class="form-check-label" for="leavesNo">
                                             No
                                         </label>
@@ -143,7 +143,7 @@
                                         </label>
 
                                         <input class="form-check-input" type="radio" name="fruitBearing" id="fruitsNo"
-                                               value="No">
+                                               value="No" checked>
                                         <label class="form-check-label" for="fruitsNo">
                                             No
                                         </label>
@@ -175,8 +175,9 @@
                         </div>
 
                         <div class="form-outline mb-4">
-                            <label for="uploadImage">Please Upload Image:</label>
-                            <input type="file" id="uploadImage" name="uploadImage" accept="image/*">
+                            <label for="uploadImage">Please Upload Image<span
+                                        style="color: red;margin-right: 1px; font-size: 20px;">*</span>:</label>
+                            <input type="file" id="uploadImage" name="uploadImage" accept="image/*" required>
                         </div>
 
                         <div class="form-outline mb-4">
@@ -201,9 +202,10 @@
                             <input type="number" class="form-control" id="altitude">
                         </div>
 
-                        <div class="form-outline mb-4">
-                            <label for="pickLocation">Please Pick a Location:</label>
-                            <input type="hidden" id="location" name="location" value="">
+                        <div class="form-outline mb-4" required>
+                            <label for="pickLocation">Please Pick a Location<span
+                                        style="color: red;margin-right: 1px; font-size: 20px;">*</span>:</label>
+                            <input type="hidden" id="location" name="location" value="" >
                             <div id="map" style="height: 400px; width: 600px;">
 
                             </div>
@@ -224,7 +226,7 @@
                                 <input class="form-control" id="pincode" type="text" name="pincode"/>
                             </fieldset>
                         </div>
-                        <button type="submit" class="btn btn-success btn-md btn-block">Add Plant</button>
+                        <button type="submit" class="btn btn-success btn-md btn-block" id="addplantbtn">Add Plant</button>
                     </form>
 
                 </div>
@@ -304,9 +306,23 @@
         document.getElementById('fruitValue').value = fruitsValue == "Yes" ? true : false;
     }
 
+    document.addEventListener('DOMContentLoaded', function() {
+        updateRadioButttons();
+    });
+
     document.querySelectorAll('input[type="radio"]').forEach(radio => {
         radio.addEventListener('change', updateRadioButttons);
     });
+
+    document.getElementById('addplantbtn').addEventListener('click', function(event) {
+        const locationValue = document.getElementById('location').value;
+        if (locationValue=="") {
+            event.preventDefault();
+            alert('Please pick a location before submitting the form.');
+        }
+    });
+
+
 </script>
 
 </body>
