@@ -48,7 +48,7 @@ let SightingSchema = new Schema(
                 flowerColor: String
             },                                                              // Plant characteristics
             identificationLink: String,                                     // Plant identification link
-            photos: [String]                                                // Plant photos
+            photos: [String]                                             // Plant photos
         },
 
         // User Fields

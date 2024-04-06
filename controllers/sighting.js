@@ -4,7 +4,7 @@ const sightingModel = require('../models/sighting');
 // Helper Methods
 
 // Create new sightings
-exports.create = function (req) {
+exports.create = function (req,filePath) {
 
     let sighting = new sightingModel({
 
@@ -41,7 +41,7 @@ exports.create = function (req) {
                 flowerColor: req.body.flowerColor
             },
             identificationLink: req.body.idLink,
-            photos: req.body.uploadImage
+            photos: [filePath],
         },
 
         user: {
@@ -57,8 +57,6 @@ exports.create = function (req) {
     // Save the sighting to the database
     // Return success or failure
     return sighting.save().then(sighting => {
-        console.log(sighting);
-
         // Return the sighting data as string
         JSON.stringify(sighting);
     }).catch(error => {
@@ -69,13 +67,16 @@ exports.create = function (req) {
 };
 
 // Fetch all sightings
-exports.getAll = function () {
-    return sightingModel.find({}).then(sightings => {
+exports.getAll = function (page, limit) {
+    // Calculate skip value based on page number and limit
+    const skip = (page - 1) * limit;
 
-        return JSON.stringify(sightings);
+    // Query the database to fetch sightings with pagination
+    return sightingModel.find({}).skip(skip).limit(limit).then(sightings => {
+        return sightings;
     }).catch(error => {
         console.log(error);
-
         return null;
     });
+
 };
