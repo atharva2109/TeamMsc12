@@ -8,48 +8,48 @@ exports.create = function (req,filePath) {
 
     let sighting = new sightingModel({
 
-        date: req.body.datePicker,
-        location: req.body.location,
+        date: req.datePicker,
+        location: req.location,
         address: {
-            line: req.body.addressLine,
-            city: req.body.city,
-            state: req.body.state,
-            country: req.body.country,
-            pinCode: req.body.pincode
+            line: req.addressLine,
+            city: req.city,
+            state: req.state,
+            country: req.country,
+            pinCode: req.pincode
         },
-        altitude: req.body.altitude,
-        status: req.body.verificationStatus,
+        altitude: req.altitude,
+        status: req.verificationStatus,
 
         plant: {
-            name: req.body.plantName,
-            commonName: req.body.plantCommonName,
-            scientificName: req.body.plantScientificName,
-            family: req.body.plantFamily,
-            genus: req.body.plantGenus,
-            species: req.body.plantSpecies,
-            description: req.body.plantDescription,
+            name: req.plantName,
+            commonName: req.plantCommonName,
+            scientificName: req.plantScientificName,
+            family: req.plantFamily,
+            genus: req.plantGenus,
+            species: req.plantSpecies,
+            description: req.plantDescription,
             size: {
-                length: req.body.plantLength,
-                height: req.body.plantHeight,
-                width: req.body.plantWidth
+                length: req.plantLength,
+                height: req.plantHeight,
+                width: req.plantWidth
             },
             characteristics: {
-                flowering: req.body.floweringValue,
-                hasLeaves: req.body.leavesValue,
-                fruitBearing: req.body.fruitValue,
-                sunExposure: req.body.sunexposure,
-                flowerColor: req.body.flowerColor
+                flowering: req.floweringValue,
+                hasLeaves: req.leavesValue,
+                fruitBearing: req.fruitValue,
+                sunExposure: req.sunExposure,
+                flowerColor: req.flowerColor
             },
-            identificationLink: req.body.idLink,
+            identificationLink: req.idLink,
             photos: [filePath],
         },
 
         user: {
-            id: req.body.user_id,
-            name: req.body.username,
+            id: req.userid,
+            name: req.username,
             contactDetails: {
-                email: req.body.email,
-                phoneNumber: req.body.phone
+                email: req.email,
+                phoneNumber: req.phone
             }
         }
     });
@@ -67,13 +67,23 @@ exports.create = function (req,filePath) {
 };
 
 // Fetch all sightings
-exports.getAll = function (page, limit) {
+exports.getPlantsPagewise = function (page, limit) {
     // Calculate skip value based on page number and limit
     const skip = (page - 1) * limit;
 
     // Query the database to fetch sightings with pagination
     return sightingModel.find({}).skip(skip).limit(limit).then(sightings => {
         return sightings;
+    }).catch(error => {
+        console.log(error);
+        return null;
+    });
+
+};
+
+exports.getAll = function (page, limit) {
+    return sightingModel.find({}).then(sightings => {
+        return JSON.stringify(sightings);
     }).catch(error => {
         console.log(error);
         return null;

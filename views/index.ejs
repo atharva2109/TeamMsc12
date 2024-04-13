@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+    <link rel="manifest" href="/manifest.json">
     <link rel='stylesheet' href='/stylesheets/homepage/index.css'/>
     <%- include('./partials/base'); %>
-    <script src='/javascripts/API.js'></script>
-    <script>
-        API();
-    </script>
+
+
 </head>
 <body>
 <%- include('./partials/header', { title: 'Homepage',visibility:'visible' }); %>
@@ -20,115 +18,8 @@
         <button type="button" data-bs-target="#plantCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
         <button type="button" data-bs-target="#plantCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
     </div>
+
     <div class="carousel-inner">
-        <% if (topPlants.length === 0) { %>
-            <div class="carousel-item active">
-                <div class="row">
-                    <div class="col-md-6" style="background-image: url('/images/Dodonaea_viscosa_image.png'); background-size: cover; background-position: center;">
-                        <div class="map-info p-5">
-                            <h4 class="display-7">Florida hopbush</h4>
-                            <p style="font-size: 18px">Family: Sapindaceae</p>
-                            <p style="font-size: 18px">Kingdom: Plantae</p>
-                            <p style="font-size: 18px">Genus: Dodonaea</p>
-                            <p style="font-size: 18px">Continent: Asia</p>
-                            <p style="font-size: 18px">Country: India</p>
-                            <p style="font-size: 18px">Creator: nazir nani</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6" id="map">
-                        <div class="map-container h-100">
-                            <div class="map-header">
-                                <h2>Map</h2>
-                            </div>
-                            <div class="map-body h-100">
-                                <div id="map-canvas" class="h-100"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="carousel-item">
-                <div class="row">
-                    <div class="col-md-6" style="background-image: url('/images/Erythrina_crista_galli_L_image.png'); background-size: cover; background-position: center;">
-                        <div class="map-info p-5">
-                            <h4 class="display-7">Erythrina crista-galli L</h4>
-                            <p style="font-size: 18px">Family: Fabaceae</p>
-                            <p style="font-size: 18px">Kingdom: Plantae</p>
-                            <p style="font-size: 18px">Genus: Erythrina</p>
-                            <p style="font-size: 18px">Continent: Ocenia</p>
-                            <p style="font-size: 18px">Country: Australia</p>
-                            <p style="font-size: 18px">Creator: Scott Johnson</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6" id="second-map">
-                        <div class="map-container h-100">
-                            <div class="map-header">
-                                <h2>Map</h2>
-                            </div>
-                            <div class="map-body h-100">
-                                <div id="map-canvas" class="h-100"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="carousel-item">
-                <div class="row">
-                    <div class="col-md-6" style="background-image: url('/images/Erigeron_philadelphicus_L.png'); background-size: cover; background-position: center;">
-                        <div class="map-info p-5">
-                            <h4 class="display-7">Erigeron philadelphicus L.</h4>
-                            <p style="font-size: 18px">Family: Asteraceae</p>
-                            <p style="font-size: 18px">Kingdom: Plantae</p>
-                            <p style="font-size: 18px">Genus: Erigeron</p>
-                            <p style="font-size: 18px">Continent: Europe</p>
-                            <p style="font-size: 18px">Country: France</p>
-                            <p style="font-size: 18px">Creator: Gilles Istin</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6" id="third-map">
-                        <div class="map-container h-100">
-                            <div class="map-header">
-                                <h2>Map</h2>
-                            </div>
-                            <div class="map-body h-100">
-                                <div id="map-canvas" class="h-100"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <% } else { %>
-        <% topPlants.forEach((plant, index) => { %>
-        <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
-            <div class="row">
-<div class="col-md-6" style="background-image:url('http://localhost:3000/<%= plant.plant.photos[0].replace(/\\/g, '/') %>'); background-size: cover; background-position: center;">
-                    <div class="map-info p-5">
-
-                        <h4 class="display-7"><%= plant.plant.name %></h4>
-                        <p style="font-size: 18px">Family: <%= plant.plant.family %></p>
-                        <p style="font-size: 18px">Common Name: <%= plant.plant.commonName %></p>
-                        <p style="font-size: 18px">Genus: <%= plant.plant.genus %></p>
-                        <p style="font-size: 18px">Country: <%= plant.address.country %></p>
-                        <p style="font-size: 18px">Creator: <%= plant.user.name %></p>
-                    </div>
-
-                </div>
-                <div class="col-md-6" id="map<%= index %>">
-                    <div class="map-container h-100">
-                        <div class="map-header">
-                            <h2>Map</h2>
-                        </div>
-                        <div class="map-body h-100">
-                            <div id="map-canvas" class="h-100"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-            <% }); %>
-        <% } %>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#plantCarousel" data-bs-slide="prev"
             style="margin-right: 2%">
@@ -217,51 +108,9 @@
         </div>
     </div>
 
-        <div class="row" style="margin-top: 1%;margin-left: 1%;margin-right: 1%">
-            <% if (plants.length === 0) { %>
-                <div class="display-plants d-flex flex-column justify-content-center align-items-center vh-100">
-                    <h4 class="text-muted mt-1">Sorry there are currently no plants to display...</h4>
-                    <button class="btn btn-success"><a href="/addplant" style="text-decoration: none;color: white"> Add Plant</a></button>
-                </div>
-                <% } else { %>
-            <% plants.forEach(plant => { %>
-                                <div class="col-md-3 mb-3 plant-card" data-has-flowers="<%= plant.plant.characteristics.flowering %>"  data-has-fruits="<%= plant.plant.characteristics.fruitBearing %>" data-has-leaves="<%= plant.plant.characteristics.hasLeaves %>">
-                                    <div class="card text-center">
-                                        <img src="<%= plant.plant.photos[0] %>" class="card-img-top" alt="Plant Image" style="height: 200px; object-fit: cover;" loading="lazy">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Name: <%= plant.plant.name %></h5>
-                                            <% if (plant.plant.family) { %>
-                                                <p class="card-text">Family: <%= plant.plant.family %></p>
-                                            <% } else { %>
-                                                <p class="card-text">Family: User not aware of it</p>
-                                            <% } %>
-                                            <% if (plant.plant.genus) { %>
-                                                <p class="card-text">Genus: <%= plant.plant.genus %></p>
-                                            <% } else { %>
-                                                <p class="card-text">Genus: User not aware of it</p>
-                                            <% } %>
-                                            <% if (plant.plant.species) { %>
-                                                <p class="card-text">Species: <%= plant.plant.species %></p>
-                                            <% } else { %>
-                                                <p class="card-text">Species: User not aware of it</p>
-                                            <% } %>
-                                            <% if (plant.address.country) { %>
-                                                <p class="card-text">Country: <%= plant.address.country %></p>
-                                            <% } else { %>
-                                                <p class="card-text">Country: User not aware of it</p>
-                                            <% } %>
-                                            <% if (plant.status === 'Verified') { %>
-                                                <img src="/images/blue_tick.png" alt="Verified" class="verification-icon" style="height: 40px;width:40px;">
-                                            <% } else if (plant.status === 'Verification in Progress') { %>
-                                                <img src="/images/red-tick.jpg" alt="Pending" class="verification-icon" style="height: 40px; width:40px;">
-                                            <% } %>
-                                            <a href="#" class="btn btn-success">View Details</a>
-                                        </div>
-                                    </div>
-                                </div>
-            <% }); %>
-                <% } %>
-        </div>
+    <div class="row " style="margin-top: 1%;margin-left: 1%;margin-right: 1%" id="plant_list">
+
+    </div>
 
 
     <nav aria-label="Page navigation">
@@ -294,16 +143,43 @@
 
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load index.js
+            const indexScript = document.createElement('script');
+            indexScript.src = '/javascripts/index.js';
+            indexScript.onload = function() {
+                console.log("After index.j is loaded!!")
+                // After index.js is loaded, load idb-utility.js
+                const idbScript = document.createElement('script');
+                idbScript.src = '/javascripts/idb-utility.js';
+                idbScript.onload = function() {
+                    // After idb-utility.js is loaded, load API.js
+                    const apiScript = document.createElement('script');
+                    apiScript.src = '/javascripts/API.js';
+                    apiScript.onload = function() {
+                        // Call the API function after API.js is loaded
+                        API();
+                    };
+                    document.head.appendChild(apiScript);
+                };
+                document.head.appendChild(idbScript);
+            };
+            document.head.appendChild(indexScript);
+        });
+    </script>
+    <script>
+
+
+
+
+
         function initMap() {
-            <% if (topPlants.length === 0) { %>
-            createMapWithMarker(15.380074, 78.983592, "map");
-            createMapWithMarker(-28.221163, 153.372328, "second-map");
-            createMapWithMarker(48.017952, 7.334534, "third-map");
-            <% } else { %>
-            <% topPlants.forEach((plant, index) => { %>
-            createMapWithMarker('<%= plant.location.split(",")[0] %>', '<%= plant.location.split(",")[1] %>', "map<%= index %>");
-            <% }); %>
-            <% } %>
+            console.log("Plant carousels: ", document.querySelector(".plantCarouselItem"))
+            //    carouselPlants.forEach((plant, index) => {
+            //
+            // console.log("Plant in carousel: ",plant)
+            //      })
+
         }
 
         function createMapWithMarker(latitude, longitude, mapElementId) {
@@ -324,7 +200,7 @@
         document.getElementById('filterSelect').addEventListener('change', function() {
             let filterValue = this.value;
             sessionStorage.setItem('plantFilter', filterValue);
-            let plantCards = document.querySelectorAll('.plant-card');
+            let plantCards = document.querySelectorAll('.plant_list');
             plantCards.forEach(function(card) {
                 if (filterValue === 'all') {
                     card.style.display = 'block';
@@ -358,6 +234,7 @@
                 document.getElementById('filterSelect').dispatchEvent(new Event('change'));
             }
         });
+
     </script>
 
 
