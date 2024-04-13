@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Plant</title>
+    <link rel="manifest" href="/manifest.json">
     <link rel="stylesheet" href="./stylesheets/addplant/style.css">
     <script src='/javascripts/API.js'></script>
     <script>
@@ -20,8 +21,7 @@
         <div class="row">
             <div class="col-sm-6 text-black">
                 <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
-                    <form style="width: 60rem;max-height: 60vh;overflow-y: auto;overflow-x: hidden" method="post"
-                          action="/addplant" enctype="multipart/form-data">
+                    <form style="width: 60rem;max-height: 60vh;overflow-y: auto;overflow-x: hidden"  >
                         <fieldset class="border p-2">
                             <legend class="float-none w-auto">User Details:</legend>
                             <div class="form-outline mb-4">
@@ -226,7 +226,7 @@
                                 <input class="form-control" id="pincode" type="text" name="pincode"/>
                             </fieldset>
                         </div>
-                        <button type="submit" class="btn btn-success btn-md btn-block" id="addplantbtn">Add Plant</button>
+                        <button type="button" class="btn btn-success btn-md btn-block" id="addplantbtn">Add Plant</button>
                     </form>
 
                 </div>
@@ -320,10 +320,62 @@
             event.preventDefault();
             alert('Please pick a location before submitting the form.');
         }
+        else{
+            var userId = '<%= user_id %>';
+            console.log("Add plants user id: ",userId);
+            const formData = {
+                username: document.getElementById("username").value,
+                email: document.getElementById("email").value,
+                phone: document.getElementById("phone").value,
+                plantName: document.getElementById("plantName").value,
+                plantCommonName: document.getElementById("plantCommonName").value,
+                plantScientificName: document.getElementById("plantScientificName").value,
+                plantFamily: document.getElementById("plantFamily").value,
+                plantGenus: document.getElementById("plantGenus").value,
+                plantSpecies: document.getElementById("plantSpecies").value,
+                plantDescription: document.getElementById("plantDescription").value,
+                plantLength: document.getElementById("plantLength").value,
+                plantWidth: document.getElementById("plantWidth").value,
+                plantHeight: document.getElementById("plantHeight").value,
+                leavesValue:   document.getElementById('leavesValue').value,
+                floweringValue: document.getElementById('floweringValue').value,
+                fruitValue:  document.getElementById('fruitValue').value,
+                sunExposure: document.getElementById("sunexposure").value,
+                flowerColor: document.getElementById("flowerColor").value,
+                idLink: document.getElementById("idLink").value,
+                uploadImage:document.getElementById("uploadImage").files[0],
+                datePicker: document.getElementById("datePicker").value,
+                verificationStatus: document.getElementById("verificationStatus").value,
+                altitude: document.getElementById("altitude").value,
+                location:document.getElementById("location").value,
+                addressLine: document.getElementById("addressLine").value,
+                city:document.getElementById("city").value,
+                state:document.getElementById("state").value,
+                country:document.getElementById("country").value,
+                pincode:document.getElementById("pincode").value,
+                userid:userId,
+            };
+
+            console.log("Form data in add plantejs",formData)
+            openSyncPlantsIDB().then((db) => {
+                addNewPlantsToSync(db, formData);
+            });
+
+            // Assuming you have service worker registration to show notifications
+            navigator.serviceWorker.ready
+                .then(function (serviceWorkerRegistration) {
+                    serviceWorkerRegistration.showNotification("Plant App",
+                        { body: "Plant added! - " + formData.plantName })
+                        .then(r =>
+                            console.log(r)
+                        );
+                });
+
+        }
     });
 
 
 </script>
-
+<script src="/javascripts/idb-utility.js"></script>
 </body>
 </html>
