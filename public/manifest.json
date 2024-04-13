@@ -1,0 +1,17 @@
+{
+  "lang": "en-uk",
+  "name": "Plant Identification App",
+  "short_name": "Plant Identification App",
+  "description": "A web application that allows the users to add,view and chat with the creators of the plant.",
+  "start_url": "/",
+  "background_color": "#2f3d58",
+  "theme_color": "#2f3d58",
+  "orientation": "any",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/images/logo/Squared_Logo.png",
+      "sizes": "256x256"
+    }
+  ]
+}
