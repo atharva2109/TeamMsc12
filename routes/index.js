@@ -64,8 +64,14 @@ router.get('/addplant', function (req, res, next) {
     res.render('addplant', {title: 'Add Plant',user_id:userId}); // Use 'addplant' as the EJS template file name
 });
 
-router.post('/addplant',upload.single('uploadImage'),async (req, res) => {
-    console.log("Add plant req body: ",req.body)
+router.post('/addplant',upload.single('uploadImage'), (req, res) => {
+    create(req.body,req.file.path).then(plant => {
+      console.log(plant);
+      res.status(200).send(plant);
+  }).catch(err => {
+      console.log(err);
+      res.status(500).send(err);
+  });
 
     await create(req.body,req.file.path);
 });
@@ -83,7 +89,7 @@ router.get('/plants', function (req, res, next) {
 
 router.get('/api/uploads-list', (req, res) => {
     const uploadsDir = path.join(__dirname, '..','public', 'images', 'uploads');
-    console.log(uploadsDir)
+console.log(uploadsDir)
     // Read the directory and get the list of files
     fs.readdir(uploadsDir, (err, files) => {
         if (err) {
@@ -98,13 +104,6 @@ router.get('/api/uploads-list', (req, res) => {
         // Send the list of URLs as a JSON response
         return res.json(uploadUrls);
     });
-});
-
-router.get('/sightingdetails', function (req, res, next) {
-    // Holds the value for sighting data
-    const sightingData = JSON.parse(decodeURIComponent(req.query.plant));
-
-    res.render('sightingdetails', {title: 'Plant Details', sighting: sightingData});
 });
 
 module.exports = router;
