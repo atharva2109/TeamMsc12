@@ -28,7 +28,7 @@ const insertPlantInCarousel = (plants) => {
 
             carouselItem.innerHTML = `
                 <div class="row">
-                    <div class="col-md-6 plantCarouselItem" style="background-image:url('http://localhost:3000/${plants.plant.photos[0].replace(/\\/g, '/') }'); background-size: cover; background-position: center;">
+                    <div class="col-md-6 plantCarouselItem" style="background-image:url('http://localhost:3000/${plants.plant.photos[0].replace(/\\/g, '/')}'); background-size: cover; background-position: center;">
                         <div class="map-info p-5">
                             <h4 class="display-7">${plants.plant && plants.plant.name}</h4>
                             <p style="font-size: 18px">Family: ${plants.plant && plants.plant.family || 'User not aware of it'}</p>
@@ -73,7 +73,7 @@ const insertPlantInCarousel = (plants) => {
                     <p class="card-text">Country: ${plants.address && plants.address.country || 'User not aware of it'}</p>
                     ${plants.status === 'Verified' ? '<img src="/images/blue_tick.png" alt="Verified" class="verification-icon" style="height: 40px;width:40px;">' : ''}
                     ${plants.status === 'Verification in Progress' ? '<img src="/images/red-tick.jpg" alt="Pending" class="verification-icon" style="height: 40px; width:40px;">' : ''}
-                    <a href="#" class="btn btn-success">View Details</a>
+                    <a href="/sightingdetails?plant=${encodeURIComponent(JSON.stringify(plants))}" class="btn btn-success">View Details</a>
                 </div>
             </div>
         `;
@@ -135,7 +135,7 @@ const insertPlantInCarousel = (plants) => {
                     <p class="card-text">Country: ${plants.address && plants.address.country || 'User not aware of it'}</p>
                     ${plants.status === 'Verified' ? '<img src="/images/blue_tick.png" alt="Verified" class="verification-icon" style="height: 40px;width:40px;">' : ''}
                     ${plants.status === 'Verification in Progress' ? '<img src="/images/red-tick.jpg" alt="Pending" class="verification-icon" style="height: 40px; width:40px;">' : ''}
-                    <a href="#" class="btn btn-success">View Details</a>
+                    <a href="/sightingdetails?plant=${encodeURIComponent(JSON.stringify(plants))}" class="btn btn-success">View Details</a>
                 </div>
             </div>
         `;

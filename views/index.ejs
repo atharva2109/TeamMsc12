@@ -32,8 +32,10 @@
     </button>
 </div>
 
-<!-- Marketing Banner -->
+<!-- Main Section -->
 <div class="card" style="width: 100%;">
+
+    <!-- Marketing Banner -->
     <div class="card-body" style="background-color: #eaf3d8;color: #575757">
         <div class="row text-center">
             <div class="col-12">
@@ -91,7 +93,7 @@
 
     </div>
 
-    <!-- Filter and Main Section -->
+    <!-- Filter and Sighting Listing -->
     <div class="min-vh-50 mt-4 w-50 m-auto">
         <div class="input-group">
             <label class="input-group-text" for=""><i class="bi bi-funnel"></i></label>
@@ -143,20 +145,20 @@
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Load index.js
             const indexScript = document.createElement('script');
             indexScript.src = '/javascripts/index.js';
-            indexScript.onload = function() {
+            indexScript.onload = function () {
                 console.log("After index.j is loaded!!")
                 // After index.js is loaded, load idb-utility.js
                 const idbScript = document.createElement('script');
                 idbScript.src = '/javascripts/idb-utility.js';
-                idbScript.onload = function() {
+                idbScript.onload = function () {
                     // After idb-utility.js is loaded, load API.js
                     const apiScript = document.createElement('script');
                     apiScript.src = '/javascripts/API.js';
-                    apiScript.onload = function() {
+                    apiScript.onload = function () {
                         // Call the API function after API.js is loaded
                         API();
                     };
@@ -168,9 +170,6 @@
         });
     </script>
     <script>
-
-
-
 
 
         function initMap() {
@@ -197,37 +196,32 @@
         }
 
 
-        document.getElementById('filterSelect').addEventListener('change', function() {
+        document.getElementById('filterSelect').addEventListener('change', function () {
             let filterValue = this.value;
             sessionStorage.setItem('plantFilter', filterValue);
             let plantCards = document.querySelectorAll('.plant_list');
-            plantCards.forEach(function(card) {
+            plantCards.forEach(function (card) {
                 if (filterValue === 'all') {
                     card.style.display = 'block';
                 } else if (filterValue === 'withFlowers' && card.getAttribute("data-has-flowers") === 'true') {
                     card.style.display = 'block';
                 } else if (filterValue === 'withoutFlowers' && card.getAttribute("data-has-flowers") === 'false') {
                     card.style.display = 'block';
-                }
-                else if (filterValue === 'withFruits' && card.getAttribute("data-has-fruits") === 'true') {
+                } else if (filterValue === 'withFruits' && card.getAttribute("data-has-fruits") === 'true') {
                     card.style.display = 'block';
-                }
-                else if (filterValue === 'withoutFruits' && card.getAttribute("data-has-fruits") === 'false') {
+                } else if (filterValue === 'withoutFruits' && card.getAttribute("data-has-fruits") === 'false') {
                     card.style.display = 'block';
-                }
-                else if (filterValue === 'withLeaves' && card.getAttribute("data-has-leaves") === 'true') {
+                } else if (filterValue === 'withLeaves' && card.getAttribute("data-has-leaves") === 'true') {
                     card.style.display = 'block';
-                }
-                else if (filterValue === 'withoutLeaves' && card.getAttribute("data-has-leaves") === 'false') {
+                } else if (filterValue === 'withoutLeaves' && card.getAttribute("data-has-leaves") === 'false') {
                     card.style.display = 'block';
-                }
-                else {
+                } else {
                     card.style.display = 'none';
                 }
             });
         });
 
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             let filterValue = sessionStorage.getItem('plantFilter');
             if (filterValue) {
                 document.getElementById('filterSelect').value = filterValue;
