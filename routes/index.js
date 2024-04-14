@@ -100,8 +100,11 @@ router.get('/api/uploads-list', (req, res) => {
     });
 });
 
-router.get('/plantdetails', function (req, res, next) {
-    res.render('plantdetails', {title: 'Plant Details'}); // Use 'plantdetails' as the EJS template file name
+router.get('/sightingdetails', function (req, res, next) {
+    // Holds the value for sighting data
+    const sightingData = JSON.parse(decodeURIComponent(req.query.plant));
+
+    res.render('sightingdetails', {title: 'Plant Details', sighting: sightingData});
 });
 
 module.exports = router;
