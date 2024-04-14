@@ -64,10 +64,15 @@ router.get('/addplant', function (req, res, next) {
     res.render('addplant', {title: 'Add Plant',user_id:userId}); // Use 'addplant' as the EJS template file name
 });
 
-router.post('/addplant',upload.single('uploadImage'),async (req, res) => {
-console.log("Add plant req body: ",req.body)
+router.post('/addplant',upload.single('uploadImage'), (req, res) => {
+    create(req.body,req.file.path).then(plant => {
+      console.log(plant);
+      res.status(200).send(plant);
+  }).catch(err => {
+      console.log(err);
+      res.status(500).send(err);
+  });
 
-    await create(req.body,req.file.path);
 });
 
 // route to get all todos
