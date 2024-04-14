@@ -72,8 +72,6 @@ router.post('/addplant',upload.single('uploadImage'), (req, res) => {
       console.log(err);
       res.status(500).send(err);
   });
-
-    await create(req.body,req.file.path);
 });
 
 // route to get all todos
@@ -104,6 +102,12 @@ console.log(uploadsDir)
         // Send the list of URLs as a JSON response
         return res.json(uploadUrls);
     });
+});
+
+router.get('/sightingdetails', function (req, res, next) {
+
+    const plantData = JSON.parse(decodeURIComponent(req.query.plant));
+    res.render('sightingdetails', {title: 'Plant Details', sighting: plantData });
 });
 
 module.exports = router;
