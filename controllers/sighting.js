@@ -57,8 +57,8 @@ exports.create = function (req,filePath) {
     // Save the sighting to the database
     // Return success or failure
     return sighting.save().then(sighting => {
-        // Return the sighting data as string
-        JSON.stringify(sighting);
+       console.log("JSON String",JSON.stringify(sighting))
+        return JSON.stringify(sighting);
     }).catch(error => {
         console.log(error);
 

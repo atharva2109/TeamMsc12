@@ -362,14 +362,14 @@
             });
 
             // Assuming you have service worker registration to show notifications
-            navigator.serviceWorker.ready
-                .then(function (serviceWorkerRegistration) {
-                    serviceWorkerRegistration.showNotification("Plant App",
-                        { body: "Plant added! - " + formData.plantName })
-                        .then(r =>
-                            console.log(r)
-                        );
-                });
+            // navigator.serviceWorker.ready
+            //     .then(function (serviceWorkerRegistration) {
+            //         serviceWorkerRegistration.showNotification("Plant App",
+            //             { body: "Plant added! - " + formData.plantName })
+            //             .then(r =>
+            //                 console.log(r)
+            //             );
+            //     });
 
         }
     });
