@@ -76,6 +76,7 @@ self.addEventListener('fetch', event => {
     })());
 });
 
+
 //Sync event to sync the todos
 self.addEventListener('sync', event => {
     if (event.tag === 'sync-plant') {
@@ -99,15 +100,22 @@ self.addEventListener('sync', event => {
                         body: formData
                     }).then(() => {
                         console.log('Service Worker: Syncing new Plant: ', syncPlant, ' done');
-                        deleteSyncPlantFromIDB(syncPostDB,syncPlant.id);
-                        // Send a notification
-                        // self.registration.showNotification('Todo Synced', {
-                        //     body: 'Todo synced successfully!',
-                        // });
+                        deleteSyncPlantFromIDB(syncPostDB, syncPlant.id).then(() => {
+                            // After successful deletion, navigate all client windows to the "/" route
+                            clients.matchAll().then(clients => {
+                                clients.forEach(client => {
+                                    client.navigate('/');
+                                });
+                            });
+                        }).catch((err) => {
+                            console.error('Service Worker: Deleting synced plant failed: ', err);
+                        });
+
                     }).catch((err) => {
                         console.error('Service Worker: Syncing new Todo: ', syncPlant, ' failed');
                     });
                 }
+
             });
         });
     }
