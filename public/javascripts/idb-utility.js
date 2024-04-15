@@ -120,12 +120,18 @@ const getAllSyncPlants = (syncPlantIDB) => {
 
 // Function to delete a syn
 const deleteSyncPlantFromIDB = (syncPlantIDB, id) => {
-    const transaction = syncPlantIDB.transaction(["sync-plants"], "readwrite")
-    const plantStore = transaction.objectStore("sync-plants")
-    const deleteRequest = plantStore.delete(id)
-    deleteRequest.addEventListener("success", () => {
-        console.log("Deleted " + id)
-    })
+    return new Promise((resolve, reject) => {
+        const transaction = syncPlantIDB.transaction(["sync-plants"], "readwrite")
+        const plantStore = transaction.objectStore("sync-plants")
+        const deleteRequest = plantStore.delete(id)
+        deleteRequest.addEventListener("success", () => {
+            console.log("Deleted " + id)
+            resolve();
+        })
+        deleteRequest.addEventListener("error", (event) => {
+            reject(event.target.error);
+        });
+    });
 }
 
 function openPlantsIDB() {
