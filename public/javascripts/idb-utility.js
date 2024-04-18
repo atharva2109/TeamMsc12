@@ -24,6 +24,36 @@ const addNewPlantsToSync = (syncTodoIDB, plantData) => {
 
 }
 
+// Function to update the sighting details.
+const updatePlantDetailsToSync = (syncToIDB, sightingDetail) => {
+    return new Promise((resolve, reject) => {
+        const transaction = syncToIDB.transaction(["sync-plants"], "readwrite");
+        const plantStore = transaction.objectStore("sync-plants");
+
+        // Find the plant object by its ID
+        const getRequest = plantStore.get(sightingDetail.id);
+        getRequest.addEventListener("success", () => {
+            const plant = getRequest.result;
+
+            // Update the desired field(s)
+            plant[sightingDetail.fieldToUpdate] = sightingDetail.newValue;
+
+            // Put the updated plant object back into the store
+            const updateRequest = plantStore.put(plant);
+            updateRequest.addEventListener("success", () => {
+                console.log("Plant detail updated successfully");
+                resolve();
+            });
+            updateRequest.addEventListener("error", (event) => {
+                reject(event.target.error);
+            });
+        });
+        getRequest.addEventListener("error", (event) => {
+            reject(event.target.error);
+        });
+    });
+};
+
 // Function to add new todos to IndexedDB and return a promise
 const addNewTodosToIDB = (plantIDB, plants) => {
     return new Promise((resolve, reject) => {
