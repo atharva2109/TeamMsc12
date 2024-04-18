@@ -31,21 +31,20 @@
         <ul class="list-group mb-3">
             <li class="list-group-item d-flex justify-content-between bg-light">
                 <div class="text-success">
-                    <h6 class="my-0">Username :</h6>
+                    <h6 class="my-0">Username :  <span class="text-success"><%= sighting.user.name %></span></h6>
                 </div>
-                <span class="text-success"><%= sighting.user.name %></span>
+
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                    <h6 class="my-0">Email ID</h6>
+                    <h6 class="my-0">Email ID :  <span class="text-muted"> <%= sighting.user.contactDetails.email %></span></h6>
                 </div>
-                <span class="text-muted"> <%= sighting.user.contactDetails.email %></span>
+
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                    <h6 class="my-0">Contact Number</h6>
+                    <h6 class="my-0">Contact Number :  <span class="text-muted"><%= sighting.user.contactDetails.phoneNumber %></span></h6>
                 </div>
-                <span class="text-muted"><%= sighting.user.contactDetails.phoneNumber %></span>
             </li>
         </ul>
 
@@ -62,51 +61,43 @@
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                    <h6 class="my-0">Elevation</h6>
+                    <h6 class="my-0">Elevation :  <span class="text-muted"><%= sighting.altitude %></span></h6>
                 </div>
-                <span class="text-muted"><%= sighting.altitude %></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                    <h6 class="my-0">Address</h6>
+                    <h6 class="my-0">Address :  <span class="text-muted"> <%= sighting.address.line %></span></h6>
                 </div>
-                <span class="text-muted"> <%= sighting.address.line %></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                    <h6 class="my-0">City/Town</h6>
+                    <h6 class="my-0">City/Town : <span class="text-muted"><%= sighting.address.city %></span></h6>
                 </div>
-                <span class="text-muted"><%= sighting.address.city %></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                    <h6 class="my-0">State</h6>
+                    <h6 class="my-0">State : <span class="text-muted"> <%= sighting.address.state %></span></h6>
                 </div>
-                <span class="text-muted"> <%= sighting.address.state %></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                    <h6 class="my-0">Postal Code</h6>
+                    <h6 class="my-0">Postal Code : <span class="text-muted"><%= sighting.address.pinCode %></span></h6>
                 </div>
-                <span class="text-muted"><%= sighting.address.pinCode %></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                    <h6 class="my-0">Country</h6>
+                    <h6 class="my-0">Country : <span class="text-muted"> <%= sighting.address.country %></span></h6>
                 </div>
-                <span class="text-muted"> <%= sighting.address.country %></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                    <h6 class="my-0">Date of Sighting</h6>
+                    <h6 class="my-0">Date of Sighting : <span class="text-muted"> <%= sighting.date %></span></h6>
                 </div>
-                <span class="text-muted"> <%= sighting.date %></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                    <h6 class="my-0">Number of Observations</h6>
+                    <h6 class="my-0">Number of Observations : <span class="text-muted"><%=          %></span></h6>
                 </div>
-                <span class="text-muted"><%=          %></span>
             </li>
         </ul>
     </div>
