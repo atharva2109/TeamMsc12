@@ -20,6 +20,9 @@
     </div>
 
     <div class="carousel-inner">
+
+    </div>
+
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#plantCarousel" data-bs-slide="prev"
             style="margin-right: 2%">
@@ -31,7 +34,7 @@
         <span class="visually-hidden">Next</span>
     </button>
 </div>
-
+<input type="hidden" id="hiddenPlants" value="<%= JSON.stringify(topPlants) %>">
 <!-- Main Section -->
 <div class="card" style="width: 100%;">
 
@@ -143,57 +146,12 @@
 
     <%- include('./partials/footer'); %>
 
+    <script src="/javascripts/index.js"></script>
+    <script src="/javascripts/idb-utility.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Load index.js
-            const indexScript = document.createElement('script');
-            indexScript.src = '/javascripts/index.js';
-            indexScript.onload = function () {
-                console.log("After index.j is loaded!!")
-                // After index.js is loaded, load idb-utility.js
-                const idbScript = document.createElement('script');
-                idbScript.src = '/javascripts/idb-utility.js';
-                idbScript.onload = function () {
-                    // After idb-utility.js is loaded, load API.js
-                    const apiScript = document.createElement('script');
-                    apiScript.src = '/javascripts/API.js';
-                    apiScript.onload = function () {
-                        // Call the API function after API.js is loaded
-                        API();
-                    };
-                    document.head.appendChild(apiScript);
-                };
-                document.head.appendChild(idbScript);
-            };
-            document.head.appendChild(indexScript);
-        });
-    </script>
-    <script>
 
 
-        function initMap() {
-            console.log("Plant carousels: ", document.querySelector(".plantCarouselItem"))
-            //    carouselPlants.forEach((plant, index) => {
-            //
-            // console.log("Plant in carousel: ",plant)
-            //      })
-
-        }
-
-        function createMapWithMarker(latitude, longitude, mapElementId) {
-            let mapOptions = {
-                zoom: 5,
-                center: {lat: parseFloat(latitude), lng: parseFloat(longitude)}
-            };
-            let map = new google.maps.Map(document.getElementById(mapElementId), mapOptions);
-
-            let markerOptions = {
-                position: new google.maps.LatLng(latitude, longitude),
-                map: map
-            };
-            let marker = new google.maps.Marker(markerOptions);
-        }
 
 
         document.getElementById('filterSelect').addEventListener('change', function () {
@@ -222,6 +180,7 @@
         });
 
         window.addEventListener('load', function () {
+
             let filterValue = sessionStorage.getItem('plantFilter');
             if (filterValue) {
                 document.getElementById('filterSelect').value = filterValue;
@@ -229,8 +188,8 @@
             }
         });
 
-    </script>
 
+    </script>
 
 </div>
 </body>
