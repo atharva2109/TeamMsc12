@@ -15,7 +15,6 @@ self.addEventListener('install', event => {
 
             const imagesToCache = uploadedFiles
                 .map(file => `${self.location.origin}${file}`)
-            console.log(imagesToCache)
             cache.addAll([
                 '/',
                 '/addplant',
@@ -36,7 +35,6 @@ self.addEventListener('install', event => {
                 '/images/add-plant.svg',
                 ...imagesToCache,
             ]);
-            console.log("Uploaded files: ",uploadedFiles)
             console.log('Service Worker: App Shell Cached');
         }
         catch{
@@ -76,8 +74,6 @@ self.addEventListener('fetch', event => {
     })());
 });
 
-
-//Sync event to sync the todos
 self.addEventListener('sync', event => {
     if (event.tag === 'sync-plant') {
         console.log('Service Worker: Syncing new Plants');
@@ -85,26 +81,25 @@ self.addEventListener('sync', event => {
             getAllSyncPlants(syncPostDB).then((syncPlants) => {
                 for (const syncPlant of syncPlants) {
                     console.log('Service Worker: Syncing new Plant: ', syncPlant);
-                    console.log(syncPlant)
                     const formData =  new FormData();
-                    // Append each property of syncPlant to the FormData object
                     for (const key in syncPlant) {
                         formData.append(key, syncPlant[key]);
                     }
 
-                    console.log("Form data : ",formData)
-
-                    // Fetch with FormData instead of JSON
                     fetch('http://localhost:3000/addplant', {
                         method: 'POST',
                         body: formData
                     }).then(() => {
                         console.log('Service Worker: Syncing new Plant: ', syncPlant, ' done');
                         deleteSyncPlantFromIDB(syncPostDB, syncPlant.id).then(() => {
-                            // After successful deletion, navigate all client windows to the "/" route
                             clients.matchAll().then(clients => {
                                 clients.forEach(client => {
-                                    client.navigate('/');
+                                    caches.open("static").then(cache => {
+                                        cache.delete('/').then(() => {
+                                            // Navigate client to the '/' route
+                                            client.navigate('/');
+                                        });
+                                    });
                                 });
                             });
                         }).catch((err) => {

@@ -1,8 +1,4 @@
-// Function to handle adding a new todo
 const addNewPlantsToSync = (syncTodoIDB, plantData) => {
-    // Retrieve todo text and add it to the IndexedDB
-        console.log("In plants sync!!!")
-        console.log("Plant data: ",plantData)
         const transaction = syncTodoIDB.transaction(["sync-plants"], "readwrite")
         const plantStore = transaction.objectStore("sync-plants")
         const addRequest = plantStore.add(plantData)
@@ -24,7 +20,6 @@ const addNewPlantsToSync = (syncTodoIDB, plantData) => {
 
 }
 
-// Function to add new todos to IndexedDB and return a promise
 const addNewTodosToIDB = (plantIDB, plants) => {
     return new Promise((resolve, reject) => {
         const transaction = plantIDB.transaction(["plants"], "readwrite");
@@ -78,10 +73,6 @@ const deleteAllExistingTodosFromIDB = (plantIDB) => {
     });
 };
 
-
-
-
-// Function to get the todo list from the IndexedDB
 const getAllPlants = (plantIDB) => {
     return new Promise((resolve, reject) => {
         const transaction = plantIDB.transaction(["plants"]);
@@ -100,8 +91,6 @@ const getAllPlants = (plantIDB) => {
     });
 }
 
-
-// Function to get the todo list from the IndexedDB
 const getAllSyncPlants = (syncPlantIDB) => {
     return new Promise((resolve, reject) => {
         const transaction = syncPlantIDB.transaction(["sync-plants"]);
@@ -118,7 +107,6 @@ const getAllSyncPlants = (syncPlantIDB) => {
     });
 }
 
-// Function to delete a syn
 const deleteSyncPlantFromIDB = (syncPlantIDB, id) => {
     return new Promise((resolve, reject) => {
         const transaction = syncPlantIDB.transaction(["sync-plants"], "readwrite")
@@ -157,7 +145,6 @@ function openPlantsIDB() {
 function openSyncPlantsIDB() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open("sync-plants", 1);
-        console.log("In openpnats sync idb")
         request.onerror = function (event) {
             reject(new Error(`Database error: ${event.target}`));
         };

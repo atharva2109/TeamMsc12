@@ -8,10 +8,9 @@ const sightingModel = require('../models/sighting');
 const session = require('express-session');
 var multer=require("multer")
 var fs=require("fs")
-/* GET home page. */
 
 router.use(session({
-    secret: 'your-secret-key', // Change this to a secret key for your application
+    secret: 'your-secret-key',
     resave: false,
     saveUninitialized: true
 }));
@@ -24,7 +23,6 @@ var storage=multer.diskStorage({
         var original=file.originalname;
         var file_extension=original.split(".")
         filename=Date.now()+"."+file_extension[file_extension.length-1];
-        console.log("File nane: ",filename)
         cb(null,filename);
     }
 });
@@ -45,10 +43,8 @@ router.get('/', async (req, res, next)=> {
     const page = parseInt(req.query.page) || 1;
     const limit = 8; // Number of plants per page
 
-    // Fetch plant data from the database
     const plants = await getPlantsPagewise(page, limit);
-
-    // Calculate total number of pages
+s
     const totalPlants = await sightingModel.countDocuments();
     const totalPages = Math.ceil(totalPlants / limit);
 
@@ -66,7 +62,6 @@ router.get('/addplant', function (req, res, next) {
 
 router.post('/addplant',upload.single('uploadImage'), (req, res) => {
     create(req.body,req.file.path).then(plant => {
-      console.log(plant);
       res.status(200).send(plant);
   }).catch(err => {
       console.log(err);
@@ -77,7 +72,6 @@ router.post('/addplant',upload.single('uploadImage'), (req, res) => {
 // route to get all todos
 router.get('/plants', function (req, res, next) {
     getAll().then(todos => {
-        console.log(todos);
         return res.status(200).send(todos);
     }).catch(err => {
         console.log(err);
@@ -87,25 +81,18 @@ router.get('/plants', function (req, res, next) {
 
 router.get('/api/uploads-list', (req, res) => {
     const uploadsDir = path.join(__dirname, '..','public', 'images', 'uploads');
-console.log(uploadsDir)
-    // Read the directory and get the list of files
     fs.readdir(uploadsDir, (err, files) => {
         if (err) {
             console.error('Error reading uploads directory:', err);
             res.status(500).json({ error: 'Internal Server Error' });
             return;
         }
-
-        // Construct URLs for each file in the uploads folder
         const uploadUrls = files.map(file => `/public/images/uploads/${file}`);
-
-        // Send the list of URLs as a JSON response
         return res.json(uploadUrls);
     });
 });
 
 router.get('/sightingdetails', function (req, res, next) {
-
     const plantData = JSON.parse(decodeURIComponent(req.query.plant));
     res.render('sightingdetails', {title: 'Plant Details', sighting: plantData });
 });
