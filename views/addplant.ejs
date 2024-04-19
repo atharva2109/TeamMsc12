@@ -322,7 +322,6 @@
         }
         else{
             var userId = '<%= user_id %>';
-            console.log("Add plants user id: ",userId);
             const formData = {
                 username: document.getElementById("username").value,
                 email: document.getElementById("email").value,
@@ -355,21 +354,9 @@
                 pincode:document.getElementById("pincode").value,
                 userid:userId,
             };
-
-            console.log("Form data in add plantejs",formData)
             openSyncPlantsIDB().then((db) => {
                 addNewPlantsToSync(db, formData);
             });
-
-            // Assuming you have service worker registration to show notifications
-            // navigator.serviceWorker.ready
-            //     .then(function (serviceWorkerRegistration) {
-            //         serviceWorkerRegistration.showNotification("Plant App",
-            //             { body: "Plant added! - " + formData.plantName })
-            //             .then(r =>
-            //                 console.log(r)
-            //             );
-            //     });
 
         }
     });
