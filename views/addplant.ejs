@@ -183,7 +183,7 @@
                         <div class="form-outline mb-4">
                             <label for="datePicker" class="form-label">Date<span
                                         style="color: red;margin-right: 1px; font-size: 20px;">*</span>: </label>
-                            <input type="date" id="datePicker" class="form-control" required name="datePicker"/>
+                            <input type="datetime-local" id="datePicker" class="form-control" required name="datePicker"/>
                         </div>
 
                         <div class="form-outline mb-4 form-switch form-check form-switch form-check-reverse d-flex flex-row "
@@ -322,7 +322,13 @@
         }
         else{
             var userId = '<%= user_id %>';
+            var sightingId = '<%= sighting_id %>';
+            const dateTimeValue = document.getElementById("datePicker").value;
+            const date = new Date(dateTimeValue);
+            const localDateTimeString = date.toLocaleString();
+            console.log("Local time string",localDateTimeString,typeof localDateTimeString)
             const formData = {
+                sightingId:sightingId,
                 username: document.getElementById("username").value,
                 email: document.getElementById("email").value,
                 phone: document.getElementById("phone").value,
@@ -343,7 +349,7 @@
                 flowerColor: document.getElementById("flowerColor").value,
                 idLink: document.getElementById("idLink").value,
                 uploadImage:document.getElementById("uploadImage").files[0],
-                datePicker: document.getElementById("datePicker").value,
+                datePicker: localDateTimeString,
                 verificationStatus: document.getElementById("verificationStatus").value,
                 altitude: document.getElementById("altitude").value,
                 location:document.getElementById("location").value,
@@ -353,6 +359,7 @@
                 country:document.getElementById("country").value,
                 pincode:document.getElementById("pincode").value,
                 userid:userId,
+
             };
             openSyncPlantsIDB().then((db) => {
                 addNewPlantsToSync(db, formData);

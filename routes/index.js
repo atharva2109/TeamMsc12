@@ -39,12 +39,13 @@ function generateUserID() {
 router.get('/', async (req, res, next)=> {
     const userId = req.query.user_id || generateUserID();
     res.locals.user_id = userId;
+    const sightingId = req.query.sightingId || generateUserID();
+    res.locals.sighting_id = sightingId;
     console.log("Routes user id: ",res.locals.user_id)
     const page = parseInt(req.query.page) || 1;
     const limit = 8; // Number of plants per page
 
     const plants = await getPlantsPagewise(page, limit);
-s
     const totalPlants = await sightingModel.countDocuments();
     const totalPages = Math.ceil(totalPlants / limit);
 
@@ -57,7 +58,8 @@ s
 
 router.get('/addplant', function (req, res, next) {
     const userId = req.query.user_id || generateUserID();
-    res.render('addplant', {title: 'Add Plant',user_id:userId}); // Use 'addplant' as the EJS template file name
+    const sightingId=req.query.sighting_id || generateUserID();
+    res.render('addplant', {title: 'Add Plant',user_id:userId,sighting_id:sightingId}); // Use 'addplant' as the EJS template file name
 });
 
 router.post('/addplant',upload.single('uploadImage'), (req, res) => {

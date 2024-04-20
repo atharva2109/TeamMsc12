@@ -8,7 +8,8 @@ let SightingSchema = new Schema(
     {
 
         // Sighting Fields
-        date: { type: Date },                               // Date of sighting
+        sightingId: { type:Number},
+        date: { type: String },                               // Date of sighting
         location: { type: String},                       // Location of the sighting
         address: {
             line: String,
