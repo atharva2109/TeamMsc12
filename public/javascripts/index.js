@@ -5,18 +5,14 @@ let currentMapIndex = 0;
 const insertPlantInCarousel = (plants) => {
     const plantList = document.getElementById('plant_list');
     const topPlants = JSON.parse(document.getElementById("hiddenPlants").value);
-    console.log("Top plants from javascriptindex.js",topPlants)
     const isTopPlant = topPlants.some((topPlant) => topPlant.plant.name === (plants.plant && plants.plant.name));
 
     // Handling top plants first
     if (isTopPlant) {
-        console.log("Top plant",plants.plant.name)
         if (!isTopFirstPlantAdded) {
-            // Handle the first top plant
             addTopPlantToCarousel(plants);
             isTopFirstPlantAdded = true;
         } else {
-console.log("else block",plants.plant.name)
             addTopPlantToCarousel(plants);
         }
     }
@@ -102,7 +98,7 @@ function addPlantCard(plants) {
     card.setAttribute('data-has-flowers', plants.plant.characteristics.flowering);
     card.setAttribute('data-has-fruits', plants.plant.characteristics.fruitBearing);
     card.setAttribute('data-has-leaves', plants.plant.characteristics.hasLeaves);
-
+    card.setAttribute('data-date-time', plants.date);
     // Create HTML content for the plant card
     card.innerHTML = `
         <div class="card text-center plant-card">
