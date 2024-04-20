@@ -97,9 +97,11 @@
     </div>
 
     <!-- Filter and Sighting Listing -->
+    <div class="row">
+        <div class="col-6 d-flex ">
     <div class="min-vh-50 mt-4 w-50 m-auto">
         <div class="input-group">
-            <label class="input-group-text" for=""><i class="bi bi-funnel"></i></label>
+            <label class="input-group-text" for="filterSelect"><i class="fa-solid fa-filter"></i></label>
             <select class="form-select" aria-label="Filter select" id="filterSelect">
                 <option disabled hidden selected><i class="bi bi-funnel"></i> Filter Plants By..</option>
                 <option value="all" selected>Show All</option>
@@ -112,7 +114,20 @@
             </select>
         </div>
     </div>
-
+        </div>
+        <div class="col-6 d-flex ">
+    <div class="min-vh-50 mt-4 w-50 m-auto">
+    <div class="input-group mt-2">
+        <label class="input-group-text" for="sortBy"><i class="fa-solid fa-sort"></i></label>
+        <select class="form-select" aria-label="Sort select" id="sortBy">
+            <option disabled hidden selected>Sort by Date & Time...</option>
+            <option value="dateAsc">Date & Time (Ascending)</option>
+            <option value="dateDesc">Date & Time (Descending)</option>
+        </select>
+    </div>
+    </div>
+        </div>
+    </div>
     <div class="row " style="margin-top: 1%;margin-left: 1%;margin-right: 1%" id="plant_list">
 
     </div>
@@ -150,6 +165,32 @@
     <script src="/javascripts/idb-utility.js"></script>
 
     <script>
+
+        document.getElementById('sortBy').addEventListener('change', function () {
+            const sortBy = this.value;
+            let plantCards = Array.from(document.querySelectorAll('.plant_list'));
+
+            if (sortBy === 'dateAsc') {
+                plantCards.sort(function (a, b) {
+                    const dateA = new Date(a.getAttribute('data-date-time'));
+                    const dateB = new Date(b.getAttribute('data-date-time'));
+                    return dateA - dateB;
+                });
+            } else if (sortBy === 'dateDesc') {
+                plantCards.sort(function (a, b) {
+                    const dateA = new Date(a.getAttribute('data-date-time'));
+                    const dateB = new Date(b.getAttribute('data-date-time'));
+                    return dateB - dateA;
+                });
+            }
+
+            // Update the display with the sorted list
+            const plantList = document.getElementById('plant_list');
+            plantList.innerHTML = '';
+            plantCards.forEach(function (card) {
+                plantList.appendChild(card);
+            });
+        });
 
 
 
