@@ -170,16 +170,22 @@
             const sortBy = this.value;
             let plantCards = Array.from(document.querySelectorAll('.plant_list'));
 
+            function parseDateString(dateString) {
+                const [datePart, timePart] = dateString.split(', ');
+                const [day, month, year] = datePart.split('/');
+                const [hours, minutes, seconds] = timePart.split(':');
+                return new Date(year, month - 1, day, hours, minutes, seconds);
+            }
             if (sortBy === 'dateAsc') {
                 plantCards.sort(function (a, b) {
-                    const dateA = new Date(a.getAttribute('data-date-time'));
-                    const dateB = new Date(b.getAttribute('data-date-time'));
+                    const dateA = parseDateString(a.getAttribute('data-date-time'));
+                    const dateB = parseDateString(b.getAttribute('data-date-time'));
                     return dateA - dateB;
                 });
             } else if (sortBy === 'dateDesc') {
                 plantCards.sort(function (a, b) {
-                    const dateA = new Date(a.getAttribute('data-date-time'));
-                    const dateB = new Date(b.getAttribute('data-date-time'));
+                    const dateA = parseDateString(a.getAttribute('data-date-time'));
+                    const dateB = parseDateString(b.getAttribute('data-date-time'));
                     return dateB - dateA;
                 });
             }

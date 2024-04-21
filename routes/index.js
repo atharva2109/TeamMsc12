@@ -49,9 +49,25 @@ router.get('/', async (req, res, next)=> {
     const totalPlants = await sightingModel.countDocuments();
     const totalPages = Math.ceil(totalPlants / limit);
 
-    const topPlants = await Sighting.find()
-        .sort({ date: -1 })
-        .limit(3);
+    const topPlants = await Sighting.aggregate([
+        {
+            $addFields: {
+                dateObject: {
+                    $dateFromString: {
+                        dateString: "$date",
+                        format: "%d/%m/%Y, %H:%M:%S",
+                        timezone: "UTC"
+                    }
+                }
+            }
+        },
+        {
+            $sort: { dateObject: -1 }
+        },
+        {
+            $limit: 3
+        }
+    ]);
 
     res.render('index', {title: 'Botanical Lens', api: API_KEY, plants, currentPage: page, totalPages,topPlants});
 });
