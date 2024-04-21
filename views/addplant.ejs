@@ -325,8 +325,17 @@
             var sightingId = '<%= sighting_id %>';
             const dateTimeValue = document.getElementById("datePicker").value;
             const date = new Date(dateTimeValue);
-            const localDateTimeString = date.toLocaleString();
-            console.log("Local time string",localDateTimeString,typeof localDateTimeString)
+            const options = {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            };
+
+            const localDateTimeString = date.toLocaleString('en-GB', options);
             const formData = {
                 sightingId:sightingId,
                 username: document.getElementById("username").value,
