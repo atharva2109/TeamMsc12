@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const messageSchema = new mongoose.Schema({
     username: { type: String, required: true },
     message: { type: String, required: true },
-    timestamp: { type: Date, default: Date.now }
+    timestamp: { type: Date, default: Date.now },
+    imageUrl: { type: String, required: false }
 });
 
 const Message = mongoose.model('Message', messageSchema);
