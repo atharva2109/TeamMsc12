@@ -9,4 +9,4 @@ node_modules/
 
 public/images/uploads/*
 
-!public/images/uploads
+!public/images/uploads/.gitkeep
