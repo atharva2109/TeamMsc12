@@ -69,6 +69,7 @@ router.get('/', async (req, res, next)=> {
         }
     ]);
 
+    console.log("Top plants in carousel:");
     res.render('index', {title: 'Botanical Lens', api: API_KEY, plants, currentPage: page, totalPages,topPlants});
 });
 
@@ -105,7 +106,7 @@ router.get('/api/uploads-list', (req, res) => {
             res.status(500).json({ error: 'Internal Server Error' });
             return;
         }
-        const uploadUrls = files.map(file => `/public/images/uploads/${file}`);
+        const uploadUrls = files.filter(file => !file.startsWith('.')).map(file => `/public/images/uploads/${file}`);
         return res.json(uploadUrls);
     });
 });

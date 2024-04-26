@@ -3,32 +3,32 @@ let count = 0;
 let isTopFirstPlantAdded = false;
 let currentMapIndex = 0;
 const insertPlantInCarousel = (plants) => {
-    const plantList = document.getElementById('plant_list');
-    const topPlants = JSON.parse(document.getElementById("hiddenPlants").value);
-    const isTopPlant = topPlants.some((topPlant) => topPlant.plant.name === (plants.plant && plants.plant.name));
+    if (plants.plant) {
+        const plantList = document.getElementById('plant_list');
+        const topPlants = JSON.parse(document.getElementById("hiddenPlants").value);
+        const isTopPlant = topPlants.some((topPlant) => topPlant.plant.name === (plants.plant && plants.plant.name));
 
-    // Handling top plants first
-    if (isTopPlant) {
-        if (!isTopFirstPlantAdded) {
-            addTopPlantToCarousel(plants);
-            isTopFirstPlantAdded = true;
-        } else {
-            addTopPlantToCarousel(plants);
+        console.log("Insert plants carousel check", plants.plant)
+        console.log("Is top plants", topPlants)
+        if (topPlants.length !== 0) {
+            if (!isTopFirstPlantAdded) {
+                addTopPlantToCarousel(plants);
+                isTopFirstPlantAdded = true;
+            } else {
+                addTopPlantToCarousel(plants);
+            }
         }
+
+        if (!isFirstPlantAdded) {
+        console.log("First plant added!!")
+        clearPlantList();
+        addPlantCard(plants);
+        isFirstPlantAdded = true;
+    } else {
+        console.log("plant added!!")
+        addPlantCard(plants);
     }
-        if (!plants.plant) {
-            // No plants to display
-            displayNoPlantsMessage();
-        } else if (!isFirstPlantAdded) {
-            console.log("First plant added!!")
-            clearPlantList();
-            addPlantCard(plants);
-            isFirstPlantAdded = true;
-        } else {
-            console.log("plant added!!")
-            addPlantCard(plants);
-        }
-
+}
 };
 
 // Function to handle adding top plants to carousel
@@ -74,12 +74,14 @@ console.log("carousel item: ",carouselItem)
 
 // Function to handle displaying no plants message
 function displayNoPlantsMessage() {
+    console.log("In display no plants")
     const plantList = document.getElementById('plant_list');
     const displayPlants = document.createElement('div');
     displayPlants.classList.add('display-plants', 'd-flex', 'flex-column', 'justify-content-center', 'align-items-center', 'vh-100');
     displayPlants.innerHTML = `
         <h4 class="text-muted mt-1">Sorry there are currently no plants to display...</h4>
-        <button class="btn btn-success"><a href="/addplant" style="text-decoration: none;color: white">Add Plant</a></button>
+        <button class="btn btn-success"  onclick=
+"window.location.href = '/addplant';">Add Plant</button>
     `;
     plantList.appendChild(displayPlants);
 }
@@ -171,8 +173,12 @@ window.onload = function () {
             }).then(function (newPlants) {
             openPlantsIDB().then((db) => {
                 console.log("Insert before: ", newPlants)
-                insertPlantInCarousel(db, newPlants);
-
+                if(newPlants.length==0){
+                    displayNoPlantsMessage();
+                }
+                else {
+                    insertPlantInCarousel(db, newPlants);
+                }
                 deleteAllExistingTodosFromIDB(db).then(() => {
                     addNewTodosToIDB(db, newPlants).then(() => {
                         console.log("All new plants added to IDB")
@@ -187,8 +193,14 @@ window.onload = function () {
         console.log("Offline mode")
         openPlantsIDB().then((db) => {
             getAllPlants(db).then((plants) => {
-                for (const plant of plants) {
-                    insertPlantInCarousel(plant)
+                console.log("Plants in plant: ",plants)
+                if(plants.length==0){
+                    displayNoPlantsMessage();
+                }
+                else {
+                    for (const plant of plants) {
+                        insertPlantInCarousel(plant)
+                    }
                 }
             });
         });

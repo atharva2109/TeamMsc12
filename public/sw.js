@@ -15,6 +15,7 @@ self.addEventListener('install', event => {
 
             const imagesToCache = uploadedFiles
                 .map(file => `${self.location.origin}${file}`)
+            console.log(imagesToCache)
             cache.addAll([
                 '/',
                 '/addplant',
@@ -22,7 +23,6 @@ self.addEventListener('install', event => {
                 '/javascripts/API.js',
                 '/javascripts/index.js',
                 '/javascripts/idb-utility.js',
-                'https://maps.googleapis.com/maps/api/js?key=AIzaSyARXO1sAXfsUdl_wxOfVJFFT3naSjyyoII&callback=initMap',
                 '/stylesheets/style.css',
                 '/stylesheets/partials/header_style.css',
                 '/stylesheets/homepage/index.css',
@@ -31,6 +31,7 @@ self.addEventListener('install', event => {
                 '/css/bootstrap.min.css',
                 '/images/logo/botanical-lens-logo.png',
                 '/images/red-tick.jpg',
+                '/images/logo/Squared_Logo.png',
                 '/images/blue_tick.png',
                 '/images/add-plant.svg',
                 ...imagesToCache,
@@ -92,16 +93,6 @@ self.addEventListener('sync', event => {
                     }).then(() => {
                         console.log('Service Worker: Syncing new Plant: ', syncPlant, ' done');
                         deleteSyncPlantFromIDB(syncPostDB, syncPlant.id).then(() => {
-                            clients.matchAll().then(clients => {
-                                clients.forEach(client => {
-                                    caches.open("static").then(cache => {
-                                        cache.delete('/').then(() => {
-                                            // Navigate client to the '/' route
-                                            client.navigate('/');
-                                        });
-                                    });
-                                });
-                            });
                         }).catch((err) => {
                             console.error('Service Worker: Deleting synced plant failed: ', err);
                         });

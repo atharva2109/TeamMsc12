@@ -12,6 +12,7 @@ const addNewPlantsToSync = (syncTodoIDB, plantData) => {
                     sw.sync.register("sync-plant")
                 }).then(() => {
                     console.log("Sync registered");
+                    window.location.href="/";
                 }).catch((err) => {
                     console.log("Sync registration failed: " + JSON.stringify(err))
                 })
@@ -123,6 +124,7 @@ const deleteSyncPlantFromIDB = (syncPlantIDB, id) => {
 }
 
 function openPlantsIDB() {
+    console.log("In open plants IDB")
     return new Promise((resolve, reject) => {
         const request = indexedDB.open("plants", 1);
 
