@@ -1,18 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Chat Page</title>
+    <meta charset="UTF-8">
+    <title>Chat about <%= plantName %></title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/socket.io/socket.io.js"></script>
     <script src="/js/jquery.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const plantName = '<%= plantName %>'; // EJS safely renders the plantName
+            const socket = io();
+
+            socket.on('connect', () => {
+                console.log("Connected to server");
+                socket.emit('joinRoom', plantName);
+            });
+
+            socket.on('message', message => {
+                $('#messageDisplay').append(
+                    `<div><strong>${message.username}</strong> (${new Date(message.timestamp).toLocaleTimeString()}): ${message.message}</div>`
+                );
+            });
+
+            $('#messageForm').submit(function(e) {
+                e.preventDefault();
+                const message = {
+                    username: $('#username').val(),
+                    message: $('#message').val(),
+                    timestamp: new Date()
+                };
+                socket.emit('chatMessage', { room: plantName, message: message });
+                $('#message').val('');
+            });
+        });
+
+        function sendMessage() {
+            const message = $('#message').val();
+            socket.emit('chatMessage', { room: plantName, message: message });
+            $('#message').val('');
+        }
+    </script>
 </head>
 <body>
 <div class="container">
-    <h1>Chat Room</h1>
-    <div id="messageDisplay" style="height: 300px; overflow-y: scroll;">
-        <% messages.forEach(function(message) { %>
-            <div><strong><%= message.username %></strong> (<%= new Date(message.timestamp).toLocaleTimeString() %>): <%= message.message %></div>
-        <% }); %>
-    </div>
+    <h1>Chatting about <%= plantName %></h1>
+    <div id="messageDisplay" style="height: 300px; overflow-y: scroll;"></div>
     <form id="messageForm" action="/chat" method="POST">
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
@@ -24,69 +56,7 @@
         </div>
         <button type="submit" class="btn btn-success">Send</button>
     </form>
+    <a href="/sightingdetails?plantId=<%= plantId %>" class="btn btn-info">Back to Plant Details</a>
 </div>
-<script>
-    // Check if online or offline
-    function isOnline() {
-        return window.navigator.onLine;
-    }
-
-    // Load messages from local storage
-    function loadMessages() {
-        let messages = JSON.parse(localStorage.getItem('messages')) || [];
-        messages.forEach(function(msg) {
-            displayMessage(msg);
-        });
-    }
-
-    // Display message in the chat window
-    function displayMessage(msg) {
-        $('#messageDisplay').append(
-            `<div><strong>${msg.username}</strong> (${new Date(msg.timestamp).toLocaleTimeString()}): ${msg.message}</div>`
-        );
-    }
-
-    // Sync messages to the server
-    function syncMessages() {
-        let messages = JSON.parse(localStorage.getItem('messages')) || [];
-        messages.forEach(function(msg) {
-            $.post('/chat', msg, function(response) {
-                console.log("Message synced: ", response);
-            });
-        });
-        localStorage.setItem('messages', JSON.stringify([])); // Clear local storage after sync
-    }
-
-    $(document).ready(function() {
-        loadMessages(); // Load messages from local storage when page loads
-
-        $('#messageForm').submit(function(e) {
-            e.preventDefault();
-            const msg = {
-                username: $('#username').val(),
-                message: $('#message').val(),
-                timestamp: new Date()
-            };
-
-            displayMessage(msg);
-
-            if (isOnline()) {
-                // Post to server if online
-                $.post('/chat', msg, function() {
-                    console.log("Message sent to server");
-                });
-            } else {
-                // Store locally if offline
-                let messages = JSON.parse(localStorage.getItem('messages')) || [];
-                messages.push(msg);
-                localStorage.setItem('messages', JSON.stringify(messages));
-            }
-
-            $('#message').val('');
-        });
-
-        window.addEventListener('online', syncMessages); // Sync when comes online
-    });
-</script>
 </body>
 </html>

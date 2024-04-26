@@ -14,3 +14,18 @@
     max-width: 100%;
     height: auto;
 }
+
+.chat-button {
+    background-color: #556B2F; /* darkolivegreen */
+    color: white; /* Sets the text color to white */
+    border: 2px solid black; /* Black border */
+    padding: 10px 20px; /* Padding for better visual spacing */
+    text-decoration: none; /* Removes underline from the link */
+    display: inline-block; /* Allows padding and border to display correctly */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.chat-button:hover {
+    background-color: #455a24; /* Slightly darker green on hover */
+}
+
