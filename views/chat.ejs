@@ -10,16 +10,10 @@
     <h1>Chat Room</h1>
     <div id="messageDisplay" style="height: 300px; overflow-y: scroll;">
         <% messages.forEach(function(message) { %>
-            <div>
-                <strong><%= message.username %></strong> (<%= new Date(message.timestamp).toLocaleTimeString() %>):
-                <%= message.message %>
-                <% if (message.imageUrl) { %>
-                    <br><img src="<%= message.imageUrl %>" alt="User Image" style="max-width: 100px; max-height: 100px;">
-                <% } %>
-            </div>
+            <div><strong><%= message.username %></strong> (<%= new Date(message.timestamp).toLocaleTimeString() %>): <%= message.message %></div>
         <% }); %>
     </div>
-    <form id="messageForm" action="/chat" method="POST" enctype="multipart/form-data">
+    <form id="messageForm" action="/chat" method="POST">
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
             <input type="text" class="form-control" name="username" id="username" placeholder="Enter your username" required>
@@ -28,18 +22,16 @@
             <label for="message" class="form-label">Message</label>
             <textarea class="form-control" name="message" id="message" rows="5" placeholder="Type your message here..." required></textarea>
         </div>
-        <div class="mb-3">
-            <label for="image" class="form-label">Upload Image</label>
-            <input type="file" class="form-control" name="image" id="image">
-        </div>
         <button type="submit" class="btn btn-success">Send</button>
     </form>
 </div>
 <script>
+    // Check if online or offline
     function isOnline() {
         return window.navigator.onLine;
     }
 
+    // Load messages from local storage
     function loadMessages() {
         let messages = JSON.parse(localStorage.getItem('messages')) || [];
         messages.forEach(function(msg) {
@@ -47,15 +39,14 @@
         });
     }
 
+    // Display message in the chat window
     function displayMessage(msg) {
-        let messageHTML = `<div><strong>${msg.username}</strong> (${new Date(msg.timestamp).toLocaleTimeString()}): ${msg.message}`;
-        if (msg.imageUrl) {
-            messageHTML += `<br><img src="${msg.imageUrl}" alt="User Image" style="max-width: 100px; max-height: 100px;">`;
-        }
-        messageHTML += '</div>';
-        $('#messageDisplay').append(messageHTML);
+        $('#messageDisplay').append(
+            `<div><strong>${msg.username}</strong> (${new Date(msg.timestamp).toLocaleTimeString()}): ${msg.message}</div>`
+        );
     }
 
+    // Sync messages to the server
     function syncMessages() {
         let messages = JSON.parse(localStorage.getItem('messages')) || [];
         messages.forEach(function(msg) {
@@ -63,49 +54,38 @@
                 console.log("Message synced: ", response);
             });
         });
-        localStorage.setItem('messages', JSON.stringify([]));
+        localStorage.setItem('messages', JSON.stringify([])); // Clear local storage after sync
     }
 
     $(document).ready(function() {
-        loadMessages();
+        loadMessages(); // Load messages from local storage when page loads
 
         $('#messageForm').submit(function(e) {
             e.preventDefault();
-            const formData = new FormData(this);
-            displayMessage({
+            const msg = {
                 username: $('#username').val(),
                 message: $('#message').val(),
-                imageUrl: URL.createObjectURL($('#image')[0].files[0]),
                 timestamp: new Date()
-            });
+            };
+
+            displayMessage(msg);
 
             if (isOnline()) {
-                $.ajax({
-                    url: '/chat',
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function() {
-                        console.log("Message sent to server");
-                    }
+                // Post to server if online
+                $.post('/chat', msg, function() {
+                    console.log("Message sent to server");
                 });
             } else {
+                // Store locally if offline
                 let messages = JSON.parse(localStorage.getItem('messages')) || [];
-                messages.push({
-                    username: $('#username').val(),
-                    message: $('#message').val(),
-                    imageUrl: $('#image').val() ? URL.createObjectURL($('#image')[0].files[0]) : null,
-                    timestamp: new Date()
-                });
+                messages.push(msg);
                 localStorage.setItem('messages', JSON.stringify(messages));
             }
 
             $('#message').val('');
-            $('#image').val('');
         });
 
-        window.addEventListener('online', syncMessages);
+        window.addEventListener('online', syncMessages); // Sync when comes online
     });
 </script>
 </body>
