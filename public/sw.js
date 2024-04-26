@@ -92,16 +92,6 @@ self.addEventListener('sync', event => {
                     }).then(() => {
                         console.log('Service Worker: Syncing new Plant: ', syncPlant, ' done');
                         deleteSyncPlantFromIDB(syncPostDB, syncPlant.id).then(() => {
-                            clients.matchAll().then(clients => {
-                                clients.forEach(client => {
-                                    caches.open("static").then(cache => {
-                                        cache.delete('/').then(() => {
-                                            // Navigate client to the '/' route
-                                            client.navigate('/');
-                                        });
-                                    });
-                                });
-                            });
                         }).catch((err) => {
                             console.error('Service Worker: Deleting synced plant failed: ', err);
                         });

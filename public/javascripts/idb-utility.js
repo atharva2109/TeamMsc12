@@ -1,22 +1,23 @@
 const addNewPlantsToSync = (syncTodoIDB, plantData) => {
-        const transaction = syncTodoIDB.transaction(["sync-plants"], "readwrite")
-        const plantStore = transaction.objectStore("sync-plants")
-        const addRequest = plantStore.add(plantData)
-        addRequest.addEventListener("success", () => {
-            console.log("Added " + "#" + addRequest.result)
-            const getRequest = plantStore.get(addRequest.result)
-            getRequest.addEventListener("success", () => {
-                console.log("Found " + JSON.stringify(getRequest.result))
-                // Send a sync message to the service worker
-                navigator.serviceWorker.ready.then((sw) => {
-                    sw.sync.register("sync-plant")
-                }).then(() => {
-                    console.log("Sync registered");
-                }).catch((err) => {
-                    console.log("Sync registration failed: " + JSON.stringify(err))
-                })
+    const transaction = syncTodoIDB.transaction(["sync-plants"], "readwrite")
+    const plantStore = transaction.objectStore("sync-plants")
+    const addRequest = plantStore.add(plantData)
+    addRequest.addEventListener("success", () => {
+        console.log("Added " + "#" + addRequest.result)
+        const getRequest = plantStore.get(addRequest.result)
+        getRequest.addEventListener("success", () => {
+            console.log("Found " + JSON.stringify(getRequest.result))
+            // Send a sync message to the service worker
+            navigator.serviceWorker.ready.then((sw) => {
+                sw.sync.register("sync-plant")
+            }).then(() => {
+                console.log("Sync registered");
+                window.location.href="/";
+            }).catch((err) => {
+                console.log("Sync registration failed: " + JSON.stringify(err))
             })
         })
+    })
 
 }
 

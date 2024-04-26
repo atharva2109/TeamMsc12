@@ -105,7 +105,7 @@ router.get('/api/uploads-list', (req, res) => {
             res.status(500).json({ error: 'Internal Server Error' });
             return;
         }
-        const uploadUrls = files.map(file => `/public/images/uploads/${file}`);
+        const uploadUrls = files.filter(file => !file.startsWith('.')).map(file => `/public/images/uploads/${file}`);
         return res.json(uploadUrls);
     });
 });
