@@ -19,8 +19,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     const message = new Message({
         username: req.body.username,
-        message: req.body.message,
-        imageUrl: req.body.imageUrl
+        message: req.body.message
     });
 
     try {
