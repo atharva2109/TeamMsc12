@@ -7,7 +7,7 @@ const sightingModel = require('../models/sighting');
 exports.create = function (req,filePath) {
 
     let sighting = new sightingModel({
-
+        sightingId:req.sightingId,
         date: req.datePicker,
         location: req.location,
         address: {

@@ -25,58 +25,70 @@ const insertPlantInCarousel = (plants) => {
             const carouselItem = document.createElement('div');
             carouselItem.classList.add('carousel-item','active');
 
-
-            carouselItem.innerHTML = `
-                <div class="row">
-                    <div class="col-md-6 plantCarouselItem" style="background-image:url('http://localhost:3000/${plants.plant.photos[0].replace(/\\/g, '/')}'); background-size: cover; background-position: center;">
-                        <div class="map-info p-5">
-                            <h4 class="display-7">${plants.plant && plants.plant.name}</h4>
-                            <p style="font-size: 18px">Family: ${plants.plant && plants.plant.family || 'User not aware of it'}</p>
-                            <p style="font-size: 18px">Common Name: ${plants.plant && plants.plant.commonName || 'User not aware of it'}</p>
-                            <p style="font-size: 18px">Genus: ${plants.plant && plants.plant.genus || 'User not aware of it'}</p>
-                            <p style="font-size: 18px">Country: ${plants.address && plants.address.country || 'User not aware of it'}</p>
-                            <p style="font-size: 18px">Creator: ${plants.user && plants.user.name || 'User not aware of it'}</p>
-                        </div>
+    if (!isTopFirstPlantAdded) {
+        carouselItem.classList.add('active');
+    }
+    console.log("carousel item: ",carouselItem)
+    carouselItem.innerHTML = `
+        <div class="row">
+            <div class="col-md-6 plantCarouselItem" style="background-image:url('http://localhost:3000/${plants.plant.photos[0].replace(/\\/g, '/')}'); background-size: cover; background-position: center;">
+                <div class="map-info p-5">
+                    <h4 class="display-7">${plants.plant.name}</h4>
+                    <p style="font-size: 18px">Family: ${plants.plant.family || 'User not aware of it'}</p>
+                    <p style="font-size: 18px">Common Name: ${plants.plant.commonName || 'User not aware of it'}</p>
+                    <p style="font-size: 18px">Genus: ${plants.plant.genus || 'User not aware of it'}</p>
+                    <p style="font-size: 18px">Country: ${plants.address.country || 'User not aware of it'}</p>
+                    <p style="font-size: 18px">Creator: ${plants.user.name || 'User not aware of it'}</p>
+                </div>
+            </div>
+            <div class="col-md-6" id="map-${mapIndex}">
+                <div class="map-container h-100">
+                    <div class="map-header">
+                        <h2>Map</h2>
                     </div>
-           <div class="col-md-6" id="map0">
-                        <div class="map-container h-100">
-                            <div class="map-header">
-                                <h2>Map</h2>
-                            </div>
-                            <div class="map-body h-100">
-                                <div id="map-canvas" class="h-100"></div>
-                            </div>
-                        </div>
+                    <div class="map-body h-100">
+                        <div id="map-canvas" class="h-100"></div>
                     </div>
                 </div>
-            `;
+            </div>
+        </div>
+    `;
 
 
         carouselContainer.appendChild(carouselItem);
 
 
-        const card = document.createElement('div');
-        card.classList.add('col-md-3', 'mb-3', 'plant_list');
-        card.setAttribute('data-has-flowers', plants.plant && plants.plant.characteristics.flowering);
-        card.setAttribute('data-has-fruits', plants.plant && plants.plant.characteristics.fruitBearing);
-        card.setAttribute('data-has-leaves', plants.plant && plants.plant.characteristics.hasLeaves);
+// Function to clear the plant list container
+function clearPlantList() {
+    const plantList = document.getElementById('plant_list');
+    plantList.innerHTML = '';
+}
 
-        // Create HTML content for the plant card (modify as needed)
-        card.innerHTML = `
-            <div class="card text-center plant-card">
-                <img src="http://localhost:3000/${plants.plant.photos[0].replace(/\\/g, '/') }" class="card-img-top" alt="Plant Image" style="height: 200px; object-fit: cover;" loading="lazy">
-                <div class="card-body">
-                    <h5 class="card-title">Name: ${plants.plant && plants.plant.name}</h5>
-                    <p class="card-text">Family: ${plants.plant && plants.plant.family || 'User not aware of it'}</p>
-                    <p class="card-text">Genus: ${plants.plant && plants.plant.genus || 'User not aware of it'}</p>
-                    <p class="card-text">Species: ${plants.plant && plants.plant.species || 'User not aware of it'}</p>
-                    <p class="card-text">Country: ${plants.address && plants.address.country || 'User not aware of it'}</p>
-                    ${plants.status === 'Verified' ? '<img src="/images/blue_tick.png" alt="Verified" class="verification-icon" style="height: 40px;width:40px;">' : ''}
-                    ${plants.status === 'Verification in Progress' ? '<img src="/images/red-tick.jpg" alt="Pending" class="verification-icon" style="height: 40px; width:40px;">' : ''}
-                    <a href="/sightingdetails?plant=${encodeURIComponent(JSON.stringify(plants))}" class="btn btn-success">View Details</a>
-                </div>
+// Function to handle adding a plant card to the plant list
+function addPlantCard(plants) {
+    const plantList = document.getElementById('plant_list');
+    const card = document.createElement('div');
+    card.classList.add('col-md-3', 'mb-3', 'plant_list');
+    card.setAttribute('data-has-flowers', plants.plant.characteristics.flowering);
+    card.setAttribute('data-has-fruits', plants.plant.characteristics.fruitBearing);
+    card.setAttribute('data-has-leaves', plants.plant.characteristics.hasLeaves);
+    card.setAttribute('data-date-time', plants.date);
+    // Create HTML content for the plant card
+    card.innerHTML = `
+        <div class="card text-center plant-card">
+            <img src="http://localhost:3000/${plants.plant.photos[0].replace(/\\/g, '/')}"; class="card-img-top" alt="Plant Image" style="height: 200px; object-fit: cover;" loading="lazy">
+            <div class="card-body">
+                <h5 class="card-title">Name: ${plants.plant.name}</h5>
+                <p class="card-text">Family: ${plants.plant.family || 'User not aware of it'}</p>
+                <p class="card-text">Genus: ${plants.plant.genus || 'User not aware of it'}</p>
+                <p class="card-text">Species: ${plants.plant.species || 'User not aware of it'}</p>
+                <p class="card-text">Country: ${plants.address.country || 'User not aware of it'}</p>
+                ${plants.status === 'Verified' ? '<img src="/images/blue_tick.png" alt="Verified" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
+                ${plants.status === 'Verification in Progress' ? '<img src="/images/red-tick.jpg" alt="Pending" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
+                <a href="/sightingdetails?plant=${encodeURIComponent(JSON.stringify(plants))}" class="btn btn-success">View Details</a>
             </div>
-        `;
+        </div>
+    `;
 
         // Append the card to the plant list container
         plantList.appendChild(card);

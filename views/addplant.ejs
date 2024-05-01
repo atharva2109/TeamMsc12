@@ -183,7 +183,7 @@
                         <div class="form-outline mb-4">
                             <label for="datePicker" class="form-label">Date<span
                                         style="color: red;margin-right: 1px; font-size: 20px;">*</span>: </label>
-                            <input type="date" id="datePicker" class="form-control" required name="datePicker"/>
+                            <input type="datetime-local" id="datePicker" class="form-control" required name="datePicker"/>
                         </div>
 
                         <div class="form-outline mb-4 form-switch form-check form-switch form-check-reverse d-flex flex-row "
@@ -242,7 +242,7 @@
     </div>
 </section>
 <%- include('./partials/footer'); %>
-
+<script src="/javascripts/idb-utility.js"></script>
 <script>
     function initMap() {
         createMapWithMarker(15.380074, 78.983592, "map");
@@ -322,8 +322,22 @@
         }
         else{
             var userId = '<%= user_id %>';
-            console.log("Add plants user id: ",userId);
+            var sightingId = '<%= sighting_id %>';
+            const dateTimeValue = document.getElementById("datePicker").value;
+            const date = new Date(dateTimeValue);
+            const options = {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            };
+
+            const localDateTimeString = date.toLocaleString('en-GB', options);
             const formData = {
+                sightingId:sightingId,
                 username: document.getElementById("username").value,
                 email: document.getElementById("email").value,
                 phone: document.getElementById("phone").value,
@@ -344,7 +358,7 @@
                 flowerColor: document.getElementById("flowerColor").value,
                 idLink: document.getElementById("idLink").value,
                 uploadImage:document.getElementById("uploadImage").files[0],
-                datePicker: document.getElementById("datePicker").value,
+                datePicker: localDateTimeString,
                 verificationStatus: document.getElementById("verificationStatus").value,
                 altitude: document.getElementById("altitude").value,
                 location:document.getElementById("location").value,
@@ -354,28 +368,17 @@
                 country:document.getElementById("country").value,
                 pincode:document.getElementById("pincode").value,
                 userid:userId,
-            };
 
-            console.log("Form data in add plantejs",formData)
+            };
             openSyncPlantsIDB().then((db) => {
                 addNewPlantsToSync(db, formData);
             });
-
-            // Assuming you have service worker registration to show notifications
-            // navigator.serviceWorker.ready
-            //     .then(function (serviceWorkerRegistration) {
-            //         serviceWorkerRegistration.showNotification("Plant App",
-            //             { body: "Plant added! - " + formData.plantName })
-            //             .then(r =>
-            //                 console.log(r)
-            //             );
-            //     });
 
         }
     });
 
 
 </script>
-<script src="/javascripts/idb-utility.js"></script>
+
 </body>
 </html>
