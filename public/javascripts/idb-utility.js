@@ -1,12 +1,30 @@
-const addNewPlantsToSync = (syncTodoIDB, plantData) => {
+// Add new plant entry into sync IDB
+const addNewPlantsToSyncIDB = (syncTodoIDB, plantData) => {
+
+    // Get instance of IDB
     const transaction = syncTodoIDB.transaction(["sync-plants"], "readwrite")
     const plantStore = transaction.objectStore("sync-plants")
+
+    // Add plant in sync IDB Request
     const addRequest = plantStore.add(plantData)
+    // In offline mode add plant in plantsIDB
+    if (!navigator.onLine) {
+        openPlantsIDB().then((db) => {
+            const transaction = db.transaction(["plants"], "readwrite");
+            const plantStore = transaction.objectStore("plants");
+            const addRequest = plantStore.add(plantData)
+            addRequest.addEventListener("success", () => {
+                console.log("Plant Added to plantIDB in offline mode")
+            })
+        });
+    }
+
     addRequest.addEventListener("success", () => {
         console.log("Added " + "#" + addRequest.result)
         const getRequest = plantStore.get(addRequest.result)
         getRequest.addEventListener("success", () => {
             console.log("Found " + JSON.stringify(getRequest.result))
+
             // Send a sync message to the service worker
             navigator.serviceWorker.ready.then((sw) => {
                 sw.sync.register("sync-plant")
@@ -20,7 +38,7 @@ const addNewPlantsToSync = (syncTodoIDB, plantData) => {
 
 }
 
-const addNewTodosToIDB = (plantIDB, plants) => {
+const addNewPlantsToPlantsIDB = (plantIDB, plants) => {
     return new Promise((resolve, reject) => {
         const transaction = plantIDB.transaction(["plants"], "readwrite");
         const plantStore = transaction.objectStore("plants");
@@ -51,24 +69,6 @@ const addNewTodosToIDB = (plantIDB, plants) => {
             resolve();
         }).catch((error) => {
             reject(error);
-        });
-    });
-};
-
-
-// Function to remove all todos from idb
-const deleteAllExistingTodosFromIDB = (plantIDB) => {
-    const transaction = plantIDB.transaction(["plants"], "readwrite");
-    const plantStore = transaction.objectStore("plants");
-    const clearRequest = plantStore.clear();
-
-    return new Promise((resolve, reject) => {
-        clearRequest.addEventListener("success", () => {
-            resolve();
-        });
-
-        clearRequest.addEventListener("error", (event) => {
-            reject(event.target.error);
         });
     });
 };
@@ -107,6 +107,23 @@ const getAllSyncPlants = (syncPlantIDB) => {
     });
 }
 
+// Function to remove all todos from idb - Will be never used
+const deleteAllPlantsFromIDB = (plantIDB) => {
+    const transaction = plantIDB.transaction(["plants"], "readwrite");
+    const plantStore = transaction.objectStore("plants");
+    const clearRequest = plantStore.clear();
+
+    return new Promise((resolve, reject) => {
+        clearRequest.addEventListener("success", () => {
+            resolve();
+        });
+
+        clearRequest.addEventListener("error", (event) => {
+            reject(event.target.error);
+        });
+    });
+};
+
 const deleteSyncPlantFromIDB = (syncPlantIDB, id) => {
     return new Promise((resolve, reject) => {
         const transaction = syncPlantIDB.transaction(["sync-plants"], "readwrite")
@@ -122,6 +139,7 @@ const deleteSyncPlantFromIDB = (syncPlantIDB, id) => {
     });
 }
 
+// Index DB to store all the plants in MongoDB in offline mode
 function openPlantsIDB() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open("plants", 1);
@@ -132,7 +150,7 @@ function openPlantsIDB() {
 
         request.onupgradeneeded = function (event) {
             const db = event.target.result;
-            db.createObjectStore('plants', {keyPath: 'id',autoIncrement:true});
+            db.createObjectStore('plants', {keyPath: 'id', autoIncrement: true});
         };
 
         request.onsuccess = function (event) {
@@ -142,6 +160,7 @@ function openPlantsIDB() {
     });
 }
 
+// Index DB just to keep track of new added/updated plants
 function openSyncPlantsIDB() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open("sync-plants", 1);
@@ -160,3 +179,4 @@ function openSyncPlantsIDB() {
         };
     });
 }
+

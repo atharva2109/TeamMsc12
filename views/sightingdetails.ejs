@@ -36,19 +36,19 @@
                 <div class="text-success">
                     <h6 class="my-0">Username :</h6>
                 </div>
-                <span class="text-success"><%= sighting.user.name %></span>
+                <span class="text-success"><%= sighting.username %></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <h6 class="my-0">Email ID</h6>
                 </div>
-                <span class="text-muted"> <%= sighting.user.contactDetails.email %></span>
+                <span class="text-muted"> <%= sighting.email %></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <h6 class="my-0">Contact Number</h6>
                 </div>
-                <span class="text-muted"><%= sighting.user.contactDetails.phoneNumber %></span>
+                <span class="text-muted"><%= sighting.phoneNumber %></span>
             </li>
         </ul>
 
@@ -73,31 +73,31 @@
                 <div>
                     <h6 class="my-0">Address</h6>
                 </div>
-                <span class="text-muted"> <%= sighting.address.line %></span>
+                <span class="text-muted"> <%= sighting.line %></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <h6 class="my-0">City/Town</h6>
                 </div>
-                <span class="text-muted"><%= sighting.address.city %></span>
+                <span class="text-muted"><%= sighting.city %></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <h6 class="my-0">State</h6>
                 </div>
-                <span class="text-muted"> <%= sighting.address.state %></span>
+                <span class="text-muted"> <%= sighting.state %></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <h6 class="my-0">Postal Code</h6>
                 </div>
-                <span class="text-muted"><%= sighting.address.pinCode %></span>
+                <span class="text-muted"><%= sighting.pinCode %></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <h6 class="my-0">Country</h6>
                 </div>
-                <span class="text-muted"> <%= sighting.address.country %></span>
+                <span class="text-muted"> <%= sighting.country %></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
@@ -116,71 +116,69 @@
     <div class="col-md-8 order-md-1">
         <h4 class="mb-3">Plant Details</h4>
         <hr>
-        <h1 style="font-size:xxx-large; color: #36454F"><%= sighting.plant.name %></h1>
+        <h1 style="font-size:xxx-large; color: #36454F"><%= sighting.name %></h1>
         <h5 class="link-dark" style="font-size: small">
-            Reference link: <a href="<%= sighting.plant.identificationLink %>"
-                               class="text-primary"><%= sighting.plant.identificationLink %></a>
+            Reference link: <a href="<%= sighting.identificationLink %>"
+                               class="text-primary"><%= sighting.identificationLink %></a>
         </h5>
         <br>
         <div class="image-container">
-            <% sighting.plant.photos.forEach(image => { %>
-                <img src="http://localhost:3000/<%= image.replace(/\\/g, '/') %>" alt="Plant Image"
+                <img src="http://localhost:3000/<%= sighting.uploadImage %>" alt="Plant Image"
                      style="object-fit: cover;" loading="lazy">
-            <% }) %>
         </div>
         <br><br>
         <ul class="list-group mb-3">
             <li class="list-group-item justify-content-between bg-light">
                 <div class="text-success">
-                    <h6 class="my-0">Plant Name : <span class="text-success"><%= sighting.plant.name %></span></h6>
+                    <h6 class="my-0">Plant Name : <span class="text-success"><%= sighting.name %></span></h6>
                 </div>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                    <h6 class="my-0">Common Name : <span class="text-muted"><%= sighting.plant.commonName %></span></h6>
+                    <h6 class="my-0">Common Name : <span class="text-muted"><%= sighting.commonName %></span></h6>
                 </div>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <h6 class="my-0">Scientific Name : <span
-                                class="text-muted"><%= sighting.plant.scientificName %></span></h6>
+                                class="text-muted"><%= sighting.scientificName %></span></h6>
                 </div>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                    <h6 class="my-0">Family : <span class="text-muted"><%= sighting.plant.family %></span></h6>
+                    <h6 class="my-0">Family : <span class="text-muted"><%= sighting.family %></span></h6>
                 </div>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                    <h6 class="my-0">Genus : <span class="text-muted"><%= sighting.plant.genus %></span></h6>
+                    <h6 class="my-0">Genus : <span class="text-muted"><%= sighting.genus %></span></h6>
                 </div>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                    <h6 class="my-0">Species : <span class="text-muted"><%= sighting.plant.species %></span></h6>
+                    <h6 class="my-0">Species : <span class="text-muted"><%= sighting.species %></span></h6>
                 </div>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                    <h6 class="my-0">Description : <span class="text-muted"><%= sighting.plant.description %></span>
+                    <h6 class="my-0">Description : <span class="text-muted"><%= sighting.description %></span>
                     </h6>
                 </div>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                    <h6 class="my-0">Plant Size : (Length: <%= sighting.plant.size.length %> x Height: <%= sighting.plant.size.height %> x Width: <%= sighting.plant.size.width %>)</h6>
+                    <h6 class="my-0">Plant Size : (Length: <%= sighting.length %> x Height: <%= sighting.height %> x Width: <%= sighting.width %>)</h6>
                 </div>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <h6 class="my-0">Characteristics:</h6><br>
                     <div class="d-flex flex-wrap gap-2">
-                        <h4><span class="badge bg-primary"><%= sighting.plant.characteristics.flowering ? 'Flowering' : 'Non-Flowering' %></span></h4>
-                        <h4><span class="badge bg-secondary"><%= sighting.plant.characteristics.hasLeaves ? 'Has Leaves' : 'Has No Leaves' %></span></h4>
-                        <h4><span class="badge bg-success"><%= sighting.plant.characteristics.fruitBearing ? 'Fruit Bearing' : 'Non-Fruit Bearing' %></span></h4>
-                        <h4><span class="badge bg-danger"><%= sighting.plant.characteristics.sunExposure %></span></h4>
-                        <h4><span class="badge bg-warning text-dark">Color: <%= sighting.plant.characteristics.flowerColor %></span></h4>
+                        <h4><span class="badge bg-primary"><%= sighting.flowering ? 'Flowering' : 'Non-Flowering' %></span></h4>
+                        <h4><span class="badge bg-secondary"><%= sighting.hasLeaves ? 'Has Leaves' : 'Has No Leaves' %></span></h4>
+                        <h4><span class="badge bg-success"><%= sighting.fruitBearing ? 'Fruit Bearing' : 'Non-Fruit Bearing' %></span></h4>
+                        <h4><span class="badge bg-danger"><%= sighting.sunExposure %></span></h4>
+                        <h4><span class="badge bg-warning text-dark">Color: <%= sighting.flowerColor %></span></h4>
                     </div>
                 </div>
             </li>

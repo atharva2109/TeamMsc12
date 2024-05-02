@@ -5,12 +5,12 @@ let currentMapIndex = 0;
 
 
 const insertPlantInCarousel = (plants) => {
-    if (plants.plant) {
+    if (plants.sightingId != null) {
         const plantList = document.getElementById('plant_list');
         const topPlants = JSON.parse(document.getElementById("hiddenPlants").value);
-        const isTopPlant = topPlants.some((topPlant) => topPlant.plant.name === (plants.plant && plants.plant.name));
+        const isTopPlant = topPlants.some((topPlant) => topPlant.name === (plants.name));
 
-        console.log("Insert plants carousel check", plants.plant)
+        console.log("Insert plants carousel check", plants)
         console.log("Is top plants", topPlants)
         if (topPlants.length !== 0) {
             if (!isTopFirstPlantAdded) {
@@ -37,7 +37,7 @@ const insertPlantInCarousel = (plants) => {
 function addTopPlantToCarousel(plants) {
     const carouselContainer = document.querySelector(".carousel-inner");
     const carouselItem = document.createElement('div');
-    console.log("Is plant added",isTopFirstPlantAdded)
+    console.log("Is plant added", isTopFirstPlantAdded)
     carouselItem.classList.add('carousel-item');
     const mapIndex = currentMapIndex;
     currentMapIndex++;
@@ -45,17 +45,17 @@ function addTopPlantToCarousel(plants) {
     if (!isTopFirstPlantAdded) {
         carouselItem.classList.add('active');
     }
-    console.log("carousel item: ",carouselItem)
+    console.log("carousel item: ", carouselItem)
     carouselItem.innerHTML = `
         <div class="row">
-            <div class="col-md-6 plantCarouselItem" style="background-image:url('http://localhost:3000/${plants.plant.photos[0].replace(/\\/g, '/')}'); background-size: cover; background-position: center;">
+            <div class="col-md-6 plantCarouselItem" style="background-image:url('http://localhost:3000/${plants.uploadImage}'); background-size: cover; background-position: center;">
                 <div class="map-info p-5">
-                    <h4 class="display-7">${plants.plant.name}</h4>
-                    <p style="font-size: 18px">Family: ${plants.plant.family || 'User not aware of it'}</p>
-                    <p style="font-size: 18px">Common Name: ${plants.plant.commonName || 'User not aware of it'}</p>
-                    <p style="font-size: 18px">Genus: ${plants.plant.genus || 'User not aware of it'}</p>
-                    <p style="font-size: 18px">Country: ${plants.address.country || 'User not aware of it'}</p>
-                    <p style="font-size: 18px">Creator: ${plants.user.name || 'User not aware of it'}</p>
+                    <h4 class="display-7">${plants.name}</h4>
+                    <p style="font-size: 18px">Family: ${plants.family || 'User not aware of it'}</p>
+                    <p style="font-size: 18px">Common Name: ${plants.commonName || 'User not aware of it'}</p>
+                    <p style="font-size: 18px">Genus: ${plants.genus || 'User not aware of it'}</p>
+                    <p style="font-size: 18px">Country: ${plants.country || 'User not aware of it'}</p>
+                    <p style="font-size: 18px">Creator: ${plants.username || 'User not aware of it'}</p>
                 </div>
             </div>
             <div class="col-md-6" id="map-${mapIndex}">
@@ -99,20 +99,20 @@ function addPlantCard(plants) {
     const plantList = document.getElementById('plant_list');
     const card = document.createElement('div');
     card.classList.add('col-md-3', 'mb-3', 'plant_list');
-    card.setAttribute('data-has-flowers', plants.plant.characteristics.flowering);
-    card.setAttribute('data-has-fruits', plants.plant.characteristics.fruitBearing);
-    card.setAttribute('data-has-leaves', plants.plant.characteristics.hasLeaves);
+    card.setAttribute('data-has-flowers', plants.flowering);
+    card.setAttribute('data-has-fruits', plants.fruitBearing);
+    card.setAttribute('data-has-leaves', plants.hasLeaves);
     card.setAttribute('data-date-time', plants.date);
     // Create HTML content for the plant card
     card.innerHTML = `
         <div class="card text-center plant-card">
-            <img src="http://localhost:3000/${plants.plant.photos[0].replace(/\\/g, '/')}"; class="card-img-top" alt="Plant Image" style="height: 200px; object-fit: cover;" loading="lazy">
+            <img src="http://localhost:3000/${plants.uploadImage}"; class="card-img-top" alt="Plant Image" style="height: 200px; object-fit: cover;" loading="lazy">
             <div class="card-body">
-                <h5 class="card-title">Name: ${plants.plant.name}</h5>
-                <p class="card-text">Family: ${plants.plant.family || 'User not aware of it'}</p>
-                <p class="card-text">Genus: ${plants.plant.genus || 'User not aware of it'}</p>
-                <p class="card-text">Species: ${plants.plant.species || 'User not aware of it'}</p>
-                <p class="card-text">Country: ${plants.address.country || 'User not aware of it'}</p>
+                <h5 class="card-title">Name: ${plants.name}</h5>
+                <p class="card-text">Family: ${plants.family || 'User not aware of it'}</p>
+                <p class="card-text">Genus: ${plants.genus || 'User not aware of it'}</p>
+                <p class="card-text">Species: ${plants.species || 'User not aware of it'}</p>
+                <p class="card-text">Country: ${plants.country || 'User not aware of it'}</p>
                 ${plants.status === 'Verified' ? '<img src="/images/blue_tick.png" alt="Verified" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
                 ${plants.status === 'Verification in Progress' ? '<img src="/images/red-tick.jpg" alt="Pending" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
                 <a href="/sightingdetails?plant=${encodeURIComponent(JSON.stringify(plants))}" class="btn btn-success">View Details</a>
@@ -124,16 +124,16 @@ function addPlantCard(plants) {
 }
 
 function initMap() {
-    console.log("Plant carousels:" ,document.querySelector(".plantCarouselItem" ))
+    console.log("Plant carousels:", document.querySelector(".plantCarouselItem"))
     const topPlants = JSON.parse(document.getElementById("hiddenPlants").value);
     topPlants.forEach((plant, index) => {
-        createMapWithMarker(plant.location.split(",")[0] , plant.location.split(",")[1] , `map-${index}` );
+        createMapWithMarker(plant.location.split(",")[0], plant.location.split(",")[1], `map-${index}`);
     })
 }
 
 function createMapWithMarker(latitude, longitude, mapElementId) {
-    console.log("Map with id",document.getElementById("map-0"))
-    console.log("Latitude: ",latitude,"Longitude: ",longitude)
+    console.log("Map with id", document.getElementById("map-0"))
+    console.log("Latitude: ", latitude, "Longitude: ", longitude)
     let mapOptions = {
         zoom: 5,
         center: {lat: parseFloat(latitude), lng: parseFloat(longitude)}
@@ -206,14 +206,13 @@ window.onload = function () {
             }).then(function (newPlants) {
             openPlantsIDB().then((db) => {
                 console.log("Insert before: ", newPlants)
-                if(newPlants.length==0){
+                if (newPlants.length == 0) {
                     displayNoPlantsMessage();
-                }
-                else {
+                } else {
                     insertPlantInCarousel(db, newPlants);
                 }
-                deleteAllExistingTodosFromIDB(db).then(() => {
-                    addNewTodosToIDB(db, newPlants).then(() => {
+                deleteAllPlantsFromIDB(db).then(() => {
+                    addNewPlantsToPlantsIDB(db, newPlants).then(() => {
                         console.log("All new plants added to IDB")
                         API()
                         initMap();
@@ -226,11 +225,10 @@ window.onload = function () {
         console.log("Offline mode")
         openPlantsIDB().then((db) => {
             getAllPlants(db).then((plants) => {
-                console.log("Plants in plant: ",plants)
-                if(plants.length==0){
+                console.log("Plants in plant: ", plants)
+                if (plants.length == 0) {
                     displayNoPlantsMessage();
-                }
-                else {
+                } else {
                     for (const plant of plants) {
                         insertPlantInCarousel(plant)
                     }
@@ -241,4 +239,3 @@ window.onload = function () {
     }
 
 }
-
