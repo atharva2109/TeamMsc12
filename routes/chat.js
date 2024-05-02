@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Message = require('../models/Message');
+var socketIo = require('socket.io');
 
 // Get all messages for a specific plant
 router.get('/', async (req, res) => {
@@ -19,17 +20,17 @@ router.get('/', async (req, res) => {
 
 // Post a new message for a specific plant
 router.post('/', async (req, res) => {
-    const plantId = req.body.plantId;  // Ensure plantId is included in the form data
+    const { plantName, plantId, username, message } = req.body;
 
-    const message = new Message({
-        username: req.body.username,
-        message: req.body.message,
-        plantId: plantId  // Save the plantId with the message
+    const newMessage = new Message({
+        username: username,
+        message: message,
+        plantId: plantId
     });
 
     try {
-        await message.save();
-        res.redirect(`/chat?plantName=${encodeURIComponent(req.body.plantName)}&plantId=${plantId}`);
+        await newMessage.save();
+        res.redirect(`/chat?plantName=${encodeURIComponent(plantName)}&plantId=${plantId}`);
     } catch (err) {
         console.error(err);
         res.status(400).json({ message: err.message });

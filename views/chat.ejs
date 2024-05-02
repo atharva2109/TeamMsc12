@@ -40,12 +40,35 @@
             $('#message').val('');
         }
     </script>
+    <script>
+        const socket = io(); // Connect to the server
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const messageForm = document.getElementById('messageForm');
+            messageForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const message = document.getElementById('message').value;
+                socket.emit('chatMessage', { message: message, username: 'Username' }); // Adjust according to your form fields
+                document.getElementById('message').value = '';  // Clear the message input
+            });
+
+            socket.on('message', (data) => {
+                const messageDisplay = document.getElementById('messageDisplay');
+                const messageElement = document.createElement('div');
+                messageElement.innerHTML = `<strong>${data.username}</strong>: ${data.message}`;
+                messageDisplay.appendChild(messageElement);
+            });
+        });
+
+    </script>
 </head>
 <body>
 <div class="container">
     <h1>Chatting about <%= plantName %></h1>
     <div id="messageDisplay" style="height: 300px; overflow-y: scroll;"></div>
     <form id="messageForm" action="/chat" method="POST">
+        <input type="hidden" name="plantName" value="<%= plantName %>">
+        <input type="hidden" name="plantId" value="<%= plantId %>">
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
             <input type="text" class="form-control" name="username" id="username" placeholder="Enter your username" required>

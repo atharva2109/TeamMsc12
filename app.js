@@ -4,15 +4,17 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+var http = require('http');  // Move this line up here
+var socketIo = require('socket.io');
+
+var app = express();
+var server = require('http').createServer(app);
+var io = socketIo(server);
 
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-
-var app = express();
-
 var chatRouter = require('./routes/chat');
-var http = require('http').createServer(app);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,10 +33,8 @@ app.use('/public/images/uploads', express.static(path.join(__dirname, '/public/i
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
 app.use('/chat', chatRouter);
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -51,5 +51,24 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+io.on('connection', (socket) => {
+  console.log('New client connected');
+
+  socket.on('chatMessage', (data) => {
+    console.log('Message received: ', data);
+    io.emit('message', data);  // Emitting to all connected clients
+  });
+
+  socket.on('disconnect', () => {
+    console.log('Client disconnected');
+  });
+});
+
+
+// Use server.listen NOT app.listen
+// server.listen(3000, () => {
+//   console.log('Listening on port 3000');
+// });
 
 module.exports = app;
