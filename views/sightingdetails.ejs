@@ -182,7 +182,7 @@
                 </div>
             </li>
         </ul>
-        <a href="/chat?plantName=<%= encodeURIComponent(sighting.plant.name) %>" class="chat-button" style="margin-top: 20px;">
+        <a href="/chat?plantName=<%= encodeURIComponent(sighting.plant.name) %>&plantId=<%=sighting.sightingId %>" class="chat-button" style="margin-top: 20px;">
             Chat about <%= sighting.plant.name %>
         </a>
     </div>
