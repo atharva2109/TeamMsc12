@@ -12,7 +12,6 @@ const addNewPlantsToSync = (syncTodoIDB, plantData) => {
                 sw.sync.register("sync-plant")
             }).then(() => {
                 console.log("Sync registered");
-                window.location.href="/";
             }).catch((err) => {
                 console.log("Sync registration failed: " + JSON.stringify(err))
             })
