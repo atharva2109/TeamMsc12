@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-sm-6 text-black">
                 <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
-                    <form style="width: 60rem;max-height: 60vh;overflow-y: auto;overflow-x: hidden"   >
+                    <form style="width: 60rem;max-height: 60vh;overflow-y: auto;overflow-x: hidden"  >
                         <fieldset class="border p-2">
                             <legend class="float-none w-auto">User Details:</legend>
                             <div class="form-outline mb-4">
@@ -367,56 +367,39 @@
                 sightingId:sightingId,
                 username: document.getElementById("username").value,
                 email: document.getElementById("email").value,
-                phoneNumber: document.getElementById("phone").value,
-                name: document.getElementById("plantName").value,
-                commonName: document.getElementById("plantCommonName").value,
-                scientificName: document.getElementById("plantScientificName").value,
-                family: document.getElementById("plantFamily").value,
-                genus: document.getElementById("plantGenus").value,
-                species: document.getElementById("plantSpecies").value,
-                description: document.getElementById("plantDescription").value,
-                length: document.getElementById("plantLength").value,
-                width: document.getElementById("plantWidth").value,
-                height: document.getElementById("plantHeight").value,
-                hasLeaves:   document.getElementById('leavesValue').value,
-                flowering: document.getElementById('floweringValue').value,
-                fruitBearing:  document.getElementById('fruitValue').value,
+                phone: document.getElementById("phone").value,
+                plantName: document.getElementById("plantName").value,
+                plantCommonName: document.getElementById("plantCommonName").value,
+                plantScientificName: document.getElementById("plantScientificName").value,
+                plantFamily: document.getElementById("plantFamily").value,
+                plantGenus: document.getElementById("plantGenus").value,
+                plantSpecies: document.getElementById("plantSpecies").value,
+                plantDescription: document.getElementById("plantDescription").value,
+                plantLength: document.getElementById("plantLength").value,
+                plantWidth: document.getElementById("plantWidth").value,
+                plantHeight: document.getElementById("plantHeight").value,
+                leavesValue:   document.getElementById('leavesValue').value,
+                floweringValue: document.getElementById('floweringValue').value,
+                fruitValue:  document.getElementById('fruitValue').value,
                 sunExposure: document.getElementById("sunexposure").value,
                 flowerColor: document.getElementById("flowerColor").value,
-                identificationLink: document.getElementById("idLink").value,
-
-                date: localDateTimeString,
-                status: document.getElementById("verificationStatus").value,
+                idLink: document.getElementById("idLink").value,
+                uploadImage:document.getElementById("uploadImage").files[0],
+                datePicker: localDateTimeString,
+                verificationStatus: document.getElementById("verificationStatus").value,
                 altitude: document.getElementById("altitude").value,
                 location:document.getElementById("location").value,
-                line: document.getElementById("addressLine").value,
+                addressLine: document.getElementById("addressLine").value,
                 city:document.getElementById("city").value,
                 state:document.getElementById("state").value,
                 country:document.getElementById("country").value,
-                pinCode:document.getElementById("pincode").value,
+                pincode:document.getElementById("pincode").value,
                 userid:userId,
 
             };
-            const uploadImage = document.getElementById("uploadImage").files[0];
-            if (uploadImage) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const base64Image = event.target.result;
-                    formData.uploadImage = base64Image;
-
-                    // After image is processed, store form data in IndexedDB or send it to the server
-                    openSyncPlantsIDB().then((db) => {
-                        addNewPlantsToSyncIDB(db, formData);
-                    });
-                };
-
-                reader.readAsDataURL(uploadImage); // Convert image file to Base64 format
-            } else {
-                // If no image is uploaded, just process the rest of the form data
-                openSyncPlantsIDB().then((db) => {
-                    addNewPlantsToSyncIDB(db, formData);
-                });
-            }
+            openSyncPlantsIDB().then((db) => {
+                addNewPlantsToSync(db, formData);
+            });
 
         }
     });
