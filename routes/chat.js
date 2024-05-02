@@ -20,6 +20,7 @@ router.get('/', async (req, res) => {
 
 // Post a new message for a specific plant
 router.post('/', async (req, res) => {
+    console.log(req.body);
     const { plantName, plantId, username, message } = req.body;
 
     const newMessage = new Message({
