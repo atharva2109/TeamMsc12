@@ -203,12 +203,18 @@
                         </div>
 
                         <div class="form-outline mb-4" required>
+
                             <label for="pickLocation">Please Pick a Location<span
                                         style="color: red;margin-right: 1px; font-size: 20px;">*</span>:</label>
+                            <button type="button" class="btn btn-success" id="fetchLocationBtn" style="width: 30%;margin-left: 0%;margin-bottom: 3%">
+                                <i class="fas fa-location-dot" style="margin-right: 2%;"></i>Current Location
+                            </button>
+
                             <input type="hidden" id="location" name="location" value="" >
                             <div id="map" style="height: 400px; width: 600px;">
 
                             </div>
+
                         </div>
                         <div class="form-outline mb-4">
                             <fieldset class="border p-2">
@@ -312,6 +318,27 @@
 
     document.querySelectorAll('input[type="radio"]').forEach(radio => {
         radio.addEventListener('change', updateRadioButttons);
+    });
+
+    document.getElementById("fetchLocationBtn").addEventListener("click", function () {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                // Update the location input field with the retrieved latitude and longitude
+                document.getElementById("location").value = `${lat},${lng}`;
+
+                // Optionally, you can also update the map to center around the current location
+                const mapElementId = "map";
+                createMapWithMarker(lat, lng, mapElementId);
+            }, function (error) {
+                console.error("Error fetching location: ", error);
+                alert("Unable to fetch current location. Please try again.");
+            });
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
     });
 
     document.getElementById('addplantbtn').addEventListener('click', function(event) {
