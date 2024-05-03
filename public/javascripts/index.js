@@ -48,7 +48,7 @@ function addTopPlantToCarousel(plants) {
     console.log("carousel item: ", carouselItem)
     carouselItem.innerHTML = `
         <div class="row">
-            <div class="col-md-6 plantCarouselItem" style="background-image:url('http://localhost:3000/${plants.uploadImage}'); background-size: cover; background-position: center;">
+            <div class="col-md-6 plantCarouselItem" style="background-image:url('${plants.uploadImage}'); background-size: cover; background-position: center;">
                 <div class="map-info p-5">
                     <h4 class="display-7">${plants.name}</h4>
                     <p style="font-size: 18px">Family: ${plants.family || 'User not aware of it'}</p>
@@ -106,7 +106,7 @@ function addPlantCard(plants) {
     // Create HTML content for the plant card
     card.innerHTML = `
         <div class="card text-center plant-card">
-            <img src="http://localhost:3000/${plants.uploadImage}"; class="card-img-top" alt="Plant Image" style="height: 200px; object-fit: cover;" loading="lazy">
+            <img src="${plants.uploadImage}"; class="card-img-top" alt="Plant Image" style="height: 200px; object-fit: cover;" loading="lazy">
             <div class="card-body">
                 <h5 class="card-title">Name: ${plants.name}</h5>
                 <p class="card-text">Family: ${plants.family || 'User not aware of it'}</p>

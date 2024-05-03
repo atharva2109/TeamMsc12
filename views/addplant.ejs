@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-sm-6 text-black">
                 <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
-                    <form style="width: 60rem;max-height: 60vh;overflow-y: auto;overflow-x: hidden"  >
+                    <form style="width: 60rem;max-height: 60vh;overflow-y: auto;overflow-x: hidden"   >
                         <fieldset class="border p-2">
                             <legend class="float-none w-auto">User Details:</legend>
                             <div class="form-outline mb-4">
@@ -384,7 +384,7 @@
                 sunExposure: document.getElementById("sunexposure").value,
                 flowerColor: document.getElementById("flowerColor").value,
                 identificationLink: document.getElementById("idLink").value,
-                uploadImage:document.getElementById("uploadImage").files[0],
+
                 date: localDateTimeString,
                 status: document.getElementById("verificationStatus").value,
                 altitude: document.getElementById("altitude").value,
@@ -397,9 +397,26 @@
                 userid:userId,
 
             };
-            openSyncPlantsIDB().then((db) => {
-                addNewPlantsToSyncIDB(db, formData);
-            });
+            const uploadImage = document.getElementById("uploadImage").files[0];
+            if (uploadImage) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const base64Image = event.target.result;
+                    formData.uploadImage = base64Image;
+
+                    // After image is processed, store form data in IndexedDB or send it to the server
+                    openSyncPlantsIDB().then((db) => {
+                        addNewPlantsToSyncIDB(db, formData);
+                    });
+                };
+
+                reader.readAsDataURL(uploadImage); // Convert image file to Base64 format
+            } else {
+                // If no image is uploaded, just process the rest of the form data
+                openSyncPlantsIDB().then((db) => {
+                    addNewPlantsToSyncIDB(db, formData);
+                });
+            }
 
         }
     });

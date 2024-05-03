@@ -78,13 +78,14 @@ router.get('/addplant', function (req, res, next) {
     res.render('addplant', {title: 'Add Plant',user_id:userId,sighting_id:sightingId}); // Use 'addplant' as the EJS template file name
 });
 
-router.post('/addplant',upload.single('uploadImage'), (req, res) => {
-    create(req.body,req.file.path).then(plant => {
-      res.status(200).send(plant);
-  }).catch(err => {
-      console.log(err);
-      res.status(500).send(err);
-  });
+router.post('/addplant',upload.none(), (req, res) => {
+        create(req.body).then(plant => {
+            res.status(200).send(plant);
+        }).catch(err => {
+            console.log(err);
+            res.status(500).send(err);
+        });
+
 });
 
 // route to get all todos
