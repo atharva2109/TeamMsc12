@@ -33,7 +33,7 @@ app.use('/public/images/uploads', express.static(path.join(__dirname, '/public/i
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/chat', chatRouter);
+// app.use('/chat', chatRouter);
 app.use(express.static(path.join(__dirname, 'public')));
 
 // catch 404 and forward to error handler
@@ -53,11 +53,13 @@ app.use(function(err, req, res, next) {
 });
 
 io.on('connection', (socket) => {
-  console.log('New client connected');
+  socket.on('joinRoom', (plantName) => {
+    socket.join(plantName); // Join a room dedicated to the plant
+    console.log(`A user joined the chat for: ${plantName}`);
+  });
 
   socket.on('chatMessage', (data) => {
-    console.log('Message received: ', data);
-    io.emit('message', data);  // Emitting to all connected clients
+    io.to(data.plantId).emit('message', data);
   });
 
   socket.on('disconnect', () => {
