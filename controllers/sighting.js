@@ -4,60 +4,48 @@ const sightingModel = require('../models/sighting');
 // Helper Methods
 
 // Create new sightings
-exports.create = function (req,filePath) {
-
+exports.create = function (req) {
     let sighting = new sightingModel({
-        sightingId:req.sightingId,
-        date: req.datePicker,
+        sightingId: req.sightingId,
+        date: req.date,
         location: req.location,
-        address: {
-            line: req.addressLine,
-            city: req.city,
-            state: req.state,
-            country: req.country,
-            pinCode: req.pincode
-        },
+
+        line: req.line,
+        city: req.city,
+        state: req.state,
+        country: req.country,
+        pinCode: req.pinCode,
+
         altitude: req.altitude,
-        status: req.verificationStatus,
+        status: req.status,
 
-        plant: {
-            name: req.plantName,
-            commonName: req.plantCommonName,
-            scientificName: req.plantScientificName,
-            family: req.plantFamily,
-            genus: req.plantGenus,
-            species: req.plantSpecies,
-            description: req.plantDescription,
-            size: {
-                length: req.plantLength,
-                height: req.plantHeight,
-                width: req.plantWidth
-            },
-            characteristics: {
-                flowering: req.floweringValue,
-                hasLeaves: req.leavesValue,
-                fruitBearing: req.fruitValue,
-                sunExposure: req.sunExposure,
-                flowerColor: req.flowerColor
-            },
-            identificationLink: req.idLink,
-            photos: [filePath],
-        },
-
-        user: {
-            id: req.userid,
-            name: req.username,
-            contactDetails: {
-                email: req.email,
-                phoneNumber: req.phone
-            }
-        }
+        name: req.name,
+        commonName: req.commonName,
+        scientificName: req.scientificName,
+        family: req.family,
+        genus: req.genus,
+        species: req.species,
+        description: req.description,
+        length: req.length,
+        height: req.height,
+        width: req.width,
+        flowering: req.flowering,
+        hasLeaves: req.hasLeaves,
+        fruitBearing: req.fruitBearing,
+        sunExposure: req.sunExposure,
+        flowerColor: req.flowerColor,
+        identificationLink: req.identificationLink,
+        uploadImage: req.uploadImage,
+        userid: req.userid,
+        username: req.username,
+        email: req.email,
+        phoneNumber: req.phoneNumber
     });
 
     // Save the sighting to the database
     // Return success or failure
     return sighting.save().then(sighting => {
-       console.log("JSON String",JSON.stringify(sighting))
+        console.log("JSON String", JSON.stringify(sighting))
         return JSON.stringify(sighting);
     }).catch(error => {
         console.log(error);
