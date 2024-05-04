@@ -111,9 +111,22 @@ router.get('/api/uploads-list', (req, res) => {
     });
 });
 
+
+
 router.post('/sightingdetails', upload.none() , (req, res) => {
-    console.log(req.body);
-    res.render('sightingdetails', {title: 'Plant Details', sighting: req.body });
+    const title = 'Plant Details';
+    const sighting = req.body;
+    req.session.title = title;
+    req.session.sighting = sighting;
+    res.redirect('/sightingdetails');
+});
+
+router.get('/sightingdetails', (req, res) => {
+    const title = req.session.title;
+    const sighting = req.session.sighting;
+    res.render('sightingdetails', { title, sighting });
+    delete req.session.title;
+    delete req.session.sighting;
 });
 
 module.exports = router;

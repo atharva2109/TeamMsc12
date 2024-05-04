@@ -133,12 +133,14 @@ function sendPlantData() {
     fetch('http://localhost:3000/sightingdetails', {
         method: 'POST',
         body: formData
-    }).then(data => {
-            // Handle the response from the server
-            console.log(data);
+    }).then(response => {
+         if (response.status === 200) {
+            window.location.href = response.url;
+        } else {
+            console.error('POST request failed with status:', response.status);
+        }
         })
         .catch(error => {
-            // Handle any errors
             console.error(error);
         });
 }
