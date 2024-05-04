@@ -78,13 +78,14 @@ router.get('/addplant', function (req, res, next) {
     res.render('addplant', {title: 'Add Plant',user_id:userId,sighting_id:sightingId}); // Use 'addplant' as the EJS template file name
 });
 
-router.post('/addplant',upload.single('uploadImage'), (req, res) => {
-    create(req.body,req.file.path).then(plant => {
-      res.status(200).send(plant);
-  }).catch(err => {
-      console.log(err);
-      res.status(500).send(err);
-  });
+router.post('/addplant',upload.none(), (req, res) => {
+        create(req.body).then(plant => {
+            res.status(200).send(plant);
+        }).catch(err => {
+            console.log(err);
+            res.status(500).send(err);
+        });
+
 });
 
 // route to get all todos
@@ -110,9 +111,22 @@ router.get('/api/uploads-list', (req, res) => {
     });
 });
 
-router.get('/sightingdetails', function (req, res, next) {
-    const plantData = JSON.parse(decodeURIComponent(req.query.plant));
-    res.render('sightingdetails', {title: 'Plant Details', sighting: plantData });
+
+
+router.post('/sightingdetails', upload.none() , (req, res) => {
+    const title = 'Plant Details';
+    const sighting = req.body;
+    req.session.title = title;
+    req.session.sighting = sighting;
+    res.redirect('/sightingdetails');
+});
+
+router.get('/sightingdetails', (req, res) => {
+    const title = req.session.title;
+    const sighting = req.session.sighting;
+    res.render('sightingdetails', { title, sighting });
+    delete req.session.title;
+    delete req.session.sighting;
 });
 
 module.exports = router;

@@ -83,12 +83,14 @@ self.addEventListener('sync', event => {
                     console.log('Service Worker: Syncing new Plant: ', syncPlant);
                     const formData = new FormData();
                     for (const key in syncPlant) {
-                        formData.append(key, syncPlant[key]);
+                            formData.append(key, syncPlant[key]);
                     }
 
                     fetch('http://localhost:3000/addplant', {
                         method: 'POST',
-                        body: formData
+                        body: formData,
+
+
                     }).then(() => {
                         console.log('Service Worker: Syncing new Plant: ', syncPlant, ' done');
                         deleteSyncPlantFromIDB(syncPostDB, syncPlant.id).then(() => {

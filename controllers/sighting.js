@@ -4,8 +4,7 @@ const sightingModel = require('../models/sighting');
 // Helper Methods
 
 // Create new sightings
-exports.create = function (req, filePath) {
-
+exports.create = function (req) {
     let sighting = new sightingModel({
         sightingId: req.sightingId,
         date: req.date,
@@ -36,8 +35,7 @@ exports.create = function (req, filePath) {
         sunExposure: req.sunExposure,
         flowerColor: req.flowerColor,
         identificationLink: req.identificationLink,
-        uploadImage: filePath,
-
+        uploadImage: req.uploadImage,
         userid: req.userid,
         username: req.username,
         email: req.email,
