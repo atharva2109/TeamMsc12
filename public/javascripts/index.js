@@ -2,6 +2,7 @@ let isFirstPlantAdded = false;
 let count = 0;
 let isTopFirstPlantAdded = false;
 let currentMapIndex = 0;
+let currentPlant = null;
 
 
 const insertPlantInCarousel = (plants) => {
@@ -48,7 +49,7 @@ function addTopPlantToCarousel(plants) {
     console.log("carousel item: ", carouselItem)
     carouselItem.innerHTML = `
         <div class="row">
-            <div class="col-md-6 plantCarouselItem" style="background-image:url('http://localhost:3000/${plants.uploadImage}'); background-size: cover; background-position: center;">
+            <div class="col-md-6 plantCarouselItem" style="background-image:url('${plants.uploadImage}'); background-size: cover; background-position: center;">
                 <div class="map-info p-5">
                     <h4 class="display-7">${plants.name}</h4>
                     <p style="font-size: 18px">Family: ${plants.family || 'User not aware of it'}</p>
@@ -98,6 +99,7 @@ function clearPlantList() {
 function addPlantCard(plants) {
     const plantList = document.getElementById('plant_list');
     const card = document.createElement('div');
+    currentPlant = plants;
     card.classList.add('col-md-3', 'mb-3', 'plant_list');
     card.setAttribute('data-has-flowers', plants.flowering);
     card.setAttribute('data-has-fruits', plants.fruitBearing);
@@ -106,7 +108,7 @@ function addPlantCard(plants) {
     // Create HTML content for the plant card
     card.innerHTML = `
         <div class="card text-center plant-card">
-            <img src="http://localhost:3000/${plants.uploadImage}"; class="card-img-top" alt="Plant Image" style="height: 200px; object-fit: cover;" loading="lazy">
+            <img src="${plants.uploadImage}"; class="card-img-top" alt="Plant Image" style="height: 200px; object-fit: cover;" loading="lazy">
             <div class="card-body">
                 <h5 class="card-title">Name: ${plants.name}</h5>
                 <p class="card-text">Family: ${plants.family || 'User not aware of it'}</p>
@@ -115,13 +117,35 @@ function addPlantCard(plants) {
                 <p class="card-text">Country: ${plants.country || 'User not aware of it'}</p>
                 ${plants.status === 'Verified' ? '<img src="/images/blue_tick.png" alt="Verified" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
                 ${plants.status === 'Verification in Progress' ? '<img src="/images/red-tick.jpg" alt="Pending" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
-                <a href="/sightingdetails?plant=${encodeURIComponent(JSON.stringify(plants))}" class="btn btn-success">View Details</a>
+                <button class="btn btn-success" onclick="sendPlantData();">View Details</button>
+
             </div>
         </div>
     `;
-
     plantList.appendChild(card);
 }
+
+function sendPlantData() {
+    const formData = new FormData();
+    for (const key in currentPlant) {
+        formData.append(key, currentPlant[key]);
+    }
+    fetch('http://localhost:3000/sightingdetails', {
+        method: 'POST',
+        body: formData
+    }).then(response => {
+         if (response.status === 200) {
+            window.location.href = response.url;
+        } else {
+            console.error('POST request failed with status:', response.status);
+        }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
+
+
 
 function initMap() {
     console.log("Plant carousels:", document.querySelector(".plantCarouselItem"))
