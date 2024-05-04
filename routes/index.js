@@ -111,9 +111,9 @@ router.get('/api/uploads-list', (req, res) => {
     });
 });
 
-router.get('/sightingdetails', function (req, res, next) {
-    const plantData = JSON.parse(decodeURIComponent(req.query.plant));
-    res.render('sightingdetails', {title: 'Plant Details', sighting: plantData });
+router.post('/sightingdetails', upload.none() , (req, res) => {
+    console.log(req.body);
+    res.render('sightingdetails', {title: 'Plant Details', sighting: req.body });
 });
 
 module.exports = router;

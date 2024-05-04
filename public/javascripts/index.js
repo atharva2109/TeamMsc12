@@ -2,6 +2,7 @@ let isFirstPlantAdded = false;
 let count = 0;
 let isTopFirstPlantAdded = false;
 let currentMapIndex = 0;
+let currentPlant = null;
 
 
 const insertPlantInCarousel = (plants) => {
@@ -98,6 +99,7 @@ function clearPlantList() {
 function addPlantCard(plants) {
     const plantList = document.getElementById('plant_list');
     const card = document.createElement('div');
+    currentPlant = plants;
     card.classList.add('col-md-3', 'mb-3', 'plant_list');
     card.setAttribute('data-has-flowers', plants.flowering);
     card.setAttribute('data-has-fruits', plants.fruitBearing);
@@ -115,13 +117,33 @@ function addPlantCard(plants) {
                 <p class="card-text">Country: ${plants.country || 'User not aware of it'}</p>
                 ${plants.status === 'Verified' ? '<img src="/images/blue_tick.png" alt="Verified" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
                 ${plants.status === 'Verification in Progress' ? '<img src="/images/red-tick.jpg" alt="Pending" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
-                <a href="/sightingdetails?plant=${encodeURIComponent(JSON.stringify(plants))}" class="btn btn-success">View Details</a>
+                <button class="btn btn-success" onclick="sendPlantData();">View Details</button>
+
             </div>
         </div>
     `;
-
     plantList.appendChild(card);
 }
+
+function sendPlantData() {
+    const formData = new FormData();
+    for (const key in currentPlant) {
+        formData.append(key, currentPlant[key]);
+    }
+    fetch('http://localhost:3000/sightingdetails', {
+        method: 'POST',
+        body: formData
+    }).then(data => {
+            // Handle the response from the server
+            console.log(data);
+        })
+        .catch(error => {
+            // Handle any errors
+            console.error(error);
+        });
+}
+
+
 
 function initMap() {
     console.log("Plant carousels:", document.querySelector(".plantCarouselItem"))
