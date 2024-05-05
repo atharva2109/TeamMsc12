@@ -4,8 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-var http = require('http');  // Move this line up here
+var http = require('http');
 var socketIo = require('socket.io');
+var Message = require('./models/message');
 
 var app = express();
 var server = require('http').createServer(app);

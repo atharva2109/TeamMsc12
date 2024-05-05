@@ -8,6 +8,8 @@ var app = require('../app');
 var debug = require('debug')('plantrecognition:server');
 var http = require('http');
 var database = require('../databases/plant-recognition')
+const socketIo = require("socket.io");
+const Message = require("../models/message");
 
 /**
  * Get port from environment and store in Express.
@@ -21,6 +23,53 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+var io = socketIo(server);
+
+// Real-time chat with socket.io
+io.on('connection', async (socket) => {
+  console.log('A user connected');
+
+  // Fetch chat history
+  try {
+    const messages = await Message.find().sort({timestamp: 1}).limit(50); // Get last 50 messages
+    socket.emit('chat history', messages);
+  } catch (error) {
+    console.error('Error fetching chat history:', error);
+  }
+
+  socket.on('join', (username) => {
+    console.log(`${username} joined the room`);
+    const joinMessage = {
+      username: "System",
+      message: `${username} joined the room`,
+      timestamp: new Date().toISOString()
+    };
+    io.emit('chat message', joinMessage);
+  });
+
+  socket.on('chat message', async (data) => {
+    const {username, message, timestamp} = data;
+    const newMessage = new Message({username, message, timestamp});
+
+    try {
+      await newMessage.save();
+      io.emit('chat message', {username, message, timestamp});
+    } catch (error) {
+      console.error('Error saving message to DB:', error);
+    }
+  });
+
+  socket.on('disconnect', () => {
+    console.log('A user disconnected');
+    const disconnectMessage = {
+      username: "System",
+      message: `A user left the room`,
+      timestamp: new Date().toISOString()
+    };
+    io.emit('chat message', disconnectMessage);
+  });
+});
 
 /**
  * Listen on provided port, on all network interfaces.
