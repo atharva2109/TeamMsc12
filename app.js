@@ -9,12 +9,9 @@ var socketIo = require('socket.io');
 
 var app = express();
 var server = require('http').createServer(app);
-var io = socketIo(server);
-
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var chatRouter = require('./routes/chat');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -33,7 +30,6 @@ app.use('/public/images/uploads', express.static(path.join(__dirname, '/public/i
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-// app.use('/chat', chatRouter);
 app.use(express.static(path.join(__dirname, 'public')));
 
 // catch 404 and forward to error handler
@@ -52,25 +48,5 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-io.on('connection', (socket) => {
-  socket.on('joinRoom', (plantName) => {
-    socket.join(plantName); // Join a room dedicated to the plant
-    console.log(`A user joined the chat for: ${plantName}`);
-  });
-
-  socket.on('chatMessage', (data) => {
-    io.to(data.plantId).emit('message', data);
-  });
-
-  socket.on('disconnect', () => {
-    console.log('Client disconnected');
-  });
-});
-
-
-// Use server.listen NOT app.listen
-// server.listen(3000, () => {
-//   console.log('Listening on port 3000');
-// });
 
 module.exports = app;
