@@ -2,7 +2,6 @@ let isFirstPlantAdded = false;
 let count = 0;
 let isTopFirstPlantAdded = false;
 let currentMapIndex = 0;
-let currentPlant = null;
 
 
 const insertPlantInCarousel = (plants) => {
@@ -99,7 +98,6 @@ function clearPlantList() {
 function addPlantCard(plants) {
     const plantList = document.getElementById('plant_list');
     const card = document.createElement('div');
-    currentPlant = plants;
     card.classList.add('col-md-3', 'mb-3', 'plant_list');
     card.setAttribute('data-has-flowers', plants.flowering);
     card.setAttribute('data-has-fruits', plants.fruitBearing);
@@ -117,15 +115,18 @@ function addPlantCard(plants) {
                 <p class="card-text">Country: ${plants.country || 'User not aware of it'}</p>
                 ${plants.status === 'Verified' ? '<img src="/images/blue_tick.png" alt="Verified" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
                 ${plants.status === 'Verification in Progress' ? '<img src="/images/red-tick.jpg" alt="Pending" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
-                <button class="btn btn-success" onclick="sendPlantData();">View Details</button>
-
+                <button class="btn btn-success" onclick='sendPlantData(${JSON.stringify(plants)});'>View Details</button>
             </div>
         </div>
     `;
     plantList.appendChild(card);
 }
+function sendPlantData(currentPlant) {
+    // Parse JSON data if it's a string
+    if (typeof currentPlant === 'string') {
+        currentPlant = JSON.parse(currentPlant);
+    }
 
-function sendPlantData() {
     const formData = new FormData();
     for (const key in currentPlant) {
         formData.append(key, currentPlant[key]);
@@ -134,17 +135,16 @@ function sendPlantData() {
         method: 'POST',
         body: formData
     }).then(response => {
-         if (response.status === 200) {
+        if (response.status === 200) {
             window.location.href = response.url;
         } else {
             console.error('POST request failed with status:', response.status);
         }
-        })
+    })
         .catch(error => {
             console.error(error);
         });
 }
-
 
 
 function initMap() {
