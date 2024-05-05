@@ -27,7 +27,7 @@ var storage=multer.diskStorage({
     }
 });
 
-let upload=multer({storage:storage})
+let upload=multer({storage:storage,limits:{fieldSize: 25 * 1024*1024}})
 
 function generateUserID() {
     const timestamp = Date.now();
