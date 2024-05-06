@@ -41,7 +41,6 @@ router.get('/', async (req, res, next)=> {
     res.locals.user_id = userId;
     const sightingId = req.query.sightingId || generateUserID();
     res.locals.sighting_id = sightingId;
-    console.log("Routes user id: ",res.locals.user_id)
     const page = parseInt(req.query.page) || 1;
     const limit = 8; // Number of plants per page
 
@@ -68,7 +67,6 @@ router.get('/', async (req, res, next)=> {
             $limit: 3
         }
     ]);
-console.log("Top plants from route page",topPlants)
     res.render('index', {title: 'Botanical Lens', api: API_KEY, plants, currentPage: page, totalPages,topPlants});
 });
 
@@ -88,7 +86,7 @@ router.post('/addplant',upload.none(), (req, res) => {
 
 });
 
-// route to get all todos
+// route to get all plants
 router.get('/plants', function (req, res, next) {
     getAll().then(todos => {
         return res.status(200).send(todos);

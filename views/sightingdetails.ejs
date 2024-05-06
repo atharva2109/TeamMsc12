@@ -21,7 +21,9 @@
 
 <!-- Header Section -->
 <%- include('./partials/header', { title: 'Plant Details',visibility:'hidden' }); %>
-<br> <br> <br>
+<br>
+<br>
+<br>
 <div class="row">
     <div class="col-md-4 order-md-2 mb-4">
 
@@ -108,19 +110,22 @@
                 <div>
                     <h6 class="my-0">Number of Observations</h6>
                 </div>
-                <span class="text-muted"><%=              %></span>
+                <span class="text-muted"><%=                %></span>
             </li>
         </ul>
     </div>
     <div class="col-md-8 order-md-1">
         <h4 class="mb-3">Plant Details</h4>
         <hr>
-        <h1 style="font-size:xxx-large; color: #36454F"><%= sighting.name %></h1>
+        <div class="d-flex">
+            <h1 style="font-size:xxx-large; color: #36454F"><%= sighting.name %></h1>
+            <div class="verification-icon"></div>
+        </div>
         <br>
         <div class="image-container">
             <img src="<%= sighting.uploadImage %>" alt="Plant Image"
                  style="max-height: 200px;max-width: 200px;" loading="lazy">
-            <div class="verification-icon"></div>
+
         </div>
         <br><br>
         <ul class="list-group mb-3">
@@ -328,20 +333,20 @@
 
     document.addEventListener('DOMContentLoaded', async function () {
         let plantName = '<%= sighting.name %>';
-        let data;
+        let dbPediaPlantData;
         try {
-            data = await fetchDBPediaData(plantName);
+            dbPediaPlantData = await fetchDBPediaData(plantName);
         } catch (error) {
             console.error("Error fetching data from DBpedia:", error);
         }
         let verifiedElement = document.querySelector('.verification-icon');
 
-
-        if (data.results && data.results.bindings && data.results.bindings.length > 0) {
-            let bindings = data.results.bindings[0];
+        // If data fetched is not empty
+        if (dbPediaPlantData.results && dbPediaPlantData.results.bindings && dbPediaPlantData.results.bindings.length > 0) {
+            let bindings = dbPediaPlantData.results.bindings[0];
 
             if (verifiedElement) {
-                verifiedElement.innerHTML = '<img src="/images/blue_tick.png" alt="Verified" class="verification-icon" style="height: 40px; width: 40px;position: relative;top: 27%;">'; // Check mark icon
+                verifiedElement.innerHTML = '<img src="/images/blue_tick.png" alt="Verified" title="Plant is verified" class="verification-icon" style="height: 40px; width: 40px;position: relative;top: 17%;">'; // Check mark icon
             }
             let ul = document.querySelector('.plantdetailsdbpidiea');
             ul.innerHTML = '';
@@ -365,11 +370,23 @@
                 `;
             li.appendChild(div);
             ul.appendChild(li);
-        } else {
+
+            li = document.createElement('li');
+            li.className = 'list-group-item d-flex justify-content-between lh-condensed';
+            div = document.createElement('div');
+            div.innerHTML = `
+                    <h6 class="my-0">DBPedia URL:</h6>
+                    <a class="text-muted" href="http://dbpedia.org/resource/${encodeURIComponent(plantName)}" target="_blank">http://dbpedia.org/resource/${encodeURIComponent(plantName)}</a>
+                `;
+            li.appendChild(div);
+            ul.appendChild(li);
+        }
+        //if data received from DBPedia is empty
+        else {
             let ul = document.querySelector('.plantdetailsdbpidiea');
             ul.innerHTML = '';
             if (verifiedElement) {
-                verifiedElement.innerHTML = '<img src="/images/red-tick.jpg" alt="Pending" class="verification-icon" style="height: 40px; width: 40px;position: relative;top: 27%;">';
+                verifiedElement.innerHTML = '<img src="/images/red-tick.jpg" alt="Pending" title="Plant verification is in progress" class="verification-icon" style="height: 40px; width: 40px;position: relative;top: 27%;">';
             }
             let li = document.createElement('li');
             li.className = 'list-group-item d-flex justify-content-between lh-condensed';
@@ -390,13 +407,22 @@
                 `;
             li.appendChild(div);
             ul.appendChild(li);
+
+            li = document.createElement('li');
+            li.className = 'list-group-item d-flex justify-content-between lh-condensed';
+            div = document.createElement('div');
+            div.innerHTML = `
+                    <h6 class="my-0">DBPedia URL:</h6>
+                    <a class="text-muted" href="http://dbpedia.org/resource/${encodeURIComponent(plantName)}" target="_blank">http://dbpedia.org/resource/${encodeURIComponent(plantName)}</a>
+                `;
+            li.appendChild(div);
+            ul.appendChild(li);
         }
 
     });
 
 
     function initMap() {
-
         // Holds the value for the location
         var location = '<%= sighting.location %>';
         const [latitude, longitude] = location.split(',');

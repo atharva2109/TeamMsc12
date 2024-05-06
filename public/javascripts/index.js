@@ -1,16 +1,12 @@
 let isFirstPlantAdded = false;
-let count = 0;
 let isTopFirstPlantAdded = false;
 let currentMapIndex = 0;
 
 
-async function insertPlantInCarousel  (plants)  {
+async function insertPlantInCarousel(plants) {
     const isVerified = await getPlantVerificationStatus(plants);
     if (plants.sightingId != null) {
-
-        const plantList = document.getElementById('plant_list');
         const topPlants = JSON.parse(document.getElementById("hiddenPlants").value);
-        const isTopPlant = topPlants.some((topPlant) => topPlant.name === (plants.name));
 
         if (topPlants.length !== 0) {
             if (!isTopFirstPlantAdded) {
@@ -22,13 +18,11 @@ async function insertPlantInCarousel  (plants)  {
         }
 
         if (!isFirstPlantAdded) {
-            console.log("First plant added!!")
             clearPlantList();
-            addPlantCard(plants,isVerified);
+            addPlantCard(plants, isVerified);
             isFirstPlantAdded = true;
         } else {
-            console.log("plant added!!")
-            addPlantCard(plants,isVerified);
+            addPlantCard(plants, isVerified);
         }
     }
 };
@@ -37,7 +31,6 @@ async function insertPlantInCarousel  (plants)  {
 function addTopPlantToCarousel(plants) {
     const carouselContainer = document.querySelector(".carousel-inner");
     const carouselItem = document.createElement('div');
-    console.log("Is plant added", isTopFirstPlantAdded)
     carouselItem.classList.add('carousel-item');
     const mapIndex = currentMapIndex;
     currentMapIndex++;
@@ -75,7 +68,6 @@ function addTopPlantToCarousel(plants) {
 
 // Function to handle displaying no plants message
 function displayNoPlantsMessage() {
-    console.log("In display no plants")
     const plantList = document.getElementById('plant_list');
     const displayPlants = document.createElement('div');
     displayPlants.classList.add('display-plants', 'd-flex', 'flex-column', 'justify-content-center', 'align-items-center', 'vh-100');
@@ -94,7 +86,7 @@ function clearPlantList() {
 }
 
 // Function to handle adding a plant card to the plant list
-function addPlantCard(plants,isVerified) {
+function addPlantCard(plants, isVerified) {
     const plantList = document.getElementById('plant_list');
     const card = document.createElement('div');
     card.classList.add('col-md-3', 'mb-3', 'plant_list');
@@ -114,13 +106,14 @@ function addPlantCard(plants,isVerified) {
                 <p class="card-text">Species: ${plants.species || 'User not aware of it'}</p>
                 <p class="card-text">Country: ${plants.country || 'User not aware of it'}</p>
                  ${isVerified ? '<img src="/images/blue_tick.png" alt="Verified" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
-                ${!isVerified  ? '<img src="/images/red-tick.jpg" alt="Pending" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
+                ${!isVerified ? '<img src="/images/red-tick.jpg" alt="Pending" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
                 <button class="btn btn-success" onclick='sendPlantData(${JSON.stringify(plants)});'>View Details</button>
             </div>
         </div>
     `;
     plantList.appendChild(card);
 }
+
 function sendPlantData(currentPlant) {
     // Parse JSON data if it's a string
     if (typeof currentPlant === 'string') {
@@ -148,7 +141,6 @@ function sendPlantData(currentPlant) {
 
 
 function initMap() {
-    console.log("Plant carousels:", document.querySelector(".plantCarouselItem"))
     const topPlants = JSON.parse(document.getElementById("hiddenPlants").value);
     topPlants.forEach((plant, index) => {
         createMapWithMarker(plant.location.split(",")[0], plant.location.split(",")[1], `map-${index}`);
@@ -156,8 +148,6 @@ function initMap() {
 }
 
 function createMapWithMarker(latitude, longitude, mapElementId) {
-    console.log("Map with id", document.getElementById("map-0"))
-    console.log("Latitude: ", latitude, "Longitude: ", longitude)
     let mapOptions = {
         zoom: 5,
         center: {lat: parseFloat(latitude), lng: parseFloat(longitude)}
@@ -229,7 +219,6 @@ window.onload = function () {
                 return res.json();
             }).then(function (newPlants) {
             openPlantsIDB().then((db) => {
-                console.log("Insert before: ", newPlants)
                 if (newPlants.length == 0) {
                     displayNoPlantsMessage();
                 } else {
@@ -237,7 +226,6 @@ window.onload = function () {
                 }
                 deleteAllPlantsFromIDB(db).then(() => {
                     addNewPlantsToPlantsIDB(db, newPlants).then(() => {
-                        console.log("All new plants added to IDB")
                         API()
                         initMap();
                     })

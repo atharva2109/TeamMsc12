@@ -1,5 +1,4 @@
-
-async function fetchDBPediaData(plantname){
+async function fetchDBPediaData(plantname) {
     let plantName = plantname;
     const endpointUrl = 'https://dbpedia.org/sparql';
 
@@ -18,12 +17,10 @@ async function fetchDBPediaData(plantname){
     const url = `${endpointUrl}?query=${encodedQuery}&format=json`;
     try {
         const response = await fetch(url);
-        const data = await response.json();
+        const dbpediaData = await response.json();
 
-        return data;
-    }
-
-    catch (error) {
+        return dbpediaData;
+    } catch (error) {
         console.error("Error fetching plant data from DBPedia:", error);
     }
 
@@ -31,8 +28,8 @@ async function fetchDBPediaData(plantname){
 
 async function getPlantVerificationStatus(plant) {
     try {
-        const data = await fetchDBPediaData(plant.name);
-        if (data && data.results && data.results.bindings && data.results.bindings.length > 0) {
+        const dbpediaData = await fetchDBPediaData(plant.name);
+        if (dbpediaData && dbpediaData.results && dbpediaData.results.bindings && dbpediaData.results.bindings.length > 0) {
             return true;
         } else {
             return false;
