@@ -119,4 +119,44 @@ self.addEventListener('sync', event => {
             });
         });
     }
+    else if (event.tag === 'update-plant') {
+        console.log('Service Worker: Syncing new Plants');
+        openSyncPlantsIDB().then((syncPostDB) => {
+            getAllSyncPlants(syncPostDB).then((syncPlants) => {
+                for (const syncPlant of syncPlants) {
+                    console.log('Service Worker: Syncing new Plant: ', syncPlant);
+                    const formData = new FormData();
+                    for (const key in syncPlant) {
+                        formData.append(key, syncPlant[key]);
+                    }
+
+                    fetch('http://localhost:3000/addplant', {
+                        method: 'POST',
+                        body: formData,
+
+
+                    }).then(() => {
+                        console.log('Service Worker: Syncing new Plant: ', syncPlant, ' done');
+                        deleteSyncPlantFromIDB(syncPostDB, syncPlant.id).then(() => {
+                            clients.matchAll().then(clients => {
+                                clients.forEach(client => {
+                                    caches.open("static").then(cache => {
+
+                                    });
+                                });
+                            });
+
+                        }).catch((err) => {
+                            console.error('Service Worker: Syncing new Todo: ', syncPlant, ' failed');
+                        });
+                        self.registration.showNotification('Plant Added', {
+                            body: 'Plant Updated successfully!',
+                            icon: '/images/logo/Squared_Logo.png'
+                        });
+                    })
+
+                }
+            });
+        });
+    }
 })

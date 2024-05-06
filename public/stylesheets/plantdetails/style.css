@@ -28,3 +28,9 @@
     display: none;
     gap: 10px; /* Optional: gap between the buttons */
 }
+
+/* Style all textarea elements to have the same fixed height */
+textarea.form-control {
+    height: 40px; /* Adjust the value as necessary */
+    resize: none; /* Prevent resizing */
+}
