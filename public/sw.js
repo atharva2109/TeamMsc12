@@ -18,8 +18,10 @@ self.addEventListener('install', event => {
             cache.addAll([
                 '/',
                 '/addplant',
+                '/plants',
                 '/manifest.json',
                 '/javascripts/API.js',
+                '/javascripts/sightings.js',
                 '/javascripts/index.js',
                 '/javascripts/idb-utility.js',
                 'https://maps.googleapis.com/maps/api/js?key=AIzaSyARXO1sAXfsUdl_wxOfVJFFT3naSjyyoII&callback=initMap',

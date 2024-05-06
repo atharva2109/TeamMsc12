@@ -4,14 +4,14 @@ let isTopFirstPlantAdded = false;
 let currentMapIndex = 0;
 
 
-const insertPlantInCarousel = (plants) => {
+async function insertPlantInCarousel  (plants)  {
+    const isVerified = await getPlantVerificationStatus(plants);
     if (plants.sightingId != null) {
+
         const plantList = document.getElementById('plant_list');
         const topPlants = JSON.parse(document.getElementById("hiddenPlants").value);
         const isTopPlant = topPlants.some((topPlant) => topPlant.name === (plants.name));
 
-        console.log("Insert plants carousel check", plants)
-        console.log("Is top plants", topPlants)
         if (topPlants.length !== 0) {
             if (!isTopFirstPlantAdded) {
                 addTopPlantToCarousel(plants);
@@ -24,11 +24,11 @@ const insertPlantInCarousel = (plants) => {
         if (!isFirstPlantAdded) {
             console.log("First plant added!!")
             clearPlantList();
-            addPlantCard(plants);
+            addPlantCard(plants,isVerified);
             isFirstPlantAdded = true;
         } else {
             console.log("plant added!!")
-            addPlantCard(plants);
+            addPlantCard(plants,isVerified);
         }
     }
 };
@@ -45,7 +45,6 @@ function addTopPlantToCarousel(plants) {
     if (!isTopFirstPlantAdded) {
         carouselItem.classList.add('active');
     }
-    console.log("carousel item: ", carouselItem)
     carouselItem.innerHTML = `
         <div class="row">
             <div class="col-md-6 plantCarouselItem" style="background-image:url('${plants.uploadImage}'); background-size: cover; background-position: center;">
@@ -95,7 +94,7 @@ function clearPlantList() {
 }
 
 // Function to handle adding a plant card to the plant list
-function addPlantCard(plants) {
+function addPlantCard(plants,isVerified) {
     const plantList = document.getElementById('plant_list');
     const card = document.createElement('div');
     card.classList.add('col-md-3', 'mb-3', 'plant_list');
@@ -114,8 +113,8 @@ function addPlantCard(plants) {
                 <p class="card-text">Genus: ${plants.genus || 'User not aware of it'}</p>
                 <p class="card-text">Species: ${plants.species || 'User not aware of it'}</p>
                 <p class="card-text">Country: ${plants.country || 'User not aware of it'}</p>
-                ${plants.status === 'Verified' ? '<img src="/images/blue_tick.png" alt="Verified" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
-                ${plants.status === 'Verification in Progress' ? '<img src="/images/red-tick.jpg" alt="Pending" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
+                 ${isVerified ? '<img src="/images/blue_tick.png" alt="Verified" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
+                ${!isVerified  ? '<img src="/images/red-tick.jpg" alt="Pending" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
                 <button class="btn btn-success" onclick='sendPlantData(${JSON.stringify(plants)});'>View Details</button>
             </div>
         </div>
