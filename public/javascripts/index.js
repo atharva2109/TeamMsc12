@@ -103,6 +103,7 @@ function addPlantCard(plants) {
     card.setAttribute('data-has-fruits', plants.fruitBearing);
     card.setAttribute('data-has-leaves', plants.hasLeaves);
     card.setAttribute('data-date-time', plants.date);
+    card.setAttribute('plant-name', plants.name);
     // Create HTML content for the plant card
     card.innerHTML = `
         <div class="card text-center plant-card">
