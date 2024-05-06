@@ -1,42 +1,151 @@
-// Add new plant entry into sync IDB
-const addNewPlantsToSyncIDB = (syncTodoIDB, plantData) => {
+const addOrUpdatePlantInSyncIDB = (db, plantData) => {
+    // Start a transaction on the 'plants' object store
+    const transaction = db.transaction(["sync-plants"], "readwrite");
+    const plantStore = transaction.objectStore("sync-plants");
 
-    // Get instance of IDB
-    const transaction = syncTodoIDB.transaction(["sync-plants"], "readwrite")
-    const plantStore = transaction.objectStore("sync-plants")
+    // Check if the plant with the sightingId already exists
+    const getRequest = plantStore.get(plantData.sightingId);
 
-    // Add plant in sync IDB Request
-    const addRequest = plantStore.add(plantData)
+    getRequest.addEventListener("success", () => {
+
+        const existingPlant = getRequest.result;
+
+        if (existingPlant) {
+            // If the plant exists, update it with the new plantData
+            const updatedPlantData = { ...existingPlant, ...plantData };
+            const updateRequest = plantStore.put(updatedPlantData);
+
+            updateRequest.addEventListener("success", () => {
+                console.log("Added " + "#" + updateRequest.result)
+                const getRequest = plantStore.get(updateRequest.result)
+
+                getRequest.addEventListener("success", () => {
+                    console.log("Found " + JSON.stringify(getRequest.result))
+
+                    // Send a sync message to the service worker
+                    navigator.serviceWorker.ready.then((sw) => {
+                        sw.sync.register("sync-plant")
+                    }).then(() => {
+                        console.log("Sync registered");
+                    }).catch((err) => {
+                        console.log("Sync registration failed: " + JSON.stringify(err))
+                    })
+                })
+            })
+
+            updateRequest.addEventListener("error", (error) => {
+                console.error("Error updating plant in IDB:", error);
+            });
+        } else {
+            // If the plant does not exist, add it as a new entry
+            const addRequest = plantStore.add(plantData);
+
+            addRequest.addEventListener("success", () => {
+                console.log("Added " + "#" + addRequest.result)
+                const getRequest = plantStore.get(addRequest.result)
+                getRequest.addEventListener("success", () => {
+                    console.log("Found " + JSON.stringify(getRequest.result))
+
+                    // Send a sync message to the service worker
+                    navigator.serviceWorker.ready.then((sw) => {
+                        sw.sync.register("sync-plant")
+                    }).then(() => {
+                        console.log("Sync registered");
+                    }).catch((err) => {
+                        console.log("Sync registration failed: " + JSON.stringify(err))
+                    })
+                })
+            })
+
+            addRequest.addEventListener("error", (error) => {
+                console.error("Error adding new plant to IDB:", error);
+            });
+        }
+    });
+
+    getRequest.addEventListener("error", (error) => {
+        console.error("Error retrieving plant from IDB:", error);
+    });
+
+    // Handle transaction complete and error events
+    transaction.addEventListener("complete", () => {
+        console.log("Transaction complete.");
+    });
+
+    transaction.addEventListener("error", (error) => {
+        console.error("Transaction error:", error);
+    });
+};
+
+const addOrUpdatePlantInIDB = (db, plantData) => {
+    // Start a transaction on the 'plants' object store
+    const transaction = db.transaction(["plants"], "readwrite");
+    const plantStore = transaction.objectStore("plants");
+
+    // Check if the plant with the sightingId already exists
+    const getRequest = plantStore.get(plantData.sightingId);
+
+    getRequest.addEventListener("success", () => {
+        const existingPlant = getRequest.result;
+
+        if (existingPlant) {
+            // If the plant exists, update it with the new plantData
+            const updatedPlantData = { ...existingPlant, ...plantData };
+            const updateRequest = plantStore.put(updatedPlantData);
+
+            updateRequest.addEventListener("success", () => {
+                console.log("Updated " + "#" + updateRequest.result)
+            })
+
+            updateRequest.addEventListener("error", (error) => {
+                console.error("Error updating plant in IDB:", error);
+            });
+        } else {
+            // If the plant does not exist, add it as a new entry
+            const addRequest = plantStore.add(plantData);
+
+            addRequest.addEventListener("success", () => {
+                console.log("Added " + "#" + addRequest.result)
+            })
+
+            addRequest.addEventListener("error", (error) => {
+                console.error("Error adding new plant to IDB:", error);
+            });
+        }
+    });
+
+    getRequest.addEventListener("error", (error) => {
+        console.error("Error retrieving plant from IDB:", error);
+    });
+
+    // Handle transaction complete and error events
+    transaction.addEventListener("complete", () => {
+        console.log("Transaction complete.");
+    });
+
+    transaction.addEventListener("error", (error) => {
+        console.error("Transaction error:", error);
+    });
+};
+
+// Function to add or update plant in IDB based on sightingId
+const addOrUpdatePlant = (plantData) => {
+    // Get an instance of the IDB
+    openSyncPlantsIDB().then(db => {
+        addOrUpdatePlantInSyncIDB(db, plantData);
+    }).catch(error => {
+        console.error("Error opening IDB:", error);
+    });
+
     // In offline mode add plant in plantsIDB
     if (!navigator.onLine) {
-        openPlantsIDB().then((db) => {
-            const transaction = db.transaction(["plants"], "readwrite");
-            const plantStore = transaction.objectStore("plants");
-            const addRequest = plantStore.add(plantData)
-            addRequest.addEventListener("success", () => {
-                console.log("Plant Added to plantIDB in offline mode")
-            })
+        openPlantsIDB().then(db => {
+            addOrUpdatePlantInIDB(db, plantData);
+        }).catch(error => {
+            console.error("Error opening IDB:", error);
         });
     }
-
-    addRequest.addEventListener("success", () => {
-        console.log("Added " + "#" + addRequest.result)
-        const getRequest = plantStore.get(addRequest.result)
-        getRequest.addEventListener("success", () => {
-            console.log("Found " + JSON.stringify(getRequest.result))
-
-            // Send a sync message to the service worker
-            navigator.serviceWorker.ready.then((sw) => {
-                sw.sync.register("sync-plant")
-            }).then(() => {
-                console.log("Sync registered");
-            }).catch((err) => {
-                console.log("Sync registration failed: " + JSON.stringify(err))
-            })
-        })
-    })
-
-}
+};
 
 const addNewPlantsToPlantsIDB = (plantIDB, plants) => {
     return new Promise((resolve, reject) => {

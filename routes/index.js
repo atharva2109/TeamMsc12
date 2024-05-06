@@ -3,7 +3,7 @@ var router = express.Router();
 var API_KEY = require('../public/javascripts/API')
 var path = require('path');
 var Sighting = require('../models/sighting')
-const {create,getAll,getPlantsPagewise} = require('../controllers/sighting');
+const {create,getAll,getPlantsPagewise, createOrUpdate} = require('../controllers/sighting');
 const sightingModel = require('../models/sighting');
 const session = require('express-session');
 var multer=require("multer")
@@ -79,7 +79,7 @@ router.get('/addplant', function (req, res, next) {
 });
 
 router.post('/addplant',upload.none(), (req, res) => {
-        create(req.body).then(plant => {
+        createOrUpdate(req.body).then(plant => {
             res.status(200).send(plant);
         }).catch(err => {
             console.log(err);

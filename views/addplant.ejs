@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-sm-6 text-black">
                 <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
-                    <form style="width: 60rem;max-height: 60vh;overflow-y: auto;overflow-x: hidden"   >
+                    <form style="width: 60rem;max-height: 60vh;overflow-y: auto;overflow-x: hidden">
                         <fieldset class="border p-2">
                             <legend class="float-none w-auto">User Details:</legend>
                             <div class="form-outline mb-4">
@@ -105,7 +105,7 @@
                                 <input type="hidden" name="fruitValue" id="fruitValue">
                                 <label for="flowering" class="form-label">Flowering:</label>
                                 <input class="form-check-input" type="radio" name="flowering" id="floweringYes"
-                                       value="Yes" >
+                                       value="Yes">
                                 <label class="form-check-label" for="floweringYes">
                                     Yes
                                 </label>
@@ -183,7 +183,8 @@
                         <div class="form-outline mb-4">
                             <label for="datePicker" class="form-label">Date<span
                                         style="color: red;margin-right: 1px; font-size: 20px;">*</span>: </label>
-                            <input type="datetime-local" id="datePicker" class="form-control" required name="datePicker"/>
+                            <input type="datetime-local" id="datePicker" class="form-control" required
+                                   name="datePicker"/>
                         </div>
 
                         <div class="form-outline mb-4 form-switch form-check form-switch form-check-reverse d-flex flex-row "
@@ -206,11 +207,12 @@
 
                             <label for="pickLocation">Please Pick a Location<span
                                         style="color: red;margin-right: 1px; font-size: 20px;">*</span>:</label>
-                            <button type="button" class="btn btn-success" id="fetchLocationBtn" style="width: 30%;margin-left: 0%;margin-bottom: 3%">
+                            <button type="button" class="btn btn-success" id="fetchLocationBtn"
+                                    style="width: 30%;margin-left: 0%;margin-bottom: 3%">
                                 <i class="fas fa-location-dot" style="margin-right: 2%;"></i>Current Location
                             </button>
 
-                            <input type="hidden" id="location" name="location" value="" >
+                            <input type="hidden" id="location" name="location" value="">
                             <div id="map" style="height: 400px; width: 600px;">
 
                             </div>
@@ -232,7 +234,8 @@
                                 <input class="form-control" id="pincode" type="text" name="pincode"/>
                             </fieldset>
                         </div>
-                        <button type="button" class="btn btn-success btn-md btn-block" id="addplantbtn">Add Plant</button>
+                        <button type="button" class="btn btn-success btn-md btn-block" id="addplantbtn">Add Plant
+                        </button>
                     </form>
 
                 </div>
@@ -312,7 +315,7 @@
         document.getElementById('fruitValue').value = fruitsValue == "Yes" ? true : false;
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         updateRadioButttons();
     });
 
@@ -341,13 +344,12 @@
         }
     });
 
-    document.getElementById('addplantbtn').addEventListener('click', function(event) {
+    document.getElementById('addplantbtn').addEventListener('click', function (event) {
         const locationValue = document.getElementById('location').value;
-        if (locationValue=="") {
+        if (locationValue == "") {
             event.preventDefault();
             alert('Please pick a location before submitting the form.');
-        }
-        else{
+        } else {
             var userId = '<%= user_id %>';
             var sightingId = '<%= sighting_id %>';
             const dateTimeValue = document.getElementById("datePicker").value;
@@ -364,7 +366,7 @@
 
             const localDateTimeString = date.toLocaleString('en-GB', options);
             const formData = {
-                sightingId:sightingId,
+                sightingId: sightingId,
                 username: document.getElementById("username").value,
                 email: document.getElementById("email").value,
                 phoneNumber: document.getElementById("phone").value,
@@ -378,9 +380,9 @@
                 length: document.getElementById("plantLength").value,
                 width: document.getElementById("plantWidth").value,
                 height: document.getElementById("plantHeight").value,
-                hasLeaves:   document.getElementById('leavesValue').value,
+                hasLeaves: document.getElementById('leavesValue').value,
                 flowering: document.getElementById('floweringValue').value,
-                fruitBearing:  document.getElementById('fruitValue').value,
+                fruitBearing: document.getElementById('fruitValue').value,
                 sunExposure: document.getElementById("sunexposure").value,
                 flowerColor: document.getElementById("flowerColor").value,
                 identificationLink: document.getElementById("idLink").value,
@@ -388,34 +390,31 @@
                 date: localDateTimeString,
                 status: document.getElementById("verificationStatus").value,
                 altitude: document.getElementById("altitude").value,
-                location:document.getElementById("location").value,
+                location: document.getElementById("location").value,
                 line: document.getElementById("addressLine").value,
-                city:document.getElementById("city").value,
-                state:document.getElementById("state").value,
-                country:document.getElementById("country").value,
-                pinCode:document.getElementById("pincode").value,
-                userid:userId,
+                city: document.getElementById("city").value,
+                state: document.getElementById("state").value,
+                country: document.getElementById("country").value,
+                pinCode: document.getElementById("pincode").value,
+                userid: userId,
 
             };
             const uploadImage = document.getElementById("uploadImage").files[0];
             if (uploadImage) {
                 const reader = new FileReader();
-                reader.onload = function(event) {
+                reader.onload = function (event) {
                     const base64Image = event.target.result;
                     formData.uploadImage = base64Image;
 
                     // After image is processed, store form data in IndexedDB or send it to the server
-                    openSyncPlantsIDB().then((db) => {
-                        addNewPlantsToSyncIDB(db, formData);
-                    });
+                    // If no image is uploaded, just process the rest of the form data
+                    addOrUpdatePlant(formData);
                 };
 
                 reader.readAsDataURL(uploadImage); // Convert image file to Base64 format
             } else {
                 // If no image is uploaded, just process the rest of the form data
-                openSyncPlantsIDB().then((db) => {
-                    addNewPlantsToSyncIDB(db, formData);
-                });
+                addOrUpdatePlant(formData);
             }
 
         }

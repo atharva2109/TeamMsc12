@@ -1,16 +1,30 @@
-.image-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: left;
-    gap: 20px;
+.list-group-item:hover .edit-button-container {
+    display: block !important;
 }
 
-.image-wrapper {
-    flex-basis: 200px;
+.edit-button-container {
+    font-size: 1.2rem;
+}
+
+.edit-button {
+    transition: color 0.3s ease;
+}
+
+.edit-button:hover {
+    color: #007bff !important;
+}
+
+/* Edit mode container */
+.edit-mode .d-flex {
     flex-grow: 1;
 }
 
-.image {
-    max-width: 100%;
-    height: auto;
+.edit-mode textarea {
+    flex-grow: 1;
+    margin-right: 10px; /* Optional: add margin between textarea and button container */
+}
+
+.edit-button-container {
+    display: none;
+    gap: 10px; /* Optional: gap between the buttons */
 }
