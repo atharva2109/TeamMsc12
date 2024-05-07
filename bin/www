@@ -30,31 +30,35 @@ var io = socketIo(server);
 io.on('connection', async (socket) => {
   console.log('A user connected');
 
-  // Fetch chat history
-  try {
-    const messages = await Message.find().sort({timestamp: 1}).limit(50); // Get last 50 messages
-    socket.emit('chat history', messages);
-  } catch (error) {
-    console.error('Error fetching chat history:', error);
-  }
+  socket.on('join', async ({ username, sightingId }) => {
+    console.log(`${username} joined the room for sighting ${sightingId}`);
+    socket.sightingId = sightingId;
+    socket.join(sightingId);
 
-  socket.on('join', (username) => {
-    console.log(`${username} joined the room`);
+    // Fetch chat history for the specific sightingId
+    try {
+      const messages = await Message.find({ sightingId: sightingId }).sort({ timestamp: 1 }).limit(50);
+      socket.emit('chat history', messages);
+    } catch (error) {
+      console.error('Error fetching chat history:', error);
+    }
+
     const joinMessage = {
       username: "System",
-      message: `A user has joined the room`,
-      timestamp: new Date().toISOString()
+      message: `You have joined the room`,
+      timestamp: new Date().toISOString(),
+      sightingId
     };
-    io.emit('chat message', joinMessage);
+    io.to(sightingId).emit('chat message', joinMessage);
   });
 
   socket.on('chat message', async (data) => {
-    const {username, message, timestamp} = data;
-    const newMessage = new Message({username, message, timestamp});
+    const { username, message, timestamp, sightingId } = data;
+    const newMessage = new Message({ username, message, timestamp, sightingId });
 
     try {
       await newMessage.save();
-      io.emit('chat message', {username, message, timestamp});
+      io.to(sightingId).emit('chat message', { username, message, timestamp, sightingId });
     } catch (error) {
       console.error('Error saving message to DB:', error);
     }
@@ -65,9 +69,10 @@ io.on('connection', async (socket) => {
     const disconnectMessage = {
       username: "System",
       message: `A user has left the room`,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      sightingId: socket.sightingId
     };
-    io.emit('chat message', disconnectMessage);
+    io.to(socket.sightingId).emit('chat message', disconnectMessage);
   });
 });
 

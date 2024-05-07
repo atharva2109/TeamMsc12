@@ -6,6 +6,7 @@ const messageSchema = new Schema({
     username: { type: String, required: true },
     message: { type: String, required: true },
     timestamp: { type: Date, default: Date.now },
+    sightingId: { type: String, required: true }
 });
 
 // Create a model based on the schema

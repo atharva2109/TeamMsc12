@@ -216,7 +216,12 @@
 
         <script>
             const socket = io();
+            const sightingId = "<%= sighting.sightingId %>"; // Get the sighting ID
             let offlineMessages = JSON.parse(localStorage.getItem('offlineMessages')) || [];
+            let lastUsername = "";
+
+            // Join the specific sighting chat room
+            socket.emit('join', { username: lastUsername || "Guest", sightingId });
 
             // Display chat history
             socket.on('chat history', function(messages) {
@@ -239,7 +244,7 @@
                 const timestamp = now.toISOString();
 
                 if (username && message) {
-                    const messageData = { username, message, timestamp };
+                    const messageData = { username, message, timestamp, sightingId };
 
                     // If online, send the message
                     if (navigator.onLine) {
@@ -256,13 +261,19 @@
             }
 
             socket.on('chat message', function(data) {
-                const { username, message, timestamp } = data;
+                const { username, message, timestamp, sightingId: receivedSightingId } = data;
+                if (receivedSightingId === sightingId) {
+                    displayMessage(username, message, timestamp);
+                }
+            });
+
+            function displayMessage(username, message, timestamp) {
                 const chatDisplayArea = document.getElementById("chatDisplayArea");
                 const newMessage = document.createElement("p");
                 newMessage.innerHTML = `<strong>${username} (${timestamp}):</strong> ${message}`;
                 chatDisplayArea.appendChild(newMessage);
                 chatDisplayArea.scrollTop = chatDisplayArea.scrollHeight;
-            });
+            }
 
             // Synchronize messages when coming back online
             window.addEventListener('online', syncOfflineMessages);
@@ -270,20 +281,22 @@
             function syncOfflineMessages() {
                 offlineMessages = JSON.parse(localStorage.getItem('offlineMessages')) || [];
                 offlineMessages.forEach((messageData) => {
-                    socket.emit('chat message', messageData);
+                    if (messageData.sightingId === sightingId) {
+                        socket.emit('chat message', messageData);
+                    }
                 });
-                offlineMessages = [];
+                offlineMessages = offlineMessages.filter(messageData => messageData.sightingId !== sightingId);
                 localStorage.setItem('offlineMessages', JSON.stringify(offlineMessages));
             }
 
-
             document.querySelector(".btn-close").addEventListener("click", endChat);
-            document.querySelector(".btn-secondary").addEventListener("click", endChat);
+            document.querySelector(".btn-secondary"). addEventListener("click", endChat);
 
             function endChat() {
                 lastUsername = ""; // Reset the last used username when chat is ended
             }
         </script>
+
 
 
 
