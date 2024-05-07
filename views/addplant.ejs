@@ -263,24 +263,6 @@
         });
     }
 
-    const verificationToggle = document.getElementById("verificationToggle");
-    const verificationStatusInput = document.getElementById("verificationStatus");
-
-    //Initial State checking
-    if (verificationToggle.checked) {
-        verificationStatusInput.value = "Verified";
-    } else {
-        verificationStatusInput.value = "Verification in Progress";
-    }
-
-    verificationToggle.addEventListener("change", function () {
-        if (verificationToggle.checked) {
-            verificationStatusInput.value = "Verified";
-        } else {
-            verificationStatusInput.value = "Verification in Progress";
-        }
-    });
-
     function updateRadioButttons() {
         const selectedFlowering = document.querySelector('input[name="flowering"]:checked');
         const floweringValue = selectedFlowering ? selectedFlowering.value : null;
@@ -368,10 +350,8 @@
                 fruitBearing:  document.getElementById('fruitValue').value,
                 sunExposure: document.getElementById("sunexposure").value,
                 flowerColor: document.getElementById("flowerColor").value,
-                identificationLink: document.getElementById("idLink").value,
 
                 date: localDateTimeString,
-                status: document.getElementById("verificationStatus").value,
                 altitude: document.getElementById("altitude").value,
                 location:document.getElementById("location").value,
                 line: document.getElementById("addressLine").value,
