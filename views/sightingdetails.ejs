@@ -239,14 +239,14 @@
                 const timestamp = now.toISOString();
 
                 if (username && message) {
-                    socket.emit('chat message', { username, message, timestamp });
+                    const messageData = { username, message, timestamp };
 
                     // If online, send the message
                     if (navigator.onLine) {
-                        socket.emit('chat message', { username, message, timestamp });
+                        socket.emit('chat message', messageData);
                     } else {
                         // Store the message locally
-                        offlineMessages.push({ username, message, timestamp });
+                        offlineMessages.push(messageData);
                         localStorage.setItem('offlineMessages', JSON.stringify(offlineMessages));
                     }
 

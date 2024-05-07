@@ -42,7 +42,7 @@ io.on('connection', async (socket) => {
     console.log(`${username} joined the room`);
     const joinMessage = {
       username: "System",
-      message: `${username} joined the room`,
+      message: `A user has joined the room`,
       timestamp: new Date().toISOString()
     };
     io.emit('chat message', joinMessage);
@@ -61,10 +61,10 @@ io.on('connection', async (socket) => {
   });
 
   socket.on('disconnect', () => {
-    console.log('A user disconnected');
+    console.log('A user has disconnected');
     const disconnectMessage = {
       username: "System",
-      message: `A user left the room`,
+      message: `A user has left the room`,
       timestamp: new Date().toISOString()
     };
     io.emit('chat message', disconnectMessage);
