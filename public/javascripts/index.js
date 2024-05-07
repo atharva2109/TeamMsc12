@@ -3,8 +3,11 @@ let isTopFirstPlantAdded = false;
 let currentMapIndex = 0;
 
 
-async function insertPlantInCarousel(plants) {
-    const isVerified = await getPlantVerificationStatus(plants);
+ async function insertPlantInCarousel(plants) {
+     let isVerified;
+     if (navigator.onLine) {
+          isVerified = await getPlantVerificationStatus(plants);
+     }
     if (plants.sightingId != null) {
         const topPlants = JSON.parse(document.getElementById("hiddenPlants").value);
 
@@ -19,10 +22,11 @@ async function insertPlantInCarousel(plants) {
 
         if (!isFirstPlantAdded) {
             clearPlantList();
-            addPlantCard(plants, isVerified);
+                addPlantCard(plants,isVerified);
+
             isFirstPlantAdded = true;
         } else {
-            addPlantCard(plants, isVerified);
+            addPlantCard(plants,isVerified);
         }
     }
 };
@@ -86,7 +90,7 @@ function clearPlantList() {
 }
 
 // Function to handle adding a plant card to the plant list
-function addPlantCard(plants, isVerified) {
+function addPlantCard(plants,isVerified) {
     const plantList = document.getElementById('plant_list');
     const card = document.createElement('div');
     card.classList.add('col-md-3', 'mb-3', 'plant_list');
@@ -105,8 +109,11 @@ function addPlantCard(plants, isVerified) {
                 <p class="card-text">Genus: ${plants.genus || 'User not aware of it'}</p>
                 <p class="card-text">Species: ${plants.species || 'User not aware of it'}</p>
                 <p class="card-text">Country: ${plants.country || 'User not aware of it'}</p>
-                 ${isVerified ? '<img src="/images/blue_tick.png" alt="Verified" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
+                
+                 ${isVerified !== undefined ? `
+                ${isVerified ? '<img src="/images/blue_tick.png" alt="Verified" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
                 ${!isVerified ? '<img src="/images/red-tick.jpg" alt="Pending" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
+            ` : ''}
                 <button class="btn btn-success" onclick='sendPlantData(${JSON.stringify(plants)});'>View Details</button>
             </div>
         </div>
