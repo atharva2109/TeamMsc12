@@ -195,7 +195,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div id="chatDisplayArea" style="height: 200px; overflow-y: auto; border: 1px solid #ddd; padding: 10px;">
+                        <div id="chatDisplayArea" style="height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px;">
                             <!-- Messages will be displayed here -->
                         </div>
                         <br>
@@ -228,11 +228,9 @@
                 const chatDisplayArea = document.getElementById("chatDisplayArea");
                 messages.forEach((data) => {
                     const { username, message, timestamp } = data;
-                    const newMessage = document.createElement("p");
-                    newMessage.innerHTML = `<strong>${username} (${timestamp}):</strong> ${message}`;
-                    chatDisplayArea.appendChild(newMessage);
+                    const bubbleType = (username === lastUsername) ? "chat-right" : "chat-left";
+                    displayMessage(username, message, timestamp, bubbleType);
                 });
-                chatDisplayArea.scrollTop = chatDisplayArea.scrollHeight;
             });
 
             document.getElementById("sendButton").addEventListener("click", sendMessage);
@@ -244,6 +242,7 @@
                 const timestamp = now.toISOString();
 
                 if (username && message) {
+                    lastUsername = username;  // Update last used username
                     const messageData = { username, message, timestamp, sightingId };
 
                     // If online, send the message
@@ -263,16 +262,31 @@
             socket.on('chat message', function(data) {
                 const { username, message, timestamp, sightingId: receivedSightingId } = data;
                 if (receivedSightingId === sightingId) {
-                    displayMessage(username, message, timestamp);
+                    const bubbleType = (username === lastUsername) ? "chat-right" : "chat-left";
+                    displayMessage(username, message, timestamp, bubbleType);
                 }
             });
 
-            function displayMessage(username, message, timestamp) {
+            function displayMessage(username, message, timestamp, bubbleType) {
                 const chatDisplayArea = document.getElementById("chatDisplayArea");
-                const newMessage = document.createElement("p");
-                newMessage.innerHTML = `<strong>${username} (${timestamp}):</strong> ${message}`;
+                const formattedTime = formatTimestamp(new Date(timestamp));
+                const newMessage = document.createElement("div");
+                newMessage.className = `chat-bubble ${bubbleType} clearfix`;
+                newMessage.innerHTML = `<strong>${username} (${formattedTime}):</strong> ${message}`;
                 chatDisplayArea.appendChild(newMessage);
                 chatDisplayArea.scrollTop = chatDisplayArea.scrollHeight;
+            }
+
+            function formatTimestamp(date) {
+                return date.toLocaleString('en-GB', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                });
             }
 
             // Synchronize messages when coming back online
@@ -296,6 +310,7 @@
                 lastUsername = ""; // Reset the last used username when chat is ended
             }
         </script>
+
 
 
 

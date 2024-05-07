@@ -45,7 +45,7 @@ io.on('connection', async (socket) => {
 
     const joinMessage = {
       username: "System",
-      message: `You have joined the room`,
+      message: `You have joined the room :)`,
       timestamp: new Date().toISOString(),
       sightingId
     };

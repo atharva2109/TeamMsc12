@@ -15,17 +15,39 @@
     height: auto;
 }
 
-.chat-button {
-    background-color: #556B2F; /* darkolivegreen */
-    color: white; /* Sets the text color to white */
-    border: 2px solid black; /* Black border */
-    padding: 10px 20px; /* Padding for better visual spacing */
-    text-decoration: none; /* Removes underline from the link */
-    display: inline-block; /* Allows padding and border to display correctly */
-    transition: background-color 0.3s; /* Smooth transition for hover effect */
+/* Base chat bubble styling */
+.chat-bubble {
+    max-width: 60%;
+    padding: 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    display: inline-block;
 }
 
-.chat-button:hover {
-    background-color: #455a24; /* Slightly darker green on hover */
+/* Chat bubble for messages from others */
+.chat-left {
+    background-color: #f1f0f0;
+    text-align: left;
+    float: left;
+    clear: both;
+    border-top-left-radius: 0;
+    margin-left: 10px;
+}
+
+/* Chat bubble for your own messages */
+.chat-right {
+    background-color: #d1ffd1;
+    text-align: right;
+    float: right;
+    clear: both;
+    border-top-right-radius: 0;
+    margin-right: 10px;
+}
+
+/* Clear float styling */
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
 }
 
