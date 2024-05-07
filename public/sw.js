@@ -18,11 +18,8 @@ self.addEventListener('install', event => {
             cache.addAll([
                 '/',
                 '/addplant',
-                '/plants',
-
                 '/manifest.json',
                 '/javascripts/API.js',
-                '/javascripts/sightings.js',
                 '/javascripts/index.js',
                 '/javascripts/idb-utility.js',
                 'https://maps.googleapis.com/maps/api/js?key=AIzaSyARXO1sAXfsUdl_wxOfVJFFT3naSjyyoII&callback=initMap',
@@ -69,20 +66,24 @@ self.addEventListener('fetch', event => {
         const cache = await caches.open("static");
         const cachedResponse = await cache.match(event.request);
         if (cachedResponse) {
+            console.log('Service Worker: Fetching from Cache: ', event.request.url);
             return cachedResponse;
         }
+        console.log('Service Worker: Fetching from URL: ', event.request.url);
         return fetch(event.request);
     })());
 });
 
 self.addEventListener('sync', event => {
     if (event.tag === 'sync-plant') {
+        console.log('Service Worker: Syncing new Plants');
         openSyncPlantsIDB().then((syncPostDB) => {
             getAllSyncPlants(syncPostDB).then((syncPlants) => {
                 for (const syncPlant of syncPlants) {
+                    console.log('Service Worker: Syncing new Plant: ', syncPlant);
                     const formData = new FormData();
                     for (const key in syncPlant) {
-                            formData.append(key, syncPlant[key]);
+                        formData.append(key, syncPlant[key]);
                     }
 
                     fetch('http://localhost:3000/addplant', {
@@ -91,6 +92,7 @@ self.addEventListener('sync', event => {
 
 
                     }).then(() => {
+                        console.log('Service Worker: Syncing new Plant: ', syncPlant, ' done');
                         deleteSyncPlantFromIDB(syncPostDB, syncPlant.id).then(() => {
                             clients.matchAll().then(clients => {
                                 clients.forEach(client => {
@@ -105,7 +107,7 @@ self.addEventListener('sync', event => {
                             });
 
                         }).catch((err) => {
-                            console.error('Service Worker: Syncing new Plant: ', syncPlant, ' failed');
+                            console.error('Service Worker: Syncing new Todo: ', syncPlant, ' failed');
                         });
                         self.registration.showNotification('Plant Added', {
                             body: 'Plant Added successfully!',

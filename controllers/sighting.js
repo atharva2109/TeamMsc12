@@ -9,16 +9,12 @@ exports.create = function (req) {
         sightingId: req.sightingId,
         date: req.date,
         location: req.location,
-
         line: req.line,
         city: req.city,
         state: req.state,
         country: req.country,
         pinCode: req.pinCode,
-
         altitude: req.altitude,
-        status: req.status,
-
         name: req.name,
         commonName: req.commonName,
         scientificName: req.scientificName,
@@ -34,7 +30,6 @@ exports.create = function (req) {
         fruitBearing: req.fruitBearing,
         sunExposure: req.sunExposure,
         flowerColor: req.flowerColor,
-        identificationLink: req.identificationLink,
         uploadImage: req.uploadImage,
         userid: req.userid,
         username: req.username,
@@ -71,6 +66,7 @@ exports.getPlantsPagewise = function (page, limit) {
 
 exports.getAll = function (page, limit) {
     return sightingModel.find({}).then(sightings => {
+        console.log("Sightings: ",sightings)
         return JSON.stringify(sightings);
     }).catch(error => {
         console.log(error);

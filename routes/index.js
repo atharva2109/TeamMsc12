@@ -67,6 +67,8 @@ router.get('/', async (req, res, next)=> {
             $limit: 3
         }
     ]);
+
+    console.log("Top plants: ",topPlants)
     res.render('index', {title: 'Botanical Lens', api: API_KEY, plants, currentPage: page, totalPages,topPlants});
 });
 
@@ -77,7 +79,8 @@ router.get('/addplant', function (req, res, next) {
 });
 
 router.post('/addplant',upload.none(), (req, res) => {
-        create(req.body).then(plant => {
+    console.log("Req body: ",req.body)
+    create(req.body).then(plant => {
             res.status(200).send(plant);
         }).catch(err => {
             console.log(err);
@@ -127,12 +130,5 @@ router.get('/sightingdetails', (req, res) => {
     delete req.session.sighting;
 });
 
-router.get('/addplant', function(req, res, next) {
-  res.render('addplant', { title: 'Add Plant' }); // Use 'addplant' as the EJS template file name
-});
-
-router.get('/addplant', function(req, res, next) {
-  res.render('addplant', { title: 'Add Plant' }); // Use 'addplant' as the EJS template file name
-});
 
 module.exports = router;
