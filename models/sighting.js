@@ -17,10 +17,6 @@ let SightingSchema = new Schema(
         country: String,
         pinCode: String,                                                                  // Address in words
         altitude: Number,                                                   // Altitude of the sighting
-        status: {
-            type: String,
-            enum: ['Verified', 'Verification in Progress']
-        },                                                                  // Status of the sighting
         name: String,                                                   // Plant name
         commonName: String,                                             // Plant common name
         scientificName: String,                                         // Plant scientific name
@@ -41,7 +37,6 @@ let SightingSchema = new Schema(
         flowerColor: String,
 
         // Plant characteristics
-        identificationLink: String,                                     // Plant identification link
         uploadImage: String,
         userid: Number,
         username: String,                                                   // user name

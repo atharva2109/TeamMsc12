@@ -20,10 +20,8 @@ const addNewPlantsToSyncIDB = (syncTodoIDB, plantData) => {
     }
 
     addRequest.addEventListener("success", () => {
-        console.log("Added " + "#" + addRequest.result)
         const getRequest = plantStore.get(addRequest.result)
         getRequest.addEventListener("success", () => {
-            console.log("Found " + JSON.stringify(getRequest.result))
 
             // Send a sync message to the service worker
             navigator.serviceWorker.ready.then((sw) => {
@@ -47,10 +45,8 @@ const addNewPlantsToPlantsIDB = (plantIDB, plants) => {
             return new Promise((resolveAdd, rejectAdd) => {
                 const addRequest = plantStore.add(plant);
                 addRequest.addEventListener("success", () => {
-                    console.log("Added " + "#" + addRequest.result + ": " + plant);
                     const getRequest = plantStore.get(addRequest.result);
                     getRequest.addEventListener("success", () => {
-                        console.log("Found " + JSON.stringify(getRequest.result));
                         insertPlantInCarousel(getRequest.result);
                         resolveAdd(); // Resolve the add promise
                     });

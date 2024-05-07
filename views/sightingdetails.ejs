@@ -8,6 +8,7 @@
     <title>Plant Details</title>
     <link rel="stylesheet" href="./stylesheets/plantdetails/style.css">
     <script src='/javascripts/API.js'></script>
+    <script src='/javascripts/sightings.js'></script>
     <script>
         API();
     </script>
@@ -20,7 +21,9 @@
 
 <!-- Header Section -->
 <%- include('./partials/header', { title: 'Plant Details',visibility:'hidden' }); %>
-<br> <br> <br>
+<br>
+<br>
+<br>
 <div class="row">
     <div class="col-md-4 order-md-2 mb-4">
 
@@ -107,22 +110,22 @@
                 <div>
                     <h6 class="my-0">Number of Observations</h6>
                 </div>
-                <span class="text-muted"><%=          %></span>
+                <span class="text-muted"><%=                %></span>
             </li>
         </ul>
     </div>
     <div class="col-md-8 order-md-1">
         <h4 class="mb-3">Plant Details</h4>
         <hr>
-        <h1 style="font-size:xxx-large; color: #36454F"><%= sighting.name %></h1>
-        <h5 class="link-dark" style="font-size: small">
-            Reference link: <a href="<%= sighting.identificationLink %>"
-                               class="text-primary"><%= sighting.identificationLink %></a>
-        </h5>
+        <div class="d-flex">
+            <h1 style="font-size:xxx-large; color: #36454F"><%= sighting.name %></h1>
+            <div class="verification-icon"></div>
+        </div>
         <br>
         <div class="image-container">
-                <img src="<%=sighting.uploadImage%>" alt="Plant Image"
-                     style="max-height: 200px;max-width: 200px;" loading="lazy">
+            <img src="<%= sighting.uploadImage %>" alt="Plant Image"
+                 style="max-height: 200px;max-width: 200px;" loading="lazy">
+
         </div>
         <br><br>
         <ul class="list-group mb-3">
@@ -165,27 +168,43 @@
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                    <h6 class="my-0">Plant Size : (Length: <%= sighting.length %> x Height: <%= sighting.height %> x Width: <%= sighting.width %>)</h6>
+                    <h6 class="my-0">Plant Size : (Length: <%= sighting.length %> x Height: <%= sighting.height %> x
+                        Width: <%= sighting.width %>)</h6>
                 </div>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <h6 class="my-0">Characteristics:</h6><br>
                     <div class="d-flex flex-wrap gap-2">
-                        <h4><span class="badge bg-primary"><%= sighting.flowering ? 'Flowering' : 'Non-Flowering' %></span></h4>
-                        <h4><span class="badge bg-secondary"><%= sighting.hasLeaves ? 'Has Leaves' : 'Has No Leaves' %></span></h4>
-                        <h4><span class="badge bg-success"><%= sighting.fruitBearing ? 'Fruit Bearing' : 'Non-Fruit Bearing' %></span></h4>
+                        <h4>
+                            <span class="badge bg-primary"><%= sighting.flowering ? 'Flowering' : 'Non-Flowering' %></span>
+                        </h4>
+                        <h4>
+                            <span class="badge bg-secondary"><%= sighting.hasLeaves ? 'Has Leaves' : 'Has No Leaves' %></span>
+                        </h4>
+                        <h4>
+                            <span class="badge bg-success"><%= sighting.fruitBearing ? 'Fruit Bearing' : 'Non-Fruit Bearing' %></span>
+                        </h4>
                         <h4><span class="badge bg-danger"><%= sighting.sunExposure %></span></h4>
                         <h4><span class="badge bg-warning text-dark">Color: <%= sighting.flowerColor %></span></h4>
                     </div>
                 </div>
             </li>
         </ul>
+
+        <h5 class="mb-3">Plant Details from DBPidiea</h5>
+        <ul class="plantdetailsdbpidiea list-group mb-3">
+
+        </ul>
+
+
+
         <!-- Chat button -->
         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#chatModal">
             Chat about <%= sighting.name %>
         </button>
-
+    </div>
+</div>
         <!-- Chat modal -->
         <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -212,118 +231,198 @@
                 </div>
             </div>
         </div>
-        <script src="/socket.io/socket.io.js"></script>
 
-        <script>
-            const socket = io();
-            const sightingId = "<%= sighting.sightingId %>"; // Get the sighting ID
-            let offlineMessages = JSON.parse(localStorage.getItem('offlineMessages')) || [];
-            let lastUsername = "";
+<%- include('./partials/footer'); %>
 
-            // Join the specific sighting chat room
-            socket.emit('join', { username: lastUsername || "Guest", sightingId });
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    const sightingId = "<%= sighting.sightingId %>"; // Get the sighting ID
+    let offlineMessages = JSON.parse(localStorage.getItem('offlineMessages')) || [];
+    let lastUsername = "";
 
-            // Display chat history
-            socket.on('chat history', function(messages) {
-                const chatDisplayArea = document.getElementById("chatDisplayArea");
-                messages.forEach((data) => {
-                    const { username, message, timestamp } = data;
-                    const bubbleType = (username === lastUsername) ? "chat-right" : "chat-left";
-                    displayMessage(username, message, timestamp, bubbleType);
-                });
-            });
+    // Join the specific sighting chat room
+    socket.emit('join', { username: lastUsername || "Guest", sightingId });
 
-            document.getElementById("sendButton").addEventListener("click", sendMessage);
+    // Display chat history
+    socket.on('chat history', function(messages) {
+        const chatDisplayArea = document.getElementById("chatDisplayArea");
+        messages.forEach((data) => {
+            const { username, message, timestamp } = data;
+            const bubbleType = (username === lastUsername) ? "chat-right" : "chat-left";
+            displayMessage(username, message, timestamp, bubbleType);
+        });
+    });
 
-            function sendMessage() {
-                let username = document.getElementById("username").value;
-                const message = document.getElementById("message").value;
-                const now = new Date();
-                const timestamp = now.toISOString();
+    document.getElementById("sendButton").addEventListener("click", sendMessage);
 
-                if (username && message) {
-                    lastUsername = username;  // Update last used username
-                    const messageData = { username, message, timestamp, sightingId };
+    function sendMessage() {
+        let username = document.getElementById("username").value;
+        const message = document.getElementById("message").value;
+        const now = new Date();
+        const timestamp = now.toISOString();
 
-                    // If online, send the message
-                    if (navigator.onLine) {
-                        socket.emit('chat message', messageData);
-                    } else {
-                        // Store the message locally
-                        offlineMessages.push(messageData);
-                        localStorage.setItem('offlineMessages', JSON.stringify(offlineMessages));
-                    }
+        if (username && message) {
+            lastUsername = username;  // Update last used username
+            const messageData = { username, message, timestamp, sightingId };
 
-                    // Clear the input fields
-                    document.getElementById("message").value = "";
-                }
-            }
-
-            socket.on('chat message', function(data) {
-                const { username, message, timestamp, sightingId: receivedSightingId } = data;
-                if (receivedSightingId === sightingId) {
-                    const bubbleType = (username === lastUsername) ? "chat-right" : "chat-left";
-                    displayMessage(username, message, timestamp, bubbleType);
-                }
-            });
-
-            function displayMessage(username, message, timestamp, bubbleType) {
-                const chatDisplayArea = document.getElementById("chatDisplayArea");
-                const formattedTime = formatTimestamp(new Date(timestamp));
-                const newMessage = document.createElement("div");
-                newMessage.className = `chat-bubble ${bubbleType} clearfix`;
-                newMessage.innerHTML = `<strong>${username} (${formattedTime}):</strong> ${message}`;
-                chatDisplayArea.appendChild(newMessage);
-                chatDisplayArea.scrollTop = chatDisplayArea.scrollHeight;
-            }
-
-            function formatTimestamp(date) {
-                return date.toLocaleString('en-GB', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    hour12: true
-                });
-            }
-
-            // Synchronize messages when coming back online
-            window.addEventListener('online', syncOfflineMessages);
-
-            function syncOfflineMessages() {
-                offlineMessages = JSON.parse(localStorage.getItem('offlineMessages')) || [];
-                offlineMessages.forEach((messageData) => {
-                    if (messageData.sightingId === sightingId) {
-                        socket.emit('chat message', messageData);
-                    }
-                });
-                offlineMessages = offlineMessages.filter(messageData => messageData.sightingId !== sightingId);
+            // If online, send the message
+            if (navigator.onLine) {
+                socket.emit('chat message', messageData);
+            } else {
+                // Store the message locally
+                offlineMessages.push(messageData);
                 localStorage.setItem('offlineMessages', JSON.stringify(offlineMessages));
             }
 
-            document.querySelector(".btn-close").addEventListener("click", endChat);
-            document.querySelector(".btn-secondary"). addEventListener("click", endChat);
+            // Clear the input fields
+            document.getElementById("message").value = "";
+        }
+    }
 
-            function endChat() {
-                lastUsername = ""; // Reset the last used username when chat is ended
+    socket.on('chat message', function(data) {
+        const { username, message, timestamp, sightingId: receivedSightingId } = data;
+        if (receivedSightingId === sightingId) {
+            const bubbleType = (username === lastUsername) ? "chat-right" : "chat-left";
+            displayMessage(username, message, timestamp, bubbleType);
+        }
+    });
+
+    function displayMessage(username, message, timestamp, bubbleType) {
+        const chatDisplayArea = document.getElementById("chatDisplayArea");
+        const formattedTime = formatTimestamp(new Date(timestamp));
+        const newMessage = document.createElement("div");
+        newMessage.className = `chat-bubble ${bubbleType} clearfix`;
+        newMessage.innerHTML = `<strong>${username} (${formattedTime}):</strong> ${message}`;
+        chatDisplayArea.appendChild(newMessage);
+        chatDisplayArea.scrollTop = chatDisplayArea.scrollHeight;
+    }
+
+    function formatTimestamp(date) {
+        return date.toLocaleString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        });
+    }
+
+    // Synchronize messages when coming back online
+    window.addEventListener('online', syncOfflineMessages);
+
+    function syncOfflineMessages() {
+        offlineMessages = JSON.parse(localStorage.getItem('offlineMessages')) || [];
+        offlineMessages.forEach((messageData) => {
+            if (messageData.sightingId === sightingId) {
+                socket.emit('chat message', messageData);
             }
-        </script>
+        });
+        offlineMessages = offlineMessages.filter(messageData => messageData.sightingId !== sightingId);
+        localStorage.setItem('offlineMessages', JSON.stringify(offlineMessages));
+    }
+
+    document.querySelector(".btn-close").addEventListener("click", endChat);
+    document.querySelector(".btn-secondary"). addEventListener("click", endChat);
+
+    function endChat() {
+        lastUsername = ""; // Reset the last used username when chat is ended
+    }
+
+    document.addEventListener('DOMContentLoaded', async function () {
+        let plantName = '<%= sighting.name %>';
+        let dbPediaPlantData;
+        try {
+            dbPediaPlantData = await fetchDBPediaData(plantName);
+        } catch (error) {
+            console.error("Error fetching data from DBpedia:", error);
+        }
+        let verifiedElement = document.querySelector('.verification-icon');
+
+        // If data fetched is not empty
+        if (dbPediaPlantData.results && dbPediaPlantData.results.bindings && dbPediaPlantData.results.bindings.length > 0) {
+            let bindings = dbPediaPlantData.results.bindings[0];
+
+            if (verifiedElement) {
+                verifiedElement.innerHTML = '<img src="/images/blue_tick.png" alt="Verified" title="Plant is verified" class="verification-icon" style="height: 40px; width: 40px;position: relative;top: 17%;">'; // Check mark icon
+            }
+            let ul = document.querySelector('.plantdetailsdbpidiea');
+            ul.innerHTML = '';
+
+            let li = document.createElement('li');
+            li.className = 'list-group-item d-flex justify-content-between lh-condensed';
+            let div = document.createElement('div');
+            div.innerHTML = `
+                    <h6 class="my-0">Name:</h6>
+                    <span class="text-muted">${bindings.label.value}</span>
+                `;
+            li.appendChild(div);
+            ul.appendChild(li);
+
+            li = document.createElement('li');
+            li.className = 'list-group-item d-flex justify-content-between lh-condensed';
+            div = document.createElement('div');
+            div.innerHTML = `
+                    <h6 class="my-0">Description:</h6>
+                    <span class="text-muted">${bindings.description.value}</span>
+                `;
+            li.appendChild(div);
+            ul.appendChild(li);
+
+            li = document.createElement('li');
+            li.className = 'list-group-item d-flex justify-content-between lh-condensed';
+            div = document.createElement('div');
+            div.innerHTML = `
+                    <h6 class="my-0">DBPedia URL:</h6>
+                    <a class="text-muted" href="http://dbpedia.org/resource/${encodeURIComponent(plantName)}" target="_blank">http://dbpedia.org/resource/${encodeURIComponent(plantName)}</a>
+                `;
+            li.appendChild(div);
+            ul.appendChild(li);
+        }
+        //if data received from DBPedia is empty
+        else {
+            let ul = document.querySelector('.plantdetailsdbpidiea');
+            ul.innerHTML = '';
+            if (verifiedElement) {
+                verifiedElement.innerHTML = '<img src="/images/red-tick.jpg" alt="Pending" title="Plant verification is in progress" class="verification-icon" style="height: 40px; width: 40px;position: relative;top: 27%;">';
+            }
+            let li = document.createElement('li');
+            li.className = 'list-group-item d-flex justify-content-between lh-condensed';
+            let div = document.createElement('div');
+            div.innerHTML = `
+                    <h6 class="my-0">Name:</h6>
+                    <span class="text-muted">No data found</span>
+                `;
+            li.appendChild(div);
+            ul.appendChild(li);
+
+            li = document.createElement('li');
+            li.className = 'list-group-item d-flex justify-content-between lh-condensed';
+            div = document.createElement('div');
+            div.innerHTML = `
+                    <h6 class="my-0">Description:</h6>
+                    <span class="text-muted">No description available</span>
+                `;
+            li.appendChild(div);
+            ul.appendChild(li);
+
+            li = document.createElement('li');
+            li.className = 'list-group-item d-flex justify-content-between lh-condensed';
+            div = document.createElement('div');
+            div.innerHTML = `
+                    <h6 class="my-0">DBPedia URL:</h6>
+                    <a class="text-muted" href="http://dbpedia.org/resource/${encodeURIComponent(plantName)}" target="_blank">http://dbpedia.org/resource/${encodeURIComponent(plantName)}</a>
+                `;
+            li.appendChild(div);
+            ul.appendChild(li);
+        }
+
+    });
 
 
-
-
-
-
-    </div>
-</div>
-<%- include('./partials/footer'); %>
-
-
-<script>
     function initMap() {
-
         // Holds the value for the location
         var location = '<%= sighting.location %>';
         const [latitude, longitude] = location.split(',');

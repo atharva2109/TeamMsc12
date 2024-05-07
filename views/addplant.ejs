@@ -169,10 +169,6 @@
                             </fieldset>
                         </div>
 
-                        <div class="form-outline mb-4">
-                            <label for="idLink" class="form-label">Identification Link: </label>
-                            <input type="text" class="form-control" id="idLink" name="idLink">
-                        </div>
 
                         <div class="form-outline mb-4">
                             <label for="uploadImage">Please Upload Image<span
@@ -186,17 +182,6 @@
                             <input type="datetime-local" id="datePicker" class="form-control" required name="datePicker"/>
                         </div>
 
-                        <div class="form-outline mb-4 form-switch form-check form-switch form-check-reverse d-flex flex-row "
-                             style="text-align: start !important;">
-                            <input type="hidden" id="verificationStatus" name="verificationStatus" value="">
-
-                            <label class="form-check-label" for="verificationStatus">Verification in Progress</label>
-                            <input class="form-check-input" type="checkbox" id="verificationToggle"
-                                   style="float: none !important; margin-top: 0; margin-left: 1em; height: 20px; width: 50px;">
-                            <label class="form-check-label" for="verificationStatus"
-                                   style="margin-left: 3em;">Verified</label>
-
-                        </div>
                         <div class="form-outline mb-4">
                             <label for="altitude" class="form-label">Altitude: </label>
                             <input type="number" class="form-control" id="altitude">
@@ -206,7 +191,7 @@
 
                             <label for="pickLocation">Please Pick a Location<span
                                         style="color: red;margin-right: 1px; font-size: 20px;">*</span>:</label>
-                            <button type="button" class="btn btn-success" id="fetchLocationBtn" style="width: 30%;margin-left: 0%;margin-bottom: 3%">
+                            <button type="button" class="btn btn-success" id="fetchLocationBtn" style="width: 30%;margin-left: 0;margin-bottom: 3%">
                                 <i class="fas fa-location-dot" style="margin-right: 2%;"></i>Current Location
                             </button>
 
@@ -277,24 +262,6 @@
             document.getElementById("location").value = `${e.latLng.lat()},${e.latLng.lng()}`;
         });
     }
-
-    const verificationToggle = document.getElementById("verificationToggle");
-    const verificationStatusInput = document.getElementById("verificationStatus");
-
-    //Initial State checking
-    if (verificationToggle.checked) {
-        verificationStatusInput.value = "Verified";
-    } else {
-        verificationStatusInput.value = "Verification in Progress";
-    }
-
-    verificationToggle.addEventListener("change", function () {
-        if (verificationToggle.checked) {
-            verificationStatusInput.value = "Verified";
-        } else {
-            verificationStatusInput.value = "Verification in Progress";
-        }
-    });
 
     function updateRadioButttons() {
         const selectedFlowering = document.querySelector('input[name="flowering"]:checked');
@@ -383,10 +350,8 @@
                 fruitBearing:  document.getElementById('fruitValue').value,
                 sunExposure: document.getElementById("sunexposure").value,
                 flowerColor: document.getElementById("flowerColor").value,
-                identificationLink: document.getElementById("idLink").value,
 
                 date: localDateTimeString,
-                status: document.getElementById("verificationStatus").value,
                 altitude: document.getElementById("altitude").value,
                 location:document.getElementById("location").value,
                 line: document.getElementById("addressLine").value,
