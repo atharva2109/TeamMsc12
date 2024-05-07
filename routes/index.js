@@ -129,4 +129,12 @@ router.get('/sightingdetails', (req, res) => {
     delete req.session.sighting;
 });
 
+router.get('/addplant', function(req, res, next) {
+  res.render('addplant', { title: 'Add Plant' }); // Use 'addplant' as the EJS template file name
+});
+
+router.get('/addplant', function(req, res, next) {
+  res.render('addplant', { title: 'Add Plant' }); // Use 'addplant' as the EJS template file name
+});
+
 module.exports = router;

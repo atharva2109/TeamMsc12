@@ -50,6 +50,8 @@ let SightingSchema = new Schema(
     });
 
 
+
+
 // Configure the 'toObject' option for the schema to include getters and virtuals convert to an object.
 SightingSchema.set('toObject', {getters: true, virtuals: true});
 
