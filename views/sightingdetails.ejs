@@ -129,37 +129,223 @@
         </div>
         <br><br>
         <ul class="list-group mb-3">
+
             <li class="list-group-item justify-content-between bg-light">
-                <div class="text-success">
-                    <h6 class="my-0">Plant Name : <span class="text-success"><%= sighting.name %></span></h6>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-success edit-mode d-none">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <div class="d-flex align-items-center">
+                                <h6 class="my-0 me-2">Plant Name:</h6>
+                                <textarea class="form-control" rows="1" style="flex-grow: 1;" data-field="name"><%= sighting.name %></textarea>
+                            </div>
+                            <div class="">
+                                <!-- Save button with image -->
+                                <a class="text-success edit-save-btn" title="Save">
+                                    <img src="/images/icons/tickmark.png" alt="Save" width="30" height="30">
+                                </a>
+                                <!-- Cancel button with image -->
+                                <a class="text-danger edit-cancel-btn" title="Cancel">
+                                    <img src="/images/icons/cancel.png" alt="Cancel" width="30" height="30">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-success edit-mode-display">
+                        <h6 class="my-0">Plant Name: <span class="text-success"><%= sighting.name %></span></h6>
+                    </div>
+                    <div class="edit-button-container">
+                        <a class="text-primary edit-button">
+                            <img src="/images/icons/pencil-edit.png" alt="Edit" width="20" height="20">
+                        </a>
+                    </div>
                 </div>
             </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                <div>
-                    <h6 class="my-0">Common Name : <span class="text-muted"><%= sighting.commonName %></span></h6>
+
+            <li class="list-group-item justify-content-between">
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Edit mode container (initially hidden) -->
+                    <div class=" edit-mode d-none">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <div class="d-flex align-items-center">
+                                <!-- Label -->
+                                <h6 class="my-0 me-2">Common Name:</h6>
+                                <!-- Textarea for editing the value -->
+                                <textarea class="form-control" rows="2" style="flex-grow: 1;" data-field="common-name"><%= sighting.commonName %></textarea>
+                            </div>
+                            <!-- Container for save and cancel buttons -->
+                            <div class="">
+                                <!-- Save button -->
+                                <a class="text-success edit-save-btn" title="Save">
+                                    <img src="/images/icons/tickmark.png" alt="Save" width="30" height="30">
+                                </a>
+                                <!-- Cancel button -->
+                                <a class="text-danger edit-cancel-btn" title="Cancel">
+                                    <img src="/images/icons/cancel.png" alt="Cancel" width="30" height="30">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Display mode container -->
+                    <div class=" edit-mode-display">
+                        <h6 class="my-0">Common Name: <span class="text-muted"><%= sighting.commonName %></span></h6>
+                    </div>
+                    <!-- Edit button -->
+                    <div class="edit-button-container">
+                        <a class="text-primary edit-button">
+                            <img src="/images/icons/pencil-edit.png" alt="Edit" width="18" height="18">
+                        </a>
+                    </div>
                 </div>
             </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                <div>
-                    <h6 class="my-0">Scientific Name : <span
-                                class="text-muted"><%= sighting.scientificName %></span></h6>
+
+            <li class="list-group-item justify-content-between">
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Edit mode container (initially hidden) -->
+                    <div class=" edit-mode d-none">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <div class="d-flex align-items-center">
+                                <!-- Label -->
+                                <h6 class="my-0 me-2">Scientific Name:</h6>
+                                <!-- Textarea for editing the value -->
+                                <textarea class="form-control" rows="3" style="flex-grow: 1;" data-field="scientific-name"><%= sighting.scientificName %></textarea>
+                            </div>
+                            <!-- Container for save and cancel buttons -->
+                            <div class="">
+                                <!-- Save button -->
+                                <a class=" edit-save-btn" title="Save">
+                                    <img src="/images/icons/tickmark.png" alt="Save" width="30" height="30">
+                                </a>
+                                <!-- Cancel button -->
+                                <a class="text-danger edit-cancel-btn" title="Cancel">
+                                    <img src="/images/icons/cancel.png" alt="Cancel" width="30" height="30">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Display mode container -->
+                    <div class=" edit-mode-display">
+                        <h6 class="my-0">Scientific Name: <span class="text-muted"><%= sighting.scientificName %></span></h6>
+                    </div>
+                    <!-- Edit button -->
+                    <div class="edit-button-container">
+                        <a class="text-primary edit-button">
+                            <img src="/images/icons/pencil-edit.png" alt="Edit" width="18" height="18">
+                        </a>
+                    </div>
                 </div>
             </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                <div>
-                    <h6 class="my-0">Family : <span class="text-muted"><%= sighting.family %></span></h6>
+
+            <li class="list-group-item justify-content-between ">
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Edit mode container (initially hidden) -->
+                    <div class=" edit-mode d-none">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <div class="d-flex align-items-center">
+                                <!-- Label -->
+                                <h6 class="my-0 me-2">Family:</h6>
+                                <!-- Textarea for editing the value -->
+                                <textarea class="form-control" rows="4" style="flex-grow: 1;" data-field="family"><%= sighting.family %></textarea>
+                            </div>
+                            <!-- Container for save and cancel buttons -->
+                            <div class="">
+                                <!-- Save button -->
+                                <a class="text-success edit-save-btn" title="Save">
+                                    <img src="/images/icons/tickmark.png" alt="Save" width="30" height="30">
+                                </a>
+                                <!-- Cancel button -->
+                                <a class="text-danger edit-cancel-btn" title="Cancel">
+                                    <img src="/images/icons/cancel.png" alt="Cancel" width="30" height="30">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Display mode container -->
+                    <div class=" edit-mode-display">
+                        <h6 class="my-0">Family: <span class="text-muted"><%= sighting.family %></span></h6>
+                    </div>
+                    <!-- Edit button -->
+                    <div class="edit-button-container">
+                        <a class="text-primary edit-button">
+                            <img src="/images/icons/pencil-edit.png" alt="Edit" width="18" height="18">
+                        </a>
+                    </div>
                 </div>
             </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                <div>
-                    <h6 class="my-0">Genus : <span class="text-muted"><%= sighting.genus %></span></h6>
+
+            <li class="list-group-item justify-content-between ">
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Edit mode container (initially hidden) -->
+                    <div class=" edit-mode d-none">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <div class="d-flex align-items-center">
+                                <!-- Label -->
+                                <h6 class="my-0 me-2">Genus:</h6>
+                                <!-- Textarea for editing the value -->
+                                <textarea class="form-control" rows="5" style="flex-grow: 1;" data-field="genus"><%= sighting.genus %></textarea>
+                            </div>
+                            <!-- Container for save and cancel buttons -->
+                            <div class="">
+                                <!-- Save button -->
+                                <a class="text-success edit-save-btn" title="Save">
+                                    <img src="/images/icons/tickmark.png" alt="Save" width="30" height="30">
+                                </a>
+                                <!-- Cancel button -->
+                                <a class="text-danger edit-cancel-btn" title="Cancel">
+                                    <img src="/images/icons/cancel.png" alt="Cancel" width="30" height="30">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Display mode container -->
+                    <div class=" edit-mode-display">
+                        <h6 class="my-0">Genus: <span class="text-muted"><%= sighting.genus %></span></h6>
+                    </div>
+                    <!-- Edit button -->
+                    <div class="edit-button-container">
+                        <a class="text-primary edit-button">
+                            <img src="/images/icons/pencil-edit.png" alt="Edit" width="18" height="18">
+                        </a>
+                    </div>
                 </div>
             </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                <div>
-                    <h6 class="my-0">Species : <span class="text-muted"><%= sighting.species %></span></h6>
+
+            <li class="list-group-item justify-content-between">
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Edit mode container (initially hidden) -->
+                    <div class=" edit-mode d-none">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <div class="d-flex align-items-center">
+                                <!-- Label -->
+                                <h6 class="my-0 me-2">Species:</h6>
+                                <!-- Textarea for editing the value -->
+                                <textarea class="form-control" rows="6" style="flex-grow: 1;" data-field="species"><%= sighting.species %></textarea>
+                            </div>
+                            <!-- Container for save and cancel buttons -->
+                            <div class="">
+                                <!-- Save button -->
+                                <a class="text-success edit-save-btn" title="Save">
+                                    <img src="/images/icons/tickmark.png" alt="Save" width="30" height="30">
+                                </a>
+                                <!-- Cancel button -->
+                                <a class="text-danger edit-cancel-btn" title="Cancel">
+                                    <img src="/images/icons/cancel.png" alt="Cancel" width="30" height="30">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Display mode container -->
+                    <div class=" edit-mode-display">
+                        <h6 class="my-0">Species: <span class="text-muted"><%= sighting.species %></span></h6>
+                    </div>
+                    <!-- Edit button -->
+                    <div class="edit-button-container">
+                        <a class="text-primary edit-button">
+                            <img src="/images/icons/pencil-edit.png" alt="Edit" width="18" height="18">
+                        </a>
+                    </div>
                 </div>
             </li>
+
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <h6 class="my-0">Description : <span class="text-muted"><%= sighting.description %></span>
@@ -235,6 +421,7 @@
 <%- include('./partials/footer'); %>
 
 <script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/idb-utility.js"></script>
 <script>
     const socket = io();
     const sightingId = "<%= sighting.sightingId %>"; // Get the sighting ID
@@ -447,6 +634,165 @@
         };
         let marker = new google.maps.Marker(markerOptions);
     }
+
+    // Function to handle save button click
+    function handleSaveButtonClick(event) {
+        // Get the clicked element and find the parent list item
+        const button = event.target.closest('.edit-save-btn');
+        if (button) {
+            const listItem = button.closest('.list-group-item');
+            if (listItem) {
+                // Retrieve the textarea and its data-field attribute
+                const textarea = listItem.querySelector('textarea');
+                const fieldName = textarea.getAttribute('data-field');
+
+                // Get the value from the textarea
+                const newValue = textarea.value;
+
+                // Handle saving the value for the specific field
+                // For example, you can send this information to your server or update your state
+                console.log(`Field: ${fieldName}, New Value: ${newValue}`);
+
+                // Update the display mode text with the new value from the textarea
+                listItem.querySelector('.edit-mode-display span').textContent = newValue;
+
+                // Switch back to display mode
+                listItem.querySelector('.edit-mode').classList.add('d-none');
+                listItem.querySelector('.edit-mode-display').classList.remove('d-none');
+
+                const formData = {
+                    sightingId:'<%= sighting.sightingId%>',
+                    username: '<%= sighting.username%>',
+                    email: '<%= sighting.email%>',
+                    phoneNumber: '<%= sighting.phoneNumber%>',
+                    name: '<%= sighting.name%>',
+                    commonName: '<%= sighting.commonName%>',
+                    scientificName: '<%= sighting.scientificName%>',
+                    family: '<%= sighting.family%>',
+                    genus: '<%= sighting.genus%>',
+                    species: '<%= sighting.species%>',
+                    description: '<%= sighting.description%>',
+                    length: '<%= sighting.length%>',
+                    width: '<%= sighting.width%>',
+                    height: '<%= sighting.height%>',
+                    hasLeaves: '<%= sighting.hasLeaves%>',
+                    flowering: '<%= sighting.flowering%>',
+                    fruitBearing: '<%= sighting.fruitBearing%>',
+                    sunExposure: '<%= sighting.sunExposure%>',
+                    flowerColor: '<%= sighting.flowerColor%>',
+                    identificationLink: '<%= sighting.identificationLink%>',
+
+                    date: '<%= sighting.date%>',
+                    status: '<%= sighting.status%>',
+                    altitude: '<%= sighting.altitude%>',
+                    location: '<%= sighting.location%>',
+                    line: '<%= sighting.line%>',
+                    city: '<%= sighting.city%>',
+                    state: '<%= sighting.state%>',
+                    country: '<%= sighting.country%>',
+                    pinCode: '<%= sighting.pinCode%>',
+                    userid: '<%= sighting.userid%>',
+                    uploadImage: '<%= sighting.uploadImage%>'
+                };
+
+                console.log("Field Name", fieldName);
+                console.log("Before adding field name", formData);
+                switch (fieldName) {
+                    case "name":
+                        formData.name = newValue;
+                        console.log("Inside Name");
+                        break
+                    case "common-name":
+                        console.log("Inside Common Name");
+                        formData.commonName = newValue;
+                        break
+                    case "scientific-name":
+                        console.log("Inside Scientific Name");
+                        formData.scientificName = newValue;
+                        break
+                    case "family":
+                        console.log("Inside Family");
+                        formData.family = newValue;
+                        break
+                    case "genus":
+                        console.log("Inside Genus");
+                        formData.genus = newValue;
+                        break
+                    case "species":
+                        console.log("Inside Species");
+                        formData.species = newValue;
+                        break
+                }
+                console.log("After adding field name", formData);
+                openSyncPlantsIDB().then((db) => {
+                    addNewPlantsToSyncIDB(db, formData);
+                });
+            }
+        }
+    }
+
+    // Attach event listeners to all edit, save, and cancel buttons
+    document.addEventListener('click', function(event) {
+        // Handle edit button click
+        if (event.target.closest('.edit-button')) {
+            const editButton = event.target.closest('.edit-button');
+            const listItem = editButton.closest('.list-group-item');
+
+            // Hide the edit button
+            editButton.style.display = 'none';
+
+            // Show the edit mode (includes the textarea, save, and cancel buttons)
+            listItem.querySelector('.edit-mode').classList.remove('d-none');
+            listItem.querySelector('.edit-mode-display').classList.add('d-none');
+
+            // Optionally, focus the textarea for immediate editing
+            const textarea = listItem.querySelector('.edit-mode textarea');
+            if (textarea) {
+                textarea.focus();
+            }
+        }
+
+        // Handle save button click
+        if (event.target.closest('.edit-save-btn')) {
+            const saveButton = event.target.closest('.edit-save-btn');
+            const listItem = saveButton.closest('.list-group-item');
+
+            // Save the updated value from the textarea
+            const textarea = listItem.querySelector('textarea');
+            const newName = textarea.value;
+
+            // Update the displayed name
+            const nameSpan = listItem.querySelector('.edit-mode-display span');
+            nameSpan.textContent = newName;
+            handleSaveButtonClick(event);
+
+            // Switch back to display mode
+            listItem.querySelector('.edit-mode').classList.add('d-none');
+            listItem.querySelector('.edit-mode-display').classList.remove('d-none');
+
+            // Show the edit button again
+            listItem.querySelector('.edit-button').style.display = 'inline-block';
+        }
+
+        // Handle cancel button click
+        if (event.target.closest('.edit-cancel-btn')) {
+            const cancelButton = event.target.closest('.edit-cancel-btn');
+            const listItem = cancelButton.closest('.list-group-item');
+
+            // Revert the textarea to the original value
+            const textarea = listItem.querySelector('textarea');
+            const originalName = listItem.querySelector('.edit-mode-display span').textContent;
+            textarea.value = originalName;
+
+            // Switch back to display mode
+            listItem.querySelector('.edit-mode').classList.add('d-none');
+            listItem.querySelector('.edit-mode-display').classList.remove('d-none');
+
+            // Show the edit button again
+            listItem.querySelector('.edit-button').style.display = 'inline-block';
+        }
+    });
+
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
