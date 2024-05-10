@@ -82,7 +82,7 @@ router.get('/faq',function (req,res,next){
 
 router.get('/addplant', function (req, res, next) {
     const userId = req.query.user_id || generateUserID();
-    const sightingId=req.query.sighting_id || generateUserID();
+    const sightingId= generateUserID();
     res.render('addplant', {title: 'Add Plant',user_id:userId,sighting_id:sightingId}); // Use 'addplant' as the EJS template file name
 });
 
