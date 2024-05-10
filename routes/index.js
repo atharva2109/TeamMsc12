@@ -39,8 +39,6 @@ function generateUserID() {
 router.get('/', async (req, res, next)=> {
     const userId = req.query.user_id || generateUserID();
     res.locals.user_id = userId;
-    const sightingId = req.query.sightingId || generateUserID();
-    res.locals.sighting_id = sightingId;
     const page = parseInt(req.query.page) || 1;
     const limit = 8; // Number of plants per page
 

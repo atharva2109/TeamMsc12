@@ -724,9 +724,7 @@
                         break
                 }
                 console.log("After adding field name", formData);
-                openSyncPlantsIDB().then((db) => {
-                    addNewPlantsToSyncIDB(db, formData);
-                });
+                    updatePlantDetailsToSyncIDB(formData);
             }
         }
     }

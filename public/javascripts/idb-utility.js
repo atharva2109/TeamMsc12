@@ -1,3 +1,47 @@
+// Update plant details to sync IDB
+const updatePlantDetailsToSyncIDB = (plantData) => {
+    openSyncPlantsIDB().then((syncIDB) => {
+        getAllSyncPlants(syncIDB).then((plants) => {
+            if (plants.length > 0 && plants.find(plant => String(plant.sightingId) === plantData.sightingId)) {
+                console.log("While updating plant's details data found in sync db  - Updating the existing details");
+            } else {
+                console.log("While updating plant's details data not present in syncIDB - Adding new entry");
+                addNewPlantsToSyncIDB(syncIDB, plantData);
+                updatePlantDetailsToPlantsIDB(plantData);
+            }
+        });
+    });
+}
+
+// Update plant details to plants IDB
+const updatePlantDetailsToPlantsIDB = (plantData) => {
+    openPlantsIDB().then((plantsIDB) => {
+        console.log("While updating plant's details data present in plantsIDB - updating exiting details");
+    });
+}
+
+const addNewPlantsToSyncIDBInBothModes = (plantData) => {
+
+    // In offline mode add plant in plantsIDB
+    if (!navigator.onLine) {
+        openPlantsIDB().then((db) => {
+            const transaction = db.transaction(["plants"], "readwrite");
+            const plantStore = transaction.objectStore("plants");
+            const addRequest = plantStore.add(plantData)
+            addRequest.addEventListener("success", () => {
+                console.log("Offline Mode - Added new plant to plantsIDB.");
+            })
+        });
+    }
+
+    // Add new plant sync IDB in both modes
+    openSyncPlantsIDB().then((syncIDB) => {
+        addNewPlantsToSyncIDB(syncIDB, plantData);
+    });
+
+}
+
+
 // Add new plant entry into sync IDB
 const addNewPlantsToSyncIDB = (syncTodoIDB, plantData) => {
 
@@ -7,17 +51,6 @@ const addNewPlantsToSyncIDB = (syncTodoIDB, plantData) => {
 
     // Add plant in sync IDB Request
     const addRequest = plantStore.add(plantData)
-    // In offline mode add plant in plantsIDB
-    if (!navigator.onLine) {
-        openPlantsIDB().then((db) => {
-            const transaction = db.transaction(["plants"], "readwrite");
-            const plantStore = transaction.objectStore("plants");
-            const addRequest = plantStore.add(plantData)
-            addRequest.addEventListener("success", () => {
-                console.log("Plant Added to plantIDB in offline mode")
-            })
-        });
-    }
 
     addRequest.addEventListener("success", () => {
         const getRequest = plantStore.get(addRequest.result)
@@ -27,9 +60,9 @@ const addNewPlantsToSyncIDB = (syncTodoIDB, plantData) => {
             navigator.serviceWorker.ready.then((sw) => {
                 sw.sync.register("sync-plant")
             }).then(() => {
-                console.log("Sync registered");
+                console.log("Sync Registered - Adding new plant details");
             }).catch((err) => {
-                console.log("Sync registration failed: " + JSON.stringify(err))
+                console.log("Sync Registration Failed: " + JSON.stringify(err))
             })
         })
     })
