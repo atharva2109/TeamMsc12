@@ -34,7 +34,8 @@ exports.create = function (req) {
         userid: req.userid,
         username: req.username,
         email: req.email,
-        phoneNumber: req.phoneNumber
+        phoneNumber: req.phoneNumber,
+        suggestions: req.suggestions
     });
 
     // Save the sighting to the database

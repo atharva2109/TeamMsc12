@@ -41,7 +41,11 @@ let SightingSchema = new Schema(
         userid: Number,
         username: String,                                                   // user name
         email: String,
-        phoneNumber: Number
+        phoneNumber: Number,
+        suggestions: {
+            type: [String],
+            default: []
+        }
     });
 
 
