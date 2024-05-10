@@ -40,11 +40,9 @@ exports.create = function (req) {
     // Save the sighting to the database
     // Return success or failure
     return sighting.save().then(sighting => {
-        console.log("JSON String", JSON.stringify(sighting))
         return JSON.stringify(sighting);
     }).catch(error => {
         console.log(error);
-
         return null;
     });
 };
@@ -66,7 +64,6 @@ exports.getPlantsPagewise = function (page, limit) {
 
 exports.getAll = function (page, limit) {
     return sightingModel.find({}).then(sightings => {
-        console.log("Sightings: ",sightings)
         return JSON.stringify(sightings);
     }).catch(error => {
         console.log(error);

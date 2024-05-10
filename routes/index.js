@@ -72,6 +72,14 @@ router.get('/', async (req, res, next)=> {
     res.render('index', {title: 'Botanical Lens', api: API_KEY, plants, currentPage: page, totalPages,topPlants});
 });
 
+router.get('/contact-us', function (req, res, next) {
+    res.render('contact', {title: 'Contact Us'});
+});
+
+router.get('/faq',function (req,res,next){
+    res.render('faq',{title:'FAQs'})
+})
+
 router.get('/addplant', function (req, res, next) {
     const userId = req.query.user_id || generateUserID();
     const sightingId=req.query.sighting_id || generateUserID();
@@ -129,6 +137,8 @@ router.get('/sightingdetails', (req, res) => {
     delete req.session.title;
     delete req.session.sighting;
 });
+
+
 
 
 module.exports = router;
