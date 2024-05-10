@@ -1,0 +1,12 @@
+.faq-tile-container div {
+    border-radius: 1em;
+    background-color: rgb(240, 240, 240);
+
+}
+
+.faq-tile-container{
+    height: 67vh;
+}
+.pg-title{
+    color: darkgreen;
+}

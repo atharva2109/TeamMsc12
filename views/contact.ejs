@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="manifest" href="/manifest.json">
+    <link rel='stylesheet' href='/stylesheets/homepage/index.css'/>
+    <link rel='stylesheet' href='/stylesheets/contact-styles.css'/>
+    <%- include('./partials/base'); %>
+
+
+</head>
+<body>
+<%- include('./partials/header', { title: 'Contact Us',visibility:'visible' }); %>
+<div class="container text-center" style="margin-top: 1%;max-width: 1120px;">
+    <div class="contact__wrapper shadow-lg mt-n9">
+        <div class="row no-gutters">
+            <div class="col-sm-6 contact-info__wrapper gradient-brand-color ">
+                <h3 class="color--white mb-5">Get in Touch With Us</h3>
+
+                <ul class="contact-info__list list-style--none position-relative z-index-101">
+                    <li class="mb-4 ">
+                        <span class="position-relative"><i class="fas fa-envelope"></i></span>
+                        support@team12.com
+                    </li>
+                    <li class="mb-4 ">
+                        <span class="position-relative"><i class="fa-regular fa-address-book"></i></span>
+                        The Diamond, 32 Leavygreave Rd, Broomhall, Sheffield S3 7RD
+                    </li>
+                    <li class="mb-4">
+                        <span class="position-relative"><i class="fas fa-phone"></i></span> +44 7456213565
+                    </li>
+
+                </ul>
+
+
+            </div>
+
+            <div class="col-sm-6 px-0 d-none d-sm-block">
+                <img src="/images/contact-us.svg"
+                     alt="Contact image" class="w-100 vh-70"
+                     style="object-fit: cover; object-position: left;height: 80%">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

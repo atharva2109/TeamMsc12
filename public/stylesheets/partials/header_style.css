@@ -7,3 +7,7 @@
 #searchbox:focus {
     box-shadow: 0 0 0 2px #C4A484;
 }
+
+.nav{
+    margin-right: 6%;
+}

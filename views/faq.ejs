@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="manifest" href="/manifest.json">
+    <link rel='stylesheet' href='/stylesheets/homepage/index.css'/>
+    <link rel='stylesheet' href='/stylesheets/faq-styles.css'/>
+    <%- include('./partials/base'); %>
+
+
+</head>
+
+<body>
+<%- include('./partials/header', { title: 'FAQs',visibility:'visible' }); %>
+<div class="container text-center">
+    <h3 class="pg-title">FAQ</h3>
+        <p>
+            Find the answers for the most frequently asked questions below
+        </p>
+
+
+        <div class="row faq-tile-container" >
+
+            <div class="col-md-6 col-lg-5 py-4 mb-4 mx-3">
+                <h6 class="mb-3 pg-title">
+                    How do I update the name of a plant?
+                </h6>
+                <div class="d-flex align-items-center justify-content-center">
+                    <p style="text-align: left; width: 25em;">
+                        Only the owner of the plant can update its name. To do this, go to the plant's details page and click on the "Edit" button next to the plant's name. Make the necessary changes and save. If you are not the owner, you are allowed to make suggestions by going to the sighting details page and clicking on update button.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-5 py-4 mb-4 mx-3">
+                <h6 class="mb-3 pg-title">
+                    How can I provide a suggestion about a plant?
+                </h6>
+                <div class="d-flex align-items-center justify-content-center">
+                    <p style="text-align: left; width: 25em;">
+                        To provide a suggestion about a plant, visit the plant's details page. You'll find a chat button which you can click and give suggestions in the chat. Your suggestions will be sent to the owner.
+
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-5 py-4 mb-4 mx-3">
+                <h6 class="mb-3 pg-title">
+                    Can I delete a plant that I've added?
+                </h6>
+                <div class="d-flex align-items-center justify-content-center">
+                    <p style="text-align: left; width: 25em;">
+                       Right now, we are not providing the option of deleting the plant neither to the owner nor to the user.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-5 py-4 mb-4 mx-3">
+                <h6 class="mb-3 pg-title">
+                    How do I contact support for further assistance?
+                </h6>
+                <div class="d-flex align-items-center justify-content-center">
+                    <p style="text-align: left; width: 25em;">
+                        For additional help or support, you can contact our support team by visiting the <a href="/contact-us">Contact</a> page where you can find the necessary details.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-5 py-4 mb-4 mx-3">
+                <h6 class="mb-3 pg-title">
+                    How do I chat with other users about a plant?
+                </h6>
+                <div class="d-flex align-items-center justify-content-center">
+                    <p style="text-align: left; width: 25em;">
+                        To chat about a plant, navigate to the plant's details page and scroll down to the chat button. You can click on that button to join  the chat and start by typing your message and hitting "Send."
+                    </p>
+                </div>
+            </div>
+
+        </div>
+</div>
+</body>
