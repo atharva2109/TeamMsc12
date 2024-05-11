@@ -1,25 +1,3 @@
-// Update plant details to sync IDB
-const updatePlantDetailsToSyncIDB = (plantData) => {
-    openSyncPlantsIDB().then((syncIDB) => {
-        getAllSyncPlants(syncIDB).then((plants) => {
-            if (plants.length > 0 && plants.find(plant => String(plant.sightingId) === plantData.sightingId)) {
-                console.log("While updating plant's details data found in sync db  - Updating the existing details");
-            } else {
-                console.log("While updating plant's details data not present in syncIDB - Adding new entry");
-                addNewPlantsToSyncIDB(syncIDB, plantData);
-                updatePlantDetailsToPlantsIDB(plantData);
-            }
-        });
-    });
-}
-
-// Update plant details to plants IDB
-const updatePlantDetailsToPlantsIDB = (plantData) => {
-    openPlantsIDB().then((plantsIDB) => {
-        console.log("While updating plant's details data present in plantsIDB - updating exiting details");
-    });
-}
-
 const addNewPlantsToSyncIDBInBothModes = (plantData) => {
 
     // In offline mode add plant in plantsIDB
@@ -27,10 +5,10 @@ const addNewPlantsToSyncIDBInBothModes = (plantData) => {
         openPlantsIDB().then((db) => {
             const transaction = db.transaction(["plants"], "readwrite");
             const plantStore = transaction.objectStore("plants");
-            const addRequest = plantStore.add(plantData)
+            const addRequest = plantStore.put(plantData)
             addRequest.addEventListener("success", () => {
                 console.log("Offline Mode - Added new plant to plantsIDB.");
-            })
+            });
         });
     }
 
@@ -50,7 +28,7 @@ const addNewPlantsToSyncIDB = (syncTodoIDB, plantData) => {
     const plantStore = transaction.objectStore("sync-plants")
 
     // Add plant in sync IDB Request
-    const addRequest = plantStore.add(plantData)
+    const addRequest = plantStore.put(plantData)
 
     addRequest.addEventListener("success", () => {
         const getRequest = plantStore.get(addRequest.result)
@@ -179,7 +157,9 @@ function openPlantsIDB() {
 
         request.onupgradeneeded = function (event) {
             const db = event.target.result;
-            db.createObjectStore('plants', {keyPath: 'id', autoIncrement: true});
+            const objectStore = db.createObjectStore('plants', { keyPath: 'sightingId' });
+            objectStore.createIndex('sightingId', 'sightingId', { unique: true });
+
         };
 
         request.onsuccess = function (event) {
@@ -199,7 +179,8 @@ function openSyncPlantsIDB() {
 
         request.onupgradeneeded = function (event) {
             const db = event.target.result;
-            db.createObjectStore('sync-plants', {keyPath: 'id', autoIncrement: true});
+            const objectStore = db.createObjectStore('sync-plants', { keyPath: 'sightingId' });
+            objectStore.createIndex('sightingId', 'sightingId', { unique: true });
         };
 
         request.onsuccess = function (event) {

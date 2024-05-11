@@ -32,6 +32,7 @@ self.addEventListener('install', event => {
                 '/stylesheets/homepage/index.css',
                 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js',
                 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js',
+                'https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuidv4.min.js',
                 '/css/bootstrap.min.css',
                 '/images/logo/botanical-lens-logo.png',
                 '/images/contact-us.svg',
@@ -98,7 +99,7 @@ self.addEventListener('sync', event => {
 
                     }).then(() => {
                         console.log('Service Worker: Syncing new Plant: ', syncPlant, ' done');
-                        deleteSyncPlantFromIDB(syncPostDB, syncPlant.id).then(() => {
+                        deleteSyncPlantFromIDB(syncPostDB, syncPlant.sightingId).then(() => {
                             clients.matchAll().then(clients => {
                                 clients.forEach(client => {
                                     caches.open("static").then(cache => {

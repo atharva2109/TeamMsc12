@@ -3,9 +3,10 @@ const sightingModel = require('../models/sighting');
 
 // Helper Methods
 
-// Create new sightings
+// Create new sightings or update existing ones
+// Create new sightings or update existing ones
 exports.create = function (req) {
-    let sighting = new sightingModel({
+    let sightingData = {
         sightingId: req.sightingId,
         date: req.date,
         location: req.location,
@@ -36,17 +37,25 @@ exports.create = function (req) {
         email: req.email,
         phoneNumber: req.phoneNumber,
         suggestions: req.suggestions
-    });
+    };
 
-    // Save the sighting to the database
-    // Return success or failure
-    return sighting.save().then(sighting => {
-        return JSON.stringify(sighting);
+    // Find the existing sighting based on sightingId
+    return sightingModel.findOneAndUpdate(
+        { sightingId: req.sightingId }, // Query: Find document with matching sightingId
+        sightingData, // Update data
+        { upsert: true, new: true } // Options: Create new document if not found, return updated document
+    ).then(updatedSighting => {
+        if (updatedSighting) {
+            return JSON.stringify(updatedSighting);
+        } else {
+            return JSON.stringify(sightingData);
+        }
     }).catch(error => {
-        console.log(error);
+        console.error("Error while creating/updating sighting:", error);
         return null;
     });
 };
+
 
 // Fetch all sightings
 exports.getPlantsPagewise = function (page, limit) {
