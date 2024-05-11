@@ -1,6 +1,5 @@
 function getUserId() {
     const userId = localStorage.getItem('userId') || generateUserID();
-    console.log("Vivek Local User Id Storage", userId);
     localStorage.setItem('userId', userId);
     return userId
 }
