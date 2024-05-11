@@ -234,6 +234,7 @@
 </section>
 <%- include('./partials/footer'); %>
 <script src="/javascripts/idb-utility.js"></script>
+<script src="/javascripts/local-storage.js"></script>
 <!-- Include the UUID library -->
 <script src="https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuidv4.min.js"></script>
 <script>
@@ -317,7 +318,7 @@
             alert('Please pick a location before submitting the form.');
         }
         else{
-            var userId = '<%= user_id %>';
+            var userId = getUserId();
             var sightingId = uuidv4();
             const dateTimeValue = document.getElementById("datePicker").value;
             const date = new Date(dateTimeValue);

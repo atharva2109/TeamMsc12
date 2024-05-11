@@ -29,16 +29,7 @@ var storage=multer.diskStorage({
 
 let upload=multer({storage:storage,limits:{fieldSize: 25 * 1024*1024}})
 
-function generateUserID() {
-    const timestamp = Date.now();
-    const randomNumber = Math.floor(Math.random() * 9000) + 1000;
-    const userID = `${timestamp}${randomNumber}`;
-    return userID;
-}
-
 router.get('/', async (req, res, next)=> {
-    const userId = req.query.user_id || generateUserID();
-    res.locals.user_id = userId;
     const page = parseInt(req.query.page) || 1;
     const limit = 8; // Number of plants per page
 
@@ -79,9 +70,7 @@ router.get('/faq',function (req,res,next){
 })
 
 router.get('/addplant', function (req, res, next) {
-    const userId = req.query.user_id || generateUserID();
-    const sightingId= generateUserID();
-    res.render('addplant', {title: 'Add Plant',user_id:userId,sighting_id:sightingId}); // Use 'addplant' as the EJS template file name
+    res.render('addplant', {title: 'Add Plant'}); // Use 'addplant' as the EJS template file name
 });
 
 router.post('/addplant',upload.none(), (req, res) => {
