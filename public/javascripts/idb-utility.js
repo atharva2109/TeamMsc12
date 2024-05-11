@@ -31,6 +31,8 @@ const addNewPlantsToSyncIDB = (syncTodoIDB, plantData) => {
             }).catch((err) => {
                 console.log("Sync registration failed: " + JSON.stringify(err))
             })
+
+
         })
     })
 
