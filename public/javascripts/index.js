@@ -98,6 +98,7 @@ function addPlantCard(plants,isVerified) {
     card.setAttribute('data-has-fruits', plants.fruitBearing);
     card.setAttribute('data-has-leaves', plants.hasLeaves);
     card.setAttribute('data-date-time', plants.date);
+    card.setAttribute('data-location', plants.location);
     card.setAttribute('plant-name', plants.name);
     // Create HTML content for the plant card
     card.innerHTML = `

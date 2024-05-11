@@ -102,14 +102,14 @@ self.addEventListener('sync', event => {
                         deleteSyncPlantFromIDB(syncPostDB, syncPlant.sightingId).then(() => {
                             clients.matchAll().then(clients => {
                                 clients.forEach(client => {
-                                    caches.open("static").then(cache => {
-                                        cache.delete('/').then(() => {
-                                            // Navigate client to the '/' route
-                                            client.navigate('/');
-                                            cache.add('/')
-                                        });
+                                    client.navigate('/').then(() => {
+                                        console.log("Client navigated to '/' route");
+                                    }).catch(err => {
+                                        console.log("Client navigation failed: " + JSON.stringify(err));
                                     });
                                 });
+                            }).catch(err => {
+                                console.log("Error matching clients: " + JSON.stringify(err));
                             });
 
                         }).catch((err) => {
