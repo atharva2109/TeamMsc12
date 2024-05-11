@@ -8,7 +8,7 @@ let SightingSchema = new Schema(
     {
 
         // Sighting Fields
-        sightingId: {type: Number},
+        sightingId: {type: String},
         date: {type: String},                               // Date of sighting
         location: {type: String},                       // Location of the sighting
         line: String,
@@ -38,7 +38,7 @@ let SightingSchema = new Schema(
 
         // Plant characteristics
         uploadImage: String,
-        userid: Number,
+        userid: String,
         username: String,                                                   // user name
         email: String,
         phoneNumber: Number,
