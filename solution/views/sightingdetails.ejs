@@ -8,7 +8,9 @@
     <title>Plant Details</title>
     <link rel="stylesheet" href="./stylesheets/plantdetails/style.css">
     <script src='/javascripts/API.js'></script>
+    <script src='/javascripts/idb-utility.js'></script>
     <script src='/javascripts/sightings.js'></script>
+    <script src='/javascripts/local-storage.js'></script>
     <script>
         API();
     </script>
@@ -37,19 +39,19 @@
                 <div class="text-success">
                     <h6 class="my-0">Username :</h6>
                 </div>
-                <span class="text-success"><%= sighting.username %></span>
+                <span class="text-success" id="username"></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <h6 class="my-0">Email ID</h6>
                 </div>
-                <span class="text-muted"> <%= sighting.email %></span>
+                <span class="text-muted" id="email"></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <h6 class="my-0">Contact Number</h6>
                 </div>
-                <span class="text-muted"><%= sighting.phoneNumber %></span>
+                <span class="text-muted" id="contactNumber"></span>
             </li>
         </ul>
 
@@ -68,108 +70,153 @@
                 <div>
                     <h6 class="my-0">Elevation</h6>
                 </div>
-                <span class="text-muted"><%= sighting.altitude %></span>
+                <span class="text-muted" id="altitude"></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <h6 class="my-0">Address</h6>
                 </div>
-                <span class="text-muted"> <%= sighting.line %></span>
+                <span class="text-muted" id="address"></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <h6 class="my-0">City/Town</h6>
                 </div>
-                <span class="text-muted"><%= sighting.city %></span>
+                <span class="text-muted" id="city"></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <h6 class="my-0">State</h6>
                 </div>
-                <span class="text-muted"> <%= sighting.state %></span>
+                <span class="text-muted" id="state"></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <h6 class="my-0">Postal Code</h6>
                 </div>
-                <span class="text-muted"><%= sighting.pinCode %></span>
+                <span class="text-muted" id="pincode"></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <h6 class="my-0">Country</h6>
                 </div>
-                <span class="text-muted"> <%= sighting.country %></span>
+                <span class="text-muted" id="country"></span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <h6 class="my-0">Date of Sighting</h6>
                 </div>
-                <span class="text-muted"> <%= sighting.date %></span>
+                <span class="text-muted" id="date"></span>
             </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                <div>
-                    <h6 class="my-0">Number of Observations</h6>
-                </div>
-                <span class="text-muted"><%=                %></span>
-            </li>
+        </ul>
+
+        <!--- Sighting Suggestions -->
+        <h4 class="d-flex justify-content-between align-items-center mb-3" id="suggestion-title">
+            <span class="text-muted">Suggestion</span>
+            <span class="badge badge-secondary badge-pill">3</span>
+        </h4>
+        <ul class="list-group mb-3" id="suggestion-list">
+
         </ul>
     </div>
     <div class="col-md-8 order-md-1">
         <h4 class="mb-3">Plant Details</h4>
         <hr>
         <div class="d-flex">
-            <h1 style="font-size:xxx-large; color: #36454F"><%= sighting.name %></h1>
+            <h1 style="font-size:xxx-large; color: #36454F" id="name"></h1>
             <div class="verification-icon"></div>
         </div>
         <br>
-        <div class="image-container">
-            <img src="<%= sighting.uploadImage %>" alt="Plant Image"
-                 style="max-height: 200px;max-width: 200px;" loading="lazy">
-
+        <div class="image-container" style="max-width: 100%; height: 500px;">
+            <img id="plantImage" src="" alt="Plant Image"
+                 style="width: 100%; height: 100%; object-fit: contain;">
         </div>
         <br><br>
         <ul class="list-group mb-3">
+
             <li class="list-group-item justify-content-between bg-light">
-                <div class="text-success">
-                    <h6 class="my-0">Plant Name : <span class="text-success"><%= sighting.name %></span></h6>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-success edit-mode d-none">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <div class="d-flex align-items-center">
+                                <h6 class="my-0 me-2">Plant Name:</h6>
+                                <textarea class="form-control" rows="1" style="flex-grow: 1;"
+                                          data-field="name" id="plantNameTextArea"></textarea>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <a id="edit-save-btn" class="edit-save-btn btn btn-outline-primary me-2 px-4"
+                                   title="Submit for Approval" style="white-space: nowrap;">Submit for Approval</a>
+                                <a class="btn btn-outline-danger px-3 edit-cancel-btn" title="Cancel">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-success edit-mode-display">
+                        <h6 class="my-0">Plant Name: <span class="text-success" id="plantName"></span></h6>
+                    </div>
+                    <div class="edit-button-container">
+                        <a class="text-primary edit-button">
+                            <img src="/images/icons/pencil-edit.png" alt="Edit" width="20" height="20">
+                        </a>
+                    </div>
                 </div>
             </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                <div>
-                    <h6 class="my-0">Common Name : <span class="text-muted"><%= sighting.commonName %></span></h6>
+
+
+            <li class="list-group-item justify-content-between">
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Display mode container -->
+                    <div class=" edit-mode-display">
+                        <h6 class="my-0">Common Name: <span class="text-muted" id="commonName"></span></h6>
+                    </div>
                 </div>
             </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                <div>
-                    <h6 class="my-0">Scientific Name : <span
-                                class="text-muted"><%= sighting.scientificName %></span></h6>
+
+            <li class="list-group-item justify-content-between">
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Display mode container -->
+                    <div class=" edit-mode-display">
+                        <h6 class="my-0">Scientific Name: <span class="text-muted" id="scientificName"></span>
+                        </h6>
+                    </div>
                 </div>
             </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                <div>
-                    <h6 class="my-0">Family : <span class="text-muted"><%= sighting.family %></span></h6>
+
+            <li class="list-group-item justify-content-between ">
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Display mode container -->
+                    <div class=" edit-mode-display">
+                        <h6 class="my-0">Family: <span class="text-muted" id="family"></span></h6>
+                    </div>
                 </div>
             </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                <div>
-                    <h6 class="my-0">Genus : <span class="text-muted"><%= sighting.genus %></span></h6>
+
+            <li class="list-group-item justify-content-between ">
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Display mode container -->
+                    <div class=" edit-mode-display">
+                        <h6 class="my-0">Genus: <span class="text-muted" id="genus"></span></h6>
+                    </div>
                 </div>
             </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                <div>
-                    <h6 class="my-0">Species : <span class="text-muted"><%= sighting.species %></span></h6>
+
+            <li class="list-group-item justify-content-between">
+                <div class="d-flex justify-content-between align-items-center">
+                    <!-- Display mode container -->
+                    <div class=" edit-mode-display">
+                        <h6 class="my-0">Species: <span class="text-muted" id="species"></span></h6>
+                    </div>
                 </div>
             </li>
+
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                    <h6 class="my-0">Description : <span class="text-muted"><%= sighting.description %></span>
+                    <h6 class="my-0">Description : <span class="text-muted" id="description"></span>
                     </h6>
                 </div>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
-                    <h6 class="my-0">Plant Size : (Length: <%= sighting.length %> x Height: <%= sighting.height %> x
-                        Width: <%= sighting.width %>)</h6>
+                    <h6 class="my-0" id="size"></h6>
                 </div>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
@@ -177,16 +224,16 @@
                     <h6 class="my-0">Characteristics:</h6><br>
                     <div class="d-flex flex-wrap gap-2">
                         <h4>
-                            <span class="badge bg-primary"><%= sighting.flowering ? 'Flowering' : 'Non-Flowering' %></span>
+                            <span class="badge bg-primary" id="flowering"></span>
                         </h4>
                         <h4>
-                            <span class="badge bg-secondary"><%= sighting.hasLeaves ? 'Has Leaves' : 'Has No Leaves' %></span>
+                            <span class="badge bg-secondary" id="hasLeaves"></span>
                         </h4>
                         <h4>
-                            <span class="badge bg-success"><%= sighting.fruitBearing ? 'Fruit Bearing' : 'Non-Fruit Bearing' %></span>
+                            <span class="badge bg-success" id="fruits"></span>
                         </h4>
-                        <h4><span class="badge bg-danger"><%= sighting.sunExposure %></span></h4>
-                        <h4><span class="badge bg-warning text-dark">Color: <%= sighting.flowerColor %></span></h4>
+                        <h4><span class="badge bg-danger" id="sunExposure"></span></h4>
+                        <h4><span class="badge bg-warning text-dark" id="color"></span></h4>
                     </div>
                 </div>
             </li>
@@ -198,233 +245,551 @@
         </ul>
 
 
-
         <!-- Chat button -->
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#chatModal">
-            Chat about <%= sighting.name %>
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#chatModal"
+                id="chatButton">
         </button>
     </div>
 </div>
-        <!-- Chat modal -->
-        <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="chatModalLabel">Chat about <%= sighting.name %></h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="chatDisplayArea" style="height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px;">
-                            <!-- Messages will be displayed here -->
-                        </div>
-                        <br>
-                        <label>Username: </label>
-                        <input type="text" id="username" class="form-control" placeholder="Enter your username">
-                        <br>
-                        <label>Message: </label>
-                        <textarea id="message" class="form-control" placeholder="Enter your message"></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="sendButton">Send</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="endChatButton">End Chat</button>
-                    </div>
+<!-- Chat modal -->
+<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="chatModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="chatDisplayArea"
+                     style="height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px;">
+                    <!-- Messages will be displayed here -->
                 </div>
+                <br>
+                <label>Username: </label>
+                <input type="text" id="username" class="form-control" placeholder="Enter your username">
+                <br>
+                <label>Message: </label>
+                <textarea id="message" class="form-control" placeholder="Enter your message"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="sendButton">Send</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="endChatButton">End Chat
+                </button>
             </div>
         </div>
+    </div>
+</div>
 
 <%- include('./partials/footer'); %>
 
 <script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/idb-utility.js"></script>
 <script>
-    const socket = io();
-    const sightingId = "<%= sighting.sightingId %>"; // Get the sighting ID
-    let offlineMessages = JSON.parse(localStorage.getItem('offlineMessages')) || [];
-    let lastUsername = "";
 
-    // Join the specific sighting chat room
-    socket.emit('join', { username: lastUsername || "Guest", sightingId });
+    function sightingDataLoaded(sightingValue) {
 
-    // Display chat history
-    socket.on('chat history', function(messages) {
-        const chatDisplayArea = document.getElementById("chatDisplayArea");
-        messages.forEach((data) => {
-            const { username, message, timestamp } = data;
-            const bubbleType = (username === lastUsername) ? "chat-right" : "chat-left";
-            displayMessage(username, message, timestamp, bubbleType);
+        console.log("Vivek-2");
+        const socket = io();
+        let sighting = sightingValue;
+        const sightingId = "<%= sightingId %>"; // Get the sighting ID
+        let offlineMessages = JSON.parse(localStorage.getItem('offlineMessages')) || [];
+        let lastUsername = "";
+        let userId = getUserId();
+
+        updateUI()
+
+        // Join the specific sighting chat room
+        socket.emit('join', { username: lastUsername || "Guest", sightingId });
+
+        // Display chat history
+        socket.on('chat history', function(messages) {
+            const chatDisplayArea = document.getElementById("chatDisplayArea");
+            messages.forEach((data) => {
+                const { username, message, timestamp } = data;
+                const bubbleType = (username === lastUsername) ? "chat-right" : "chat-left";
+                displayMessage(username, message, timestamp, bubbleType);
+            });
         });
-    });
 
-    document.getElementById("sendButton").addEventListener("click", sendMessage);
+        document.getElementById("sendButton").addEventListener("click", sendMessage);
 
-    function sendMessage() {
-        let username = document.getElementById("username").value;
-        const message = document.getElementById("message").value;
-        const now = new Date();
-        const timestamp = now.toISOString();
+        function sendMessage() {
+            let username = document.getElementById("username").value;
+            const message = document.getElementById("message").value;
+            const now = new Date();
+            const timestamp = now.toISOString();
 
-        if (username && message) {
-            lastUsername = username;  // Update last used username
-            const messageData = { username, message, timestamp, sightingId };
+            if (username && message) {
+                lastUsername = username;  // Update last used username
+                const messageData = { username, message, timestamp, sightingId };
 
-            // If online, send the message
-            if (navigator.onLine) {
-                socket.emit('chat message', messageData);
-            } else {
-                // Store the message locally
-                offlineMessages.push(messageData);
-                localStorage.setItem('offlineMessages', JSON.stringify(offlineMessages));
+                // If online, send the message
+                if (navigator.onLine) {
+                    socket.emit('chat message', messageData);
+                } else {
+                    // Store the message locally
+                    offlineMessages.push(messageData);
+                    localStorage.setItem('offlineMessages', JSON.stringify(offlineMessages));
+                }
+
+                // Clear the input fields
+                document.getElementById("message").value = "";
             }
-
-            // Clear the input fields
-            document.getElementById("message").value = "";
         }
-    }
 
-    socket.on('chat message', function(data) {
-        const { username, message, timestamp, sightingId: receivedSightingId } = data;
-        if (receivedSightingId === sightingId) {
-            const bubbleType = (username === lastUsername) ? "chat-right" : "chat-left";
-            displayMessage(username, message, timestamp, bubbleType);
-        }
-    });
-
-    function displayMessage(username, message, timestamp, bubbleType) {
-        const chatDisplayArea = document.getElementById("chatDisplayArea");
-        const formattedTime = formatTimestamp(new Date(timestamp));
-        const newMessage = document.createElement("div");
-        newMessage.className = `chat-bubble ${bubbleType} clearfix`;
-        newMessage.innerHTML = `<strong>${username} (${formattedTime}):</strong> ${message}`;
-        chatDisplayArea.appendChild(newMessage);
-        chatDisplayArea.scrollTop = chatDisplayArea.scrollHeight;
-    }
-
-    function formatTimestamp(date) {
-        return date.toLocaleString('en-GB', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: true
-        });
-    }
-
-    // Synchronize messages when coming back online
-    window.addEventListener('online', syncOfflineMessages);
-
-    function syncOfflineMessages() {
-        offlineMessages = JSON.parse(localStorage.getItem('offlineMessages')) || [];
-        offlineMessages.forEach((messageData) => {
-            if (messageData.sightingId === sightingId) {
-                socket.emit('chat message', messageData);
+        socket.on('chat message', function(data) {
+            const { username, message, timestamp, sightingId: receivedSightingId } = data;
+            if (receivedSightingId === sightingId) {
+                const bubbleType = (username === lastUsername) ? "chat-right" : "chat-left";
+                displayMessage(username, message, timestamp, bubbleType);
             }
         });
-        offlineMessages = offlineMessages.filter(messageData => messageData.sightingId !== sightingId);
-        localStorage.setItem('offlineMessages', JSON.stringify(offlineMessages));
-    }
 
-    document.querySelector(".btn-close").addEventListener("click", endChat);
-    document.querySelector(".btn-secondary"). addEventListener("click", endChat);
-
-    function endChat() {
-        lastUsername = ""; // Reset the last used username when chat is ended
-    }
-
-    document.addEventListener('DOMContentLoaded', async function () {
-        let plantName = '<%= sighting.name %>';
-        let dbPediaPlantData;
-        try {
-            dbPediaPlantData = await fetchDBPediaData(plantName);
-        } catch (error) {
-            console.error("Error fetching data from DBpedia:", error);
+        function displayMessage(username, message, timestamp, bubbleType) {
+            const chatDisplayArea = document.getElementById("chatDisplayArea");
+            const formattedTime = formatTimestamp(new Date(timestamp));
+            const newMessage = document.createElement("div");
+            newMessage.className = `chat-bubble ${bubbleType} clearfix`;
+            newMessage.innerHTML = `<strong>${username} (${formattedTime}):</strong> ${message}`;
+            chatDisplayArea.appendChild(newMessage);
+            chatDisplayArea.scrollTop = chatDisplayArea.scrollHeight;
         }
-        let verifiedElement = document.querySelector('.verification-icon');
 
-        // If data fetched is not empty
-        if (dbPediaPlantData.results && dbPediaPlantData.results.bindings && dbPediaPlantData.results.bindings.length > 0) {
-            let bindings = dbPediaPlantData.results.bindings[0];
+        function formatTimestamp(date) {
+            return date.toLocaleString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            });
+        }
 
-            if (verifiedElement) {
-                verifiedElement.innerHTML = '<img src="/images/blue_tick.png" alt="Verified" title="Plant is verified" class="verification-icon" style="height: 40px; width: 40px;position: relative;top: 17%;">'; // Check mark icon
+        // Synchronize messages when coming back online
+        window.addEventListener('online', syncOfflineMessages);
+
+        function syncOfflineMessages() {
+            offlineMessages = JSON.parse(localStorage.getItem('offlineMessages')) || [];
+            offlineMessages.forEach((messageData) => {
+                if (messageData.sightingId === sightingId) {
+                    socket.emit('chat message', messageData);
+                }
+            });
+            offlineMessages = offlineMessages.filter(messageData => messageData.sightingId !== sightingId);
+            localStorage.setItem('offlineMessages', JSON.stringify(offlineMessages));
+        }
+
+        document.querySelector(".btn-close").addEventListener("click", endChat);
+        document.querySelector(".btn-secondary"). addEventListener("click", endChat);
+
+        function endChat() {
+            lastUsername = ""; // Reset the last used username when chat is ended
+        }
+
+        function initMap() {
+            // Holds the value for the location
+            var location = sighting.location;
+            const [latitude, longitude] = location.split(',');
+
+            // Convert the latitude and longitude to float values
+            const lat = parseFloat(latitude.trim());
+            const long = parseFloat(longitude.trim());
+
+            createMapWithMarker(lat, long, "map");
+        }
+
+        function createMapWithMarker(latitude, longitude, mapElementId) {
+            let mapOptions = {
+                zoom: 5,
+                center: {lat: latitude, lng: longitude}
+            };
+            let map = new google.maps.Map(document.getElementById(mapElementId), mapOptions);
+
+            let markerOptions = {
+                position: new google.maps.LatLng(latitude, longitude),
+                map: map
+            };
+            let marker = new google.maps.Marker(markerOptions);
+        }
+
+        // Function to handle save button click
+        function handleSaveButtonClick(event) {
+            // Get the clicked element and find the parent list item
+            const button = event.target.closest('.edit-save-btn');
+            if (button) {
+                const listItem = button.closest('.list-group-item');
+                if (listItem) {
+                    // Retrieve the textarea and its data-field attribute
+                    const textarea = listItem.querySelector('textarea');
+                    const fieldName = textarea.getAttribute('data-field');
+
+                    // Get the value from the textarea
+                    const newValue = textarea.value;
+
+                    // Handle saving the value for the specific field
+                    // For example, you can send this information to your server or update your state
+                    console.log(`Field: ${fieldName}, New Value: ${newValue}`);
+
+                    // Update the display mode text with the new value from the textarea
+                    listItem.querySelector('.edit-mode-display span').textContent = newValue;
+
+                    // Switch back to display mode
+                    listItem.querySelector('.edit-mode').classList.add('d-none');
+                    listItem.querySelector('.edit-mode-display').classList.remove('d-none');
+
+                    const formData = createFormData();
+
+                    let userId = getUserId();
+                    const sightingUserId = sighting.userid;
+
+                    if (userId === sightingUserId) {
+                        formData.name = newValue;
+                        console.log("Vivek Inside Update Name", formData.name);
+                    } else {
+                        console.log("Vivek Inside Update Sighting Suggestions", sighting.suggestions);
+                        formData.suggestions = formData.suggestions.concat(newValue);
+                        console.log("Vivek Inside Update Form Suggestions", formData.suggestions);
+
+                    }
+
+                    addNewPlantsToSyncIDBInBothModes(formData);
+                }
             }
-            let ul = document.querySelector('.plantdetailsdbpidiea');
-            ul.innerHTML = '';
+        }
 
-            let li = document.createElement('li');
-            li.className = 'list-group-item d-flex justify-content-between lh-condensed';
-            let div = document.createElement('div');
-            div.innerHTML = `
+        function createFormData() {
+            return {
+                sightingId: sighting.sightingId,
+                username: sighting.username,
+                email: sighting.email,
+                phoneNumber: sighting.phoneNumber,
+                name: sighting.name,
+                commonName: sighting.commonName,
+                scientificName: sighting.scientificName,
+                family: sighting.family,
+                genus: sighting.genus,
+                species: sighting.species,
+                description: sighting.description,
+                length: sighting.length,
+                width: sighting.width,
+                height: sighting.height,
+                hasLeaves: sighting.hasLeaves,
+                flowering: sighting.flowering,
+                fruitBearing: sighting.fruitBearing,
+                sunExposure: sighting.sunExposure,
+                flowerColor: sighting.flowerColor,
+                identificationLink: sighting.identificationLink,
+                date: sighting.date,
+                status: sighting.status,
+                altitude: sighting.altitude,
+                location: sighting.location,
+                line: sighting.line,
+                city: sighting.city,
+                state: sighting.state,
+                country: sighting.country,
+                pinCode: sighting.pinCode,
+                userid: sighting.userid,
+                uploadImage: sighting.uploadImage,
+                suggestions: sighting.suggestions
+            }
+        }
+
+        // Attach event listeners to all edit, save, and cancel buttons
+        document.addEventListener('click', function(event) {
+            // Handle edit button click
+            if (event.target.closest('.edit-button')) {
+                const editButton = event.target.closest('.edit-button');
+                const listItem = editButton.closest('.list-group-item');
+
+                // Hide the edit button
+                editButton.style.display = 'none';
+
+                // Show the edit mode (includes the textarea, save, and cancel buttons)
+                listItem.querySelector('.edit-mode').classList.remove('d-none');
+                listItem.querySelector('.edit-mode-display').classList.add('d-none');
+
+                // Optionally, focus the textarea for immediate editing
+                const textarea = listItem.querySelector('.edit-mode textarea');
+                if (textarea) {
+                    textarea.focus();
+                }
+            }
+
+            // Handle save button click
+            if (event.target.closest('.edit-save-btn')) {
+                const saveButton = event.target.closest('.edit-save-btn');
+                const listItem = saveButton.closest('.list-group-item');
+
+                // Save the updated value from the textarea
+                const textarea = listItem.querySelector('textarea');
+                const newName = textarea.value;
+
+                // Update the displayed name
+                const nameSpan = listItem.querySelector('.edit-mode-display span');
+                nameSpan.textContent = newName;
+                handleSaveButtonClick(event);
+
+                // Switch back to display mode
+                listItem.querySelector('.edit-mode').classList.add('d-none');
+                listItem.querySelector('.edit-mode-display').classList.remove('d-none');
+
+                // Show the edit button again
+                listItem.querySelector('.edit-button').style.display = 'inline-block';
+            }
+
+            // Handle cancel button click
+            if (event.target.closest('.edit-cancel-btn')) {
+                const cancelButton = event.target.closest('.edit-cancel-btn');
+                const listItem = cancelButton.closest('.list-group-item');
+
+                // Revert the textarea to the original value
+                const textarea = listItem.querySelector('textarea');
+                const originalName = listItem.querySelector('.edit-mode-display span').textContent;
+                textarea.value = originalName;
+
+                // Switch back to display mode
+                listItem.querySelector('.edit-mode').classList.add('d-none');
+                listItem.querySelector('.edit-mode-display').classList.remove('d-none');
+
+                // Show the edit button again
+                listItem.querySelector('.edit-button').style.display = 'inline-block';
+            }
+        });
+
+        async function domContentLoaded() {
+            const editSaveBtn = document.getElementById('edit-save-btn');
+            const sightingUserId = sighting.userid;
+
+            if (userId === sightingUserId) {
+                editSaveBtn.classList.remove('btn-outline-primary');
+                editSaveBtn.classList.add('btn-outline-success');
+                editSaveBtn.textContent = 'Update';
+                editSaveBtn.title = 'Save';
+            }
+
+            let plantName = sighting.name;
+            let dbPediaPlantData;
+            try {
+                dbPediaPlantData = await fetchDBPediaData(plantName);
+            } catch (error) {
+                console.error("Error fetching data from DBpedia:", error);
+            }
+            let verifiedElement = document.querySelector('.verification-icon');
+
+            // If data fetched is not empty
+            if (dbPediaPlantData.results && dbPediaPlantData.results.bindings && dbPediaPlantData.results.bindings.length > 0) {
+                let bindings = dbPediaPlantData.results.bindings[0];
+
+                if (verifiedElement) {
+                    verifiedElement.innerHTML = '<img src="/images/blue_tick.png" alt="Verified" title="Plant is verified" class="verification-icon" style="height: 40px; width: 40px;position: relative;top: 17%;">'; // Check mark icon
+                }
+                let ul = document.querySelector('.plantdetailsdbpidiea');
+                ul.innerHTML = '';
+
+                let li = document.createElement('li');
+                li.className = 'list-group-item d-flex justify-content-between lh-condensed';
+                let div = document.createElement('div');
+                div.innerHTML = `
                     <h6 class="my-0">Name:</h6>
                     <span class="text-muted">${bindings.label.value}</span>
                 `;
-            li.appendChild(div);
-            ul.appendChild(li);
+                li.appendChild(div);
+                ul.appendChild(li);
 
-            li = document.createElement('li');
-            li.className = 'list-group-item d-flex justify-content-between lh-condensed';
-            div = document.createElement('div');
-            div.innerHTML = `
+                li = document.createElement('li');
+                li.className = 'list-group-item d-flex justify-content-between lh-condensed';
+                div = document.createElement('div');
+                div.innerHTML = `
                     <h6 class="my-0">Description:</h6>
                     <span class="text-muted">${bindings.description.value}</span>
                 `;
-            li.appendChild(div);
-            ul.appendChild(li);
+                li.appendChild(div);
+                ul.appendChild(li);
 
-            li = document.createElement('li');
-            li.className = 'list-group-item d-flex justify-content-between lh-condensed';
-            div = document.createElement('div');
-            div.innerHTML = `
+                li = document.createElement('li');
+                li.className = 'list-group-item d-flex justify-content-between lh-condensed';
+                div = document.createElement('div');
+                div.innerHTML = `
                     <h6 class="my-0">DBPedia URL:</h6>
                     <a class="text-muted" href="http://dbpedia.org/resource/${encodeURIComponent(plantName)}" target="_blank">http://dbpedia.org/resource/${encodeURIComponent(plantName)}</a>
                 `;
-            li.appendChild(div);
-            ul.appendChild(li);
-        }
-        //if data received from DBPedia is empty
-        else {
-            let ul = document.querySelector('.plantdetailsdbpidiea');
-            ul.innerHTML = '';
-            if (verifiedElement) {
-                verifiedElement.innerHTML = '<img src="/images/red-tick.jpg" alt="Pending" title="Plant verification is in progress" class="verification-icon" style="height: 40px; width: 40px;position: relative;top: 27%;">';
+                li.appendChild(div);
+                ul.appendChild(li);
             }
-            let li = document.createElement('li');
-            li.className = 'list-group-item d-flex justify-content-between lh-condensed';
-            let div = document.createElement('div');
-            div.innerHTML = `
+            //if data received from DBPedia is empty
+            else {
+                let ul = document.querySelector('.plantdetailsdbpidiea');
+                ul.innerHTML = '';
+                if (verifiedElement) {
+                    verifiedElement.innerHTML = '<img src="/images/red-tick.jpg" alt="Pending" title="Plant verification is in progress" class="verification-icon" style="height: 40px; width: 40px;position: relative;top: 27%;">';
+                }
+                let li = document.createElement('li');
+                li.className = 'list-group-item d-flex justify-content-between lh-condensed';
+                let div = document.createElement('div');
+                div.innerHTML = `
                     <h6 class="my-0">Name:</h6>
                     <span class="text-muted">No data found</span>
                 `;
-            li.appendChild(div);
-            ul.appendChild(li);
+                li.appendChild(div);
+                ul.appendChild(li);
 
-            li = document.createElement('li');
-            li.className = 'list-group-item d-flex justify-content-between lh-condensed';
-            div = document.createElement('div');
-            div.innerHTML = `
+                li = document.createElement('li');
+                li.className = 'list-group-item d-flex justify-content-between lh-condensed';
+                div = document.createElement('div');
+                div.innerHTML = `
                     <h6 class="my-0">Description:</h6>
                     <span class="text-muted">No description available</span>
                 `;
-            li.appendChild(div);
-            ul.appendChild(li);
+                li.appendChild(div);
+                ul.appendChild(li);
 
-            li = document.createElement('li');
-            li.className = 'list-group-item d-flex justify-content-between lh-condensed';
-            div = document.createElement('div');
-            div.innerHTML = `
+                li = document.createElement('li');
+                li.className = 'list-group-item d-flex justify-content-between lh-condensed';
+                div = document.createElement('div');
+                div.innerHTML = `
                     <h6 class="my-0">DBPedia URL:</h6>
                     <a class="text-muted" href="http://dbpedia.org/resource/${encodeURIComponent(plantName)}" target="_blank">http://dbpedia.org/resource/${encodeURIComponent(plantName)}</a>
                 `;
-            li.appendChild(div);
-            ul.appendChild(li);
+                li.appendChild(div);
+                ul.appendChild(li);
+            }
         }
 
-    });
+        function updateUI() {
+            document.getElementById('username').textContent = sighting.username;
+            document.getElementById('email').textContent = sighting.email || "";
+            document.getElementById('contactNumber').textContent = sighting.phoneNumber || "";
 
+            initMap();
+
+            domContentLoaded();
+
+            document.getElementById('altitude').textContent = sighting.altitude || "";
+            document.getElementById('address').textContent = sighting.line || "";
+            document.getElementById('city').textContent = sighting.city || ""
+            document.getElementById('state').textContent = sighting.state || "";
+            document.getElementById('pincode').textContent = sighting.pinCode || "";
+            document.getElementById('country').textContent = sighting.country || "";
+            document.getElementById('date').textContent = sighting.date || "";
+
+            suggestionSection();
+
+            document.getElementById('name').textContent = sighting.name || "";
+            document.getElementById('plantImage').src = sighting.uploadImage;
+            document.getElementById('plantNameTextArea').textContent = sighting.name || "";
+            document.getElementById('plantName').textContent = sighting.name || "";
+            document.getElementById('commonName').textContent = sighting.commonName || "";
+            document.getElementById('scientificName').textContent = sighting.scientificName || "";
+            document.getElementById('family').textContent = sighting.family || "";
+            document.getElementById('genus').textContent = sighting.genus || "";
+            document.getElementById('species').textContent = sighting.species || "";
+            document.getElementById('description').textContent = sighting.description || "";
+            document.getElementById('size').textContent = `Plant Size: (Length: ${sighting.length} x Height: ${sighting.height} x Width: ${sighting.width})`;
+            document.getElementById('flowering').textContent = sighting.flowering ? 'Flowering' : 'Non-Flowering';
+            document.getElementById('hasLeaves').textContent = sighting.hasLeaves ? 'Has Leaves' : 'Has No Leaves';
+            document.getElementById('fruits').textContent = sighting.fruitBearing ? 'Fruit Bearing' : 'Non-Fruit Bearing';
+            document.getElementById('sunExposure').textContent = sighting.sunExposure || "";
+            document.getElementById('color').textContent = `Color: ${sighting.flowerColor}`;
+
+            document.getElementById('chatButton').textContent = `Chat About: ${sighting.name}`;
+        }
+
+        function suggestionSection() {
+            let suggestionsTitle =  document.getElementById('suggestion-title');
+            let suggestionsList = document.getElementById('suggestion-list');
+
+            // Clear existing list items to avoid duplicates
+            suggestionsList.innerHTML = '';
+
+            let suggestionsString = sighting.suggestions[0];
+            let suggestionArray = suggestionsString.split(',');
+            suggestionArray = suggestionArray.filter(suggestion => suggestion.trim().toLowerCase() !== "nosuggestion");
+
+            // Check if there are suggestions to display
+            if (suggestionArray.length > 0) {
+                // Append new items to the suggestion list
+                suggestionArray.forEach(suggestion => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+                    listItem.style.display = 'flex';
+                    listItem.style.justifyContent = 'space-between';
+                    listItem.style.alignItems = 'center';
+                    listItem.style.height = '50px';
+
+                    // Create and append the text span
+                    const textSpan = document.createElement('span');
+                    textSpan.textContent = suggestion.trim();
+                    textSpan.style.flexGrow = '1';
+                    listItem.appendChild(textSpan);
+
+                    // Create and append the approve button
+                    const approveButton = document.createElement('button');
+                    approveButton.className = 'btn btn-success';
+                    approveButton.textContent = 'Approve';
+                    approveButton.style.display = 'none'; // Ensure button is hidden initially
+                    approveButton.style.flexGrow = '1';
+                    approveButton.style.width = '100px';
+                    approveButton.style.height = '100%';
+                    approveButton.style.alignItems = 'center';
+                    approveButton.style.justifyContent = 'center';
+
+                    // Attach an event listener to the button
+                    approveButton.onclick = () => approveSuggestion(suggestion.trim());
+
+                    if(getUserId() === sighting.sightingId) {
+                        listItem.appendChild(approveButton);
+                    }
+
+                    suggestionsList.appendChild(listItem);
+
+                    // Adding mouse enter and leave events to toggle visibility
+                    listItem.onmouseenter = () => {
+                        approveButton.style.display = 'flex'; // Show button on hover
+                    };
+                    listItem.onmouseleave = () => {
+                        approveButton.style.display = 'none'; // Hide button when not hovering
+                    };
+                });
+
+            } else {
+                // If no suggestions after filtering, display a default message
+                const emptyItem = document.createElement('li');
+                emptyItem.className = 'list-group-item';
+                emptyItem.textContent = 'No suggestions available';
+                suggestionsList.appendChild(emptyItem);
+            }
+        }
+
+        function approveSuggestion(suggestion) {
+
+            const formData = createFormData();
+
+            // Resetting the suggestion list
+            formData.suggestions = ['NoSuggestion'];
+
+            formData.name = suggestion;
+
+            addNewPlantsToSyncIDBInBothModes(formData);
+        }
+    }
+
+    async function fetchSighting() {
+        let sightingId = '<%= sightingId %>'; // This is server-rendered; ensure it's properly escaped to prevent XSS.
+        try {
+            const db = await openPlantsIDB(); // Wait for the IndexedDB connection to open.
+            let sighting = await getPlantFromIDB(db, sightingId); // Wait for the sighting data to be fetched from the database.
+            console.log("Fetched sighting:", sighting);
+            sightingDataLoaded(sighting);
+        } catch (error) {
+            console.error("Error fetching sighting from IndexedDB", error);
+        }
+    }
 
     function initMap() {
         // Holds the value for the location
-        var location = '<%= sighting.location %>';
+        var location = "17.841722638155066,78.32441231249999";
         const [latitude, longitude] = location.split(',');
 
         // Convert the latitude and longitude to float values
@@ -434,19 +799,7 @@
         createMapWithMarker(lat, long, "map");
     }
 
-    function createMapWithMarker(latitude, longitude, mapElementId) {
-        let mapOptions = {
-            zoom: 5,
-            center: {lat: latitude, lng: longitude}
-        };
-        let map = new google.maps.Map(document.getElementById(mapElementId), mapOptions);
-
-        let markerOptions = {
-            position: new google.maps.LatLng(latitude, longitude),
-            map: map
-        };
-        let marker = new google.maps.Marker(markerOptions);
-    }
+    fetchSighting();
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>

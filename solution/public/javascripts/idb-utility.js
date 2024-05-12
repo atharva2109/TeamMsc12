@@ -1,3 +1,25 @@
+const addNewPlantsToSyncIDBInBothModes = (plantData) => {
+
+    // In offline mode add plant in plantsIDB
+    if (!navigator.onLine) {
+        openPlantsIDB().then((db) => {
+            const transaction = db.transaction(["plants"], "readwrite");
+            const plantStore = transaction.objectStore("plants");
+            const addRequest = plantStore.put(plantData)
+            addRequest.addEventListener("success", () => {
+                console.log("Offline Mode - Added new plant to plantsIDB.");
+            });
+        });
+    }
+
+    // Add new plant sync IDB in both modes
+    openSyncPlantsIDB().then((syncIDB) => {
+        addNewPlantsToSyncIDB(syncIDB, plantData);
+    });
+
+}
+
+
 // Add new plant entry into sync IDB
 const addNewPlantsToSyncIDB = (syncTodoIDB, plantData) => {
 
@@ -6,18 +28,7 @@ const addNewPlantsToSyncIDB = (syncTodoIDB, plantData) => {
     const plantStore = transaction.objectStore("sync-plants")
 
     // Add plant in sync IDB Request
-    const addRequest = plantStore.add(plantData)
-    // In offline mode add plant in plantsIDB
-    if (!navigator.onLine) {
-        openPlantsIDB().then((db) => {
-            const transaction = db.transaction(["plants"], "readwrite");
-            const plantStore = transaction.objectStore("plants");
-            const addRequest = plantStore.add(plantData)
-            addRequest.addEventListener("success", () => {
-                console.log("Plant Added to plantIDB in offline mode")
-            })
-        });
-    }
+    const addRequest = plantStore.put(plantData)
 
     addRequest.addEventListener("success", () => {
         const getRequest = plantStore.get(addRequest.result)
@@ -27,9 +38,9 @@ const addNewPlantsToSyncIDB = (syncTodoIDB, plantData) => {
             navigator.serviceWorker.ready.then((sw) => {
                 sw.sync.register("sync-plant")
             }).then(() => {
-                console.log("Sync registered");
+                console.log("Sync Registered - Adding new plant details");
             }).catch((err) => {
-                console.log("Sync registration failed: " + JSON.stringify(err))
+                console.log("Sync Registration Failed: " + JSON.stringify(err))
             })
 
 
@@ -122,6 +133,22 @@ const deleteAllPlantsFromIDB = (plantIDB) => {
     });
 };
 
+const getPlantFromIDB = (plantIDB, id) => {
+    return new Promise((resolve, reject) => {
+        const transaction = plantIDB.transaction(["plants"], "readonly");
+        const plantStore = transaction.objectStore("plants");
+        const getRequest = plantStore.get(id);
+        getRequest.addEventListener("success", () => {
+            const plant = getRequest.result;
+            resolve(plant);
+        });
+        getRequest.addEventListener("error", (event) => {
+            reject(event.target.error);
+        });
+    });
+};
+
+
 const deleteSyncPlantFromIDB = (syncPlantIDB, id) => {
     return new Promise((resolve, reject) => {
         const transaction = syncPlantIDB.transaction(["sync-plants"], "readwrite")
@@ -148,7 +175,9 @@ function openPlantsIDB() {
 
         request.onupgradeneeded = function (event) {
             const db = event.target.result;
-            db.createObjectStore('plants', {keyPath: 'id', autoIncrement: true});
+            const objectStore = db.createObjectStore('plants', { keyPath: 'sightingId' });
+            objectStore.createIndex('sightingId', 'sightingId', { unique: true });
+
         };
 
         request.onsuccess = function (event) {
@@ -168,7 +197,8 @@ function openSyncPlantsIDB() {
 
         request.onupgradeneeded = function (event) {
             const db = event.target.result;
-            db.createObjectStore('sync-plants', {keyPath: 'id', autoIncrement: true});
+            const objectStore = db.createObjectStore('sync-plants', { keyPath: 'sightingId' });
+            objectStore.createIndex('sightingId', 'sightingId', { unique: true });
         };
 
         request.onsuccess = function (event) {

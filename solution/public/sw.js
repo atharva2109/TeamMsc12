@@ -1,5 +1,6 @@
 importScripts('/javascripts/idb-utility.js');
 
+const dynamicCache= 'site-dynamic-v1';
 
 // Use the install event to pre-cache all initial resources.
 self.addEventListener('install', event => {
@@ -22,6 +23,7 @@ self.addEventListener('install', event => {
                 '/faq',
                 '/manifest.json',
                 '/javascripts/API.js',
+                '/javascripts/local-storage.js',
                 '/javascripts/index.js',
                 '/javascripts/idb-utility.js',
                 'https://maps.googleapis.com/maps/api/js?key=AIzaSyARXO1sAXfsUdl_wxOfVJFFT3naSjyyoII&callback=initMap',
@@ -32,6 +34,7 @@ self.addEventListener('install', event => {
                 '/stylesheets/homepage/index.css',
                 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js',
                 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js',
+                'https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuidv4.min.js',
                 '/css/bootstrap.min.css',
                 '/images/logo/botanical-lens-logo.png',
                 '/images/contact-us.svg',
@@ -98,8 +101,7 @@ self.addEventListener('sync', event => {
 
                     }).then(() => {
                         console.log('Service Worker: Syncing new Plant: ', syncPlant, ' done');
-                        deleteSyncPlantFromIDB(syncPostDB, syncPlant.id).then(() => {
-                            // After registration is completed, navigate clients
+                        deleteSyncPlantFromIDB(syncPostDB, syncPlant.sightingId).then(() => {
                             clients.matchAll().then(clients => {
                                 clients.forEach(client => {
                                     client.navigate('/').then(() => {

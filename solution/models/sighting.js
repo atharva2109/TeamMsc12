@@ -8,7 +8,7 @@ let SightingSchema = new Schema(
     {
 
         // Sighting Fields
-        sightingId: {type: Number},
+        sightingId: {type: String, required: true, unique: true},
         date: {type: String},                               // Date of sighting
         location: {type: String},                       // Location of the sighting
         line: String,
@@ -16,7 +16,7 @@ let SightingSchema = new Schema(
         state: String,
         country: String,
         pinCode: String,                                                                  // Address in words
-        altitude: Number,                                                   // Altitude of the sighting
+        altitude: String,                                                   // Altitude of the sighting
         name: String,                                                   // Plant name
         commonName: String,                                             // Plant common name
         scientificName: String,                                         // Plant scientific name
@@ -38,10 +38,14 @@ let SightingSchema = new Schema(
 
         // Plant characteristics
         uploadImage: String,
-        userid: Number,
+        userid: String,
         username: String,                                                   // user name
         email: String,
-        phoneNumber: Number
+        phoneNumber: String,
+        suggestions: {
+            type: [String],
+            default: []
+        }
     });
 
 

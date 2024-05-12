@@ -234,6 +234,9 @@
 </section>
 <%- include('./partials/footer'); %>
 <script src="/javascripts/idb-utility.js"></script>
+<script src="/javascripts/local-storage.js"></script>
+<!-- Include the UUID library -->
+<script src="https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuidv4.min.js"></script>
 <script>
     function initMap() {
         createMapWithMarker(15.380074, 78.983592, "map");
@@ -315,8 +318,8 @@
             alert('Please pick a location before submitting the form.');
         }
         else{
-            var userId = '<%= user_id %>';
-            var sightingId = '<%= sighting_id %>';
+            var userId = getUserId();
+            var sightingId = uuidv4();
             const dateTimeValue = document.getElementById("datePicker").value;
             const date = new Date(dateTimeValue);
             const options = {
@@ -359,8 +362,8 @@
                 state:document.getElementById("state").value,
                 country:document.getElementById("country").value,
                 pinCode:document.getElementById("pincode").value,
-                userid:userId,
-
+                suggestions: ["NoSuggestion"],
+                userid:userId
             };
             const uploadImage = document.getElementById("uploadImage").files[0];
             if (uploadImage) {
@@ -370,17 +373,13 @@
                     formData.uploadImage = base64Image;
 
                     // After image is processed, store form data in IndexedDB or send it to the server
-                    openSyncPlantsIDB().then((db) => {
-                        addNewPlantsToSyncIDB(db, formData);
-                    });
+                    addNewPlantsToSyncIDBInBothModes(formData);
                 };
 
                 reader.readAsDataURL(uploadImage); // Convert image file to Base64 format
             } else {
                 // If no image is uploaded, just process the rest of the form data
-                openSyncPlantsIDB().then((db) => {
-                    addNewPlantsToSyncIDB(db, formData);
-                });
+                addNewPlantsToSyncIDBInBothModes(formData);
             }
 
         }
