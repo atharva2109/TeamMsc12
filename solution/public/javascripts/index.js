@@ -10,7 +10,7 @@ let currentMapIndex = 0;
      }
     if (plants.sightingId != null) {
         const topPlants = JSON.parse(document.getElementById("hiddenPlants").value);
-        console.log("Top plants from index.js:",topPlants)
+
         // if (topPlants.length !== 0) {
         //     if (!isTopFirstPlantAdded) {
         //
@@ -74,6 +74,63 @@ function addTopPlantToCarousel(plants) {
 
 // Function to handle displaying no plants message
 function displayNoPlantsMessage() {
+    const carouselContainer = document.querySelector(".carousel-inner");
+    const carouselItem = document.createElement('div');
+    carouselItem.classList.add('carousel-item');
+    carouselItem.classList.add('active');
+    carouselItem.innerHTML = `
+        <div class="row">
+            <div class="col-md-6 plantCarouselItem" style="background-image:url('/images/pink-rose.jpg'); background-size: cover; background-position: center;">
+                <div class="map-info p-5">
+                    <h4 class="display-7">Rose</h4>
+                    <p style="font-size: 18px">Family: Rosaceae </p>
+                    <p style="font-size: 18px">Common Name: Rose</p>
+                    <p style="font-size: 18px">Genus: Rosa</p>
+                    <p style="font-size: 18px">Country:Sheffield</p>
+                    <p style="font-size: 18px">Creator: xyz</p>
+                </div>
+            </div>
+            <div class="col-md-6" id="map-0">
+                <div class="map-container h-100">
+                    <div class="map-header">
+                        <h2>Map</h2>
+                    </div>
+                    <div class="map-body h-100">
+                        <div id="map-canvas" class="h-100"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    const carouselSecondItem = document.createElement('div');
+    carouselSecondItem.classList.add('carousel-item');
+    carouselSecondItem.innerHTML = `
+        <div class="row">
+            <div class="col-md-6 plantCarouselItem" style="background-image:url('/images/lily.jpeg'); background-size: cover; background-position: center;">
+                <div class="map-info p-5">
+                    <h4 class="display-7">Lily</h4>
+                    <p style="font-size: 18px">Family: Liliaceae </p>
+                    <p style="font-size: 18px">Common Name: Lily</p>
+                    <p style="font-size: 18px">Genus: Lilium; L.</p>
+                    <p style="font-size: 18px">Country:London</p>
+                    <p style="font-size: 18px">Creator: abc</p>
+                </div>
+            </div>
+            <div class="col-md-6" id="map-1">
+                <div class="map-container h-100">
+                    <div class="map-header">
+                        <h2>Map</h2>
+                    </div>
+                    <div class="map-body h-100">
+                        <div id="map-canvas" class="h-100"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    carouselContainer.appendChild(carouselItem);
+    carouselContainer.appendChild(carouselSecondItem);
     const plantList = document.getElementById('plant_list');
     const displayPlants = document.createElement('div');
     displayPlants.classList.add('display-plants', 'd-flex', 'flex-column', 'justify-content-center', 'align-items-center', 'vh-100');
@@ -129,10 +186,18 @@ function sendPlantData(sightingId) {
 }
 
 
-function initMap(newPlants) {
-    newPlants.forEach((plant, index) => {
-        createMapWithMarker(plant.location.split(",")[0], plant.location.split(",")[1], `map-${index}`);
-    })
+function initMap() {
+    const topPlants = JSON.parse(document.getElementById("hiddenPlants").value);
+    console.log("Top plants in initMap: ",topPlants)
+    if(topPlants.length!=0) {
+        topPlants.forEach((plant, index) => {
+            createMapWithMarker(plant.location.split(",")[0], plant.location.split(",")[1], `map-${index}`);
+        })
+    }
+    else{
+        createMapWithMarker(53.389759, -1.468186, `map-0`);
+        createMapWithMarker( 51.509865, -0.118092, `map-1`);
+    }
 }
 
 function createMapWithMarker(latitude, longitude, mapElementId) {
@@ -215,7 +280,7 @@ window.onload = function () {
                 deleteAllPlantsFromIDB(db).then(() => {
                     addNewPlantsToPlantsIDB(db, newPlants).then(() => {
                         API()
-                        initMap(newPlants);
+                        initMap();
                     })
                 });
             });
