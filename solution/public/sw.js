@@ -1,5 +1,6 @@
 importScripts('/javascripts/idb-utility.js');
 
+const dynamicCache= 'site-dynamic-v1';
 
 // Use the install event to pre-cache all initial resources.
 self.addEventListener('install', event => {
@@ -22,6 +23,7 @@ self.addEventListener('install', event => {
                 '/faq',
                 '/manifest.json',
                 '/javascripts/API.js',
+                '/javascripts/local-storage.js',
                 '/javascripts/index.js',
                 '/javascripts/idb-utility.js',
                 'https://maps.googleapis.com/maps/api/js?key=AIzaSyARXO1sAXfsUdl_wxOfVJFFT3naSjyyoII&callback=initMap',

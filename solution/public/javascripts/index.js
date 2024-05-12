@@ -115,36 +115,15 @@ function addPlantCard(plants,isVerified) {
                 ${isVerified ? '<img src="/images/blue_tick.png" alt="Verified" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
                 ${!isVerified ? '<img src="/images/red-tick.jpg" alt="Pending" class="verification-icon" style="height: 40px; width: 40px;">' : ''}
             ` : ''}
-                <button class="btn btn-success" onclick='sendPlantData(${JSON.stringify(plants)});'>View Details</button>
+                <button class="btn btn-success" onclick='sendPlantData(${JSON.stringify(plants.sightingId)});'>View Details</button>
             </div>
         </div>
     `;
     plantList.appendChild(card);
 }
 
-function sendPlantData(currentPlant) {
-    // Parse JSON data if it's a string
-    if (typeof currentPlant === 'string') {
-        currentPlant = JSON.parse(currentPlant);
-    }
-
-    const formData = new FormData();
-    for (const key in currentPlant) {
-        formData.append(key, currentPlant[key]);
-    }
-    fetch('http://localhost:3000/sightingdetails', {
-        method: 'POST',
-        body: formData
-    }).then(response => {
-        if (response.status === 200) {
-            window.location.href = response.url;
-        } else {
-            console.error('POST request failed with status:', response.status);
-        }
-    })
-        .catch(error => {
-            console.error(error);
-        });
+function sendPlantData(sightingId) {
+    window.location.href = `/sightingdetails?sightingId=${sightingId}`;
 }
 
 

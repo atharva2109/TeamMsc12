@@ -133,6 +133,22 @@ const deleteAllPlantsFromIDB = (plantIDB) => {
     });
 };
 
+const getPlantFromIDB = (plantIDB, id) => {
+    return new Promise((resolve, reject) => {
+        const transaction = plantIDB.transaction(["plants"], "readonly");
+        const plantStore = transaction.objectStore("plants");
+        const getRequest = plantStore.get(id);
+        getRequest.addEventListener("success", () => {
+            const plant = getRequest.result;
+            resolve(plant);
+        });
+        getRequest.addEventListener("error", (event) => {
+            reject(event.target.error);
+        });
+    });
+};
+
+
 const deleteSyncPlantFromIDB = (syncPlantIDB, id) => {
     return new Promise((resolve, reject) => {
         const transaction = syncPlantIDB.transaction(["sync-plants"], "readwrite")

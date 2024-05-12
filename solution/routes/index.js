@@ -107,22 +107,9 @@ router.get('/api/uploads-list', (req, res) => {
     });
 });
 
-
-
-router.post('/sightingdetails', upload.none() , (req, res) => {
-    const title = 'Plant Details';
-    const sighting = req.body;
-    req.session.title = title;
-    req.session.sighting = sighting;
-    res.redirect('/sightingdetails');
-});
-
 router.get('/sightingdetails', (req, res) => {
-    const title = req.session.title;
-    const sighting = req.session.sighting;
-    res.render('sightingdetails', { title, sighting });
-    delete req.session.title;
-    delete req.session.sighting;
+    const sightingId  = req.query.sightingId;
+    res.render('sightingdetails', { title: "Plants Details", sightingId: sightingId });
 });
 
 
