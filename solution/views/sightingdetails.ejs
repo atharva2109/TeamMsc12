@@ -111,11 +111,11 @@
         </ul>
 
         <!--- Sighting Suggestions -->
-        <h4 class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="d-flex justify-content-between align-items-center mb-3" id="suggestion-title">
             <span class="text-muted">Suggestion</span>
             <span class="badge badge-secondary badge-pill">3</span>
         </h4>
-        <ul class="list-group mb-3">
+        <ul class="list-group mb-3" id="suggestion-list">
 
         </ul>
     </div>
@@ -294,6 +294,7 @@
         const sightingId = "<%= sightingId %>"; // Get the sighting ID
         let offlineMessages = JSON.parse(localStorage.getItem('offlineMessages')) || [];
         let lastUsername = "";
+        let userId = getUserId();
 
         updateUI()
 
@@ -438,41 +439,7 @@
                     listItem.querySelector('.edit-mode').classList.add('d-none');
                     listItem.querySelector('.edit-mode-display').classList.remove('d-none');
 
-                    const formData = {
-                        sightingId: sighting.sightingId,
-                        username: sighting.username,
-                        email: sighting.email,
-                        phoneNumber: sighting.phoneNumber,
-                        name: sighting.name,
-                        commonName: sighting.commonName,
-                        scientificName: sighting.scientificName,
-                        family: sighting.family,
-                        genus: sighting.genus,
-                        species: sighting.species,
-                        description: sighting.description,
-                        length: sighting.length,
-                        width: sighting.width,
-                        height: sighting.height,
-                        hasLeaves: sighting.hasLeaves,
-                        flowering: sighting.flowering,
-                        fruitBearing: sighting.fruitBearing,
-                        sunExposure: sighting.sunExposure,
-                        flowerColor: sighting.flowerColor,
-                        identificationLink: sighting.identificationLink,
-                        date: sighting.date,
-                        status: sighting.status,
-                        altitude: sighting.altitude,
-                        location: sighting.location,
-                        line: sighting.line,
-                        city: sighting.city,
-                        state: sighting.state,
-                        country: sighting.country,
-                        pinCode: sighting.pinCode,
-                        userid: sighting.userid,
-                        uploadImage: sighting.uploadImage,
-                        suggestions: sighting.suggestions
-                    };
-
+                    const formData = createFormData();
 
                     let userId = getUserId();
                     const sightingUserId = sighting.userid;
@@ -489,6 +456,43 @@
 
                     addNewPlantsToSyncIDBInBothModes(formData);
                 }
+            }
+        }
+
+        function createFormData() {
+            return {
+                sightingId: sighting.sightingId,
+                username: sighting.username,
+                email: sighting.email,
+                phoneNumber: sighting.phoneNumber,
+                name: sighting.name,
+                commonName: sighting.commonName,
+                scientificName: sighting.scientificName,
+                family: sighting.family,
+                genus: sighting.genus,
+                species: sighting.species,
+                description: sighting.description,
+                length: sighting.length,
+                width: sighting.width,
+                height: sighting.height,
+                hasLeaves: sighting.hasLeaves,
+                flowering: sighting.flowering,
+                fruitBearing: sighting.fruitBearing,
+                sunExposure: sighting.sunExposure,
+                flowerColor: sighting.flowerColor,
+                identificationLink: sighting.identificationLink,
+                date: sighting.date,
+                status: sighting.status,
+                altitude: sighting.altitude,
+                location: sighting.location,
+                line: sighting.line,
+                city: sighting.city,
+                state: sighting.state,
+                country: sighting.country,
+                pinCode: sighting.pinCode,
+                userid: sighting.userid,
+                uploadImage: sighting.uploadImage,
+                suggestions: sighting.suggestions
             }
         }
 
@@ -555,7 +559,6 @@
         });
 
         async function domContentLoaded() {
-            let userId = getUserId();
             const editSaveBtn = document.getElementById('edit-save-btn');
             const sightingUserId = sighting.userid;
 
@@ -670,10 +673,11 @@
             document.getElementById('pincode').textContent = sighting.pinCode || "";
             document.getElementById('country').textContent = sighting.country || "";
             document.getElementById('date').textContent = sighting.date || "";
+
+            suggestionSection();
+
             document.getElementById('name').textContent = sighting.name || "";
-
             document.getElementById('plantImage').src = sighting.uploadImage;
-
             document.getElementById('plantNameTextArea').textContent = sighting.name || "";
             document.getElementById('plantName').textContent = sighting.name || "";
             document.getElementById('commonName').textContent = sighting.commonName || "";
@@ -688,7 +692,86 @@
             document.getElementById('fruits').textContent = sighting.fruitBearing ? 'Fruit Bearing' : 'Non-Fruit Bearing';
             document.getElementById('sunExposure').textContent = sighting.sunExposure || "";
             document.getElementById('color').textContent = `Color: ${sighting.flowerColor}`;
+
             document.getElementById('chatButton').textContent = `Chat About: ${sighting.name}`;
+        }
+
+        function suggestionSection() {
+            let suggestionsTitle =  document.getElementById('suggestion-title');
+            let suggestionsList = document.getElementById('suggestion-list');
+
+            // Clear existing list items to avoid duplicates
+            suggestionsList.innerHTML = '';
+
+            let suggestionsString = sighting.suggestions[0];
+            let suggestionArray = suggestionsString.split(',');
+            suggestionArray = suggestionArray.filter(suggestion => suggestion.trim().toLowerCase() !== "nosuggestion");
+
+            // Check if there are suggestions to display
+            if (suggestionArray.length > 0) {
+                // Append new items to the suggestion list
+                suggestionArray.forEach(suggestion => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+                    listItem.style.display = 'flex';
+                    listItem.style.justifyContent = 'space-between';
+                    listItem.style.alignItems = 'center';
+                    listItem.style.height = '50px';
+
+                    // Create and append the text span
+                    const textSpan = document.createElement('span');
+                    textSpan.textContent = suggestion.trim();
+                    textSpan.style.flexGrow = '1';
+                    listItem.appendChild(textSpan);
+
+                    // Create and append the approve button
+                    const approveButton = document.createElement('button');
+                    approveButton.className = 'btn btn-success';
+                    approveButton.textContent = 'Approve';
+                    approveButton.style.display = 'none'; // Ensure button is hidden initially
+                    approveButton.style.flexGrow = '1';
+                    approveButton.style.width = '100px';
+                    approveButton.style.height = '100%';
+                    approveButton.style.alignItems = 'center';
+                    approveButton.style.justifyContent = 'center';
+
+                    // Attach an event listener to the button
+                    approveButton.onclick = () => approveSuggestion(suggestion.trim());
+
+                    if(getUserId() === sighting.sightingId) {
+                        listItem.appendChild(approveButton);
+                    }
+
+                    suggestionsList.appendChild(listItem);
+
+                    // Adding mouse enter and leave events to toggle visibility
+                    listItem.onmouseenter = () => {
+                        approveButton.style.display = 'flex'; // Show button on hover
+                    };
+                    listItem.onmouseleave = () => {
+                        approveButton.style.display = 'none'; // Hide button when not hovering
+                    };
+                });
+
+            } else {
+                // If no suggestions after filtering, display a default message
+                const emptyItem = document.createElement('li');
+                emptyItem.className = 'list-group-item';
+                emptyItem.textContent = 'No suggestions available';
+                suggestionsList.appendChild(emptyItem);
+            }
+        }
+
+        function approveSuggestion(suggestion) {
+
+            const formData = createFormData();
+
+            // Resetting the suggestion list
+            formData.suggestions = ['NoSuggestion'];
+
+            formData.name = suggestion;
+
+            addNewPlantsToSyncIDBInBothModes(formData);
         }
     }
 
