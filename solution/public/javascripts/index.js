@@ -10,22 +10,24 @@ let currentMapIndex = 0;
      }
     if (plants.sightingId != null) {
         const topPlants = JSON.parse(document.getElementById("hiddenPlants").value);
-
-        if (topPlants.length !== 0) {
-            if (!isTopFirstPlantAdded) {
-                addTopPlantToCarousel(plants);
-                isTopFirstPlantAdded = true;
-            } else {
-                addTopPlantToCarousel(plants);
-            }
-        }
+        console.log("Top plants from index.js:",topPlants)
+        // if (topPlants.length !== 0) {
+        //     if (!isTopFirstPlantAdded) {
+        //
+        //         isTopFirstPlantAdded = true;
+        //     } else {
+        //         addTopPlantToCarousel(plants);
+        //     }
+        // }
 
         if (!isFirstPlantAdded) {
             clearPlantList();
+            addTopPlantToCarousel(plants);
                 addPlantCard(plants,isVerified);
 
             isFirstPlantAdded = true;
         } else {
+            addTopPlantToCarousel(plants);
             addPlantCard(plants,isVerified);
         }
     }
@@ -127,9 +129,8 @@ function sendPlantData(sightingId) {
 }
 
 
-function initMap() {
-    const topPlants = JSON.parse(document.getElementById("hiddenPlants").value);
-    topPlants.forEach((plant, index) => {
+function initMap(newPlants) {
+    newPlants.forEach((plant, index) => {
         createMapWithMarker(plant.location.split(",")[0], plant.location.split(",")[1], `map-${index}`);
     })
 }
@@ -150,7 +151,7 @@ function createMapWithMarker(latitude, longitude, mapElementId) {
 
 function API() {
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyARXO1sAXfsUdl_wxOfVJFFT3naSjyyoII&callback=initMap`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDvba_AADmYUKZcMBmOnZGD0xIxCYQxT1s&callback=initMap`;
     script.defer = true;
     document.head.appendChild(script);
 }
@@ -214,7 +215,7 @@ window.onload = function () {
                 deleteAllPlantsFromIDB(db).then(() => {
                     addNewPlantsToPlantsIDB(db, newPlants).then(() => {
                         API()
-                        initMap();
+                        initMap(newPlants);
                     })
                 });
             });

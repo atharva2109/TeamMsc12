@@ -102,6 +102,7 @@ self.addEventListener('sync', event => {
                     }).then(() => {
                         console.log('Service Worker: Syncing new Plant: ', syncPlant, ' done');
                         deleteSyncPlantFromIDB(syncPostDB, syncPlant.sightingId).then(() => {
+                  // After registration is completed, navigate clients
                             clients.matchAll().then(clients => {
                                 clients.forEach(client => {
                                     client.navigate('/').then(() => {

@@ -6,7 +6,6 @@ let Schema = mongoose.Schema;
 // Define the schema for plant sightings
 let SightingSchema = new Schema(
     {
-
         // Sighting Fields
         sightingId: {type: String, required: true, unique: true},
         date: {type: String},                               // Date of sighting
@@ -46,6 +45,7 @@ let SightingSchema = new Schema(
             type: [String],
             default: []
         }
+
     });
 
 

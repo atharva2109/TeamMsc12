@@ -57,7 +57,7 @@ router.get('/', async (req, res, next)=> {
         }
     ]);
 
-    console.log("Top plants: ",topPlants)
+    console.log("Top plants from routes: ",topPlants)
     res.render('index', {title: 'Botanical Lens', api: API_KEY, plants, currentPage: page, totalPages,topPlants});
 });
 

@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="61f43348-723e-4139-91fd-b9878bc38c05" name="Changes" comment="Updated the Sighting details data fetching functionality.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/solution/public/stylesheets/plantdetails/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/solution/public/stylesheets/plantdetails/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/solution/views/sightingdetails.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/solution/views/sightingdetails.ejs" afterDir="false" />
-    </list>
+    <list default="true" id="61f43348-723e-4139-91fd-b9878bc38c05" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
