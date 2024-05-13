@@ -15,6 +15,7 @@
 
 #plantCarousel{
     margin-top: 2% !important;
+    height: 50%;
 }
 .carousel-control-prev-icon {
     margin-right: 70%;
@@ -30,6 +31,7 @@
     position: relative;
     background-image: linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
     color: #fff;
+    height: 400px;
 }
 
 

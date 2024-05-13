@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d41ff292-07c6-42c3-aac7-64083d22fb06" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/solution/public/javascripts/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/solution/public/javascripts/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/solution/public/stylesheets/homepage/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/solution/public/stylesheets/homepage/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/solution/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/solution/routes/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/solution/views/index.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/solution/views/index.ejs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Node.js.bin\\www.executor": "Run",
+    "node.js.selected.package.tslint": "(autodetect)"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <servers />
+  </component>
+</project>
