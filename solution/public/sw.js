@@ -140,14 +140,7 @@ self.addEventListener('sync', event => {
                                     // After registration is completed, navigate clients
                                     clients.matchAll().then(clients => {
                                         clients.forEach(client => {
-                                            client
-                                                .navigate('/')
-                                                .then(() => {
-                                                    console.log("Client navigated to '/' route");
-                                                })
-                                                .catch(err => {
-                                                    console.log("Client navigation failed:", JSON.stringify(err));
-                                                });
+                                            client.postMessage({ type: 'SYNC_COMPLETED' });
                                         });
                                     }).catch(err => {
                                         console.log("Error matching clients:", JSON.stringify(err));

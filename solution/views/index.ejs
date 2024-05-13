@@ -336,6 +336,63 @@
             }
         });
 
+        // Register the service worker if not already registered
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(registration => {
+                    console.log('Service Worker registered with scope:', registration.scope);
+
+                    // Listen for messages from the service worker
+                    navigator.serviceWorker.addEventListener('message', event => {
+                        if (event.data && event.data.type === 'SYNC_COMPLETED') {
+                            console.log('Sync completed, refreshing plant list...');
+                            fetchMainPageData();
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Service Worker registration failed:', error);
+                });
+        }
+
+        // Function to fetch and update the main page data
+        function fetchMainPageData() {
+            fetch('/api/sightings')
+                .then(response => response.json())
+                .then(data => {
+                    // Update the UI with the new data
+                    updateSightingsList(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching sighting data:', error);
+                });
+        }
+
+        // Function to update the sightings list in the UI
+        function updateSightingsList(sightings) {
+            const sightingsList = document.getElementById('plant_list');
+            sightingsList.innerHTML = '';
+
+            sightings.forEach(sighting => {
+                const sightingItem = document.createElement('div');
+                sightingItem.className = 'plant_list';
+                sightingItem.setAttribute('data-date-time', sighting.date);
+                sightingItem.setAttribute('data-location', sighting.location);
+                sightingItem.setAttribute('data-has-flowers', sighting.flowering);
+                sightingItem.setAttribute('data-has-fruits', sighting.fruitBearing);
+                sightingItem.setAttribute('data-has-leaves', sighting.hasLeaves);
+                sightingItem.setAttribute('plant-name', sighting.name);
+                sightingItem.innerHTML = `
+            <h3>${sighting.name}</h3>
+            <p>${sighting.description}</p>
+            <img src="${sighting.uploadImage}" alt="${sighting.name}">
+        `;
+                sightingsList.appendChild(sightingItem);
+            });
+        }
+
+        // Initial fetch of the main page data
+        fetchMainPageData();
 
     </script>
 

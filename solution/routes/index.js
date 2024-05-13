@@ -91,7 +91,10 @@ router.get('/sightingdetails', (req, res) => {
     res.render('sightingdetails', { title: "Plants Details", sightingId: sightingId });
 });
 
-
+router.get('/api/sightings', async (req, res) => {
+    const plants = await sightingModel.find({});
+    res.json(plants);
+});
 
 
 module.exports = router;
