@@ -9,28 +9,21 @@
     <script>
         getUserId();
     </script>
-
-
 </head>
 <body>
-<%- include('./partials/header', { title: 'Homepage',visibility:'visible' }); %>
+<%- include('./partials/header', { title: 'Homepage', visibility: 'visible' }); %>
 
 <!--Carousel -->
 <div id="plantCarousel" class="carousel slide p-3 p-md-5 m-md-3 bg-light rounded" data-ride="carousel">
     <div class="carousel-indicators">
-        <button type="button" data-bs-target="#plantCarousel" data-bs-slide-to="0" class="active" aria-current="true"
-                aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#plantCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
         <button type="button" data-bs-target="#plantCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
         <button type="button" data-bs-target="#plantCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
     </div>
 
-    <div class="carousel-inner">
-
-    </div>
-
+    <div class="carousel-inner"></div>
 </div>
-<button class="carousel-control-prev" type="button" data-bs-target="#plantCarousel" data-bs-slide="prev"
-        style="margin-right: 2%">
+<button class="carousel-control-prev" type="button" data-bs-target="#plantCarousel" data-bs-slide="prev" style="margin-right: 2%">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Previous</span>
 </button>
@@ -38,6 +31,7 @@
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Next</span>
 </button>
+
 <!-- Main Section -->
 <div class="card" style="width: 100%;">
 
@@ -49,10 +43,9 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-6 d-flex align-items-center ">
+            <div class="col-6 d-flex align-items-center">
                 <div class="text-center">
                     <i class="fa-sharp fa-solid fa-plus"></i>
-
                     <h2>Add Plants</h2>
                 </div>
             </div>
@@ -65,7 +58,6 @@
         </div>
         <div class="row">
             <div class="col-6">
-
                 <p>Add new plants to your collection with ease</p>
             </div>
             <div class="col-6">
@@ -88,20 +80,17 @@
         </div>
         <div class="row">
             <div class="col-6">
-                <p>Interactive catalog of plants with detailed information, images, and categorization to engage users
-                    and help them explore different plant options easily.</p>
+                <p>Interactive catalog of plants with detailed information, images, and categorization to engage users and help them explore different plant options easily.</p>
             </div>
-
             <div class="col-6">
                 <p>Filter plants according to specific criteria</p>
             </div>
         </div>
-
     </div>
 
     <!-- Filter and Sighting Listing -->
     <div class="row">
-        <div class="col-4 d-flex ">
+        <div class="col-4 d-flex">
             <div class="min-vh-50 mt-4 w-50 m-auto">
                 <div class="input-group">
                     <label class="input-group-text" for="filterSelect"><i class="fa-solid fa-filter"></i></label>
@@ -120,14 +109,13 @@
         </div>
         <div class="col-4 d-flex">
             <div class="input-group ms-1 border rounded-2 w-20" style="margin-top: 5%; width: 100%; height: 60%;">
-        <span class="input-group-text" id="search-icon">
-            <i class="fa fa-search"></i> <!-- FontAwesome search icon -->
-        </span>
-                <input class="form-control" id="searchbox" type="search" placeholder="Search for a Plant"
-                       aria-label="Search" style="border-color: #3C1414;">
+                <span class="input-group-text" id="search-icon">
+                    <i class="fa fa-search"></i> <!-- FontAwesome search icon -->
+                </span>
+                <input class="form-control" id="searchbox" type="search" placeholder="Search for a Plant" aria-label="Search" style="border-color: #3C1414;">
             </div>
         </div>
-        <div class="col-4 d-flex ">
+        <div class="col-4 d-flex">
             <div class="min-vh-50 mt-4 w-50 m-auto">
                 <div class="input-group mt-2">
                     <label class="input-group-text" for="sortBy"><i class="fa-solid fa-sort"></i></label>
@@ -142,10 +130,7 @@
             </div>
         </div>
     </div>
-    <div class="row " style="margin-top: 1%;margin-left: 1%;margin-right: 1%" id="plant_list">
-
-    </div>
-
+    <div class="row" style="margin-top: 1%; margin-left: 1%; margin-right: 1%" id="plant_list"></div>
 
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
@@ -180,11 +165,10 @@
     <script src="/javascripts/idb-utility.js"></script>
 
     <script>
-
         function calculateDistance(lat1, lon1, lat2, lon2) {
             const R = 6371; // Radius of the earth in km
             const dLat = deg2rad(lat2 - lat1);
-            const dLon = deg2rad(lon2 - lon1);
+            const dLon = deg2rad(lon1 - lon2);
             const a =
                 Math.sin(dLat / 2) * Math.sin(dLat / 2) +
                 Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
@@ -197,7 +181,6 @@
         function deg2rad(deg) {
             return deg * (Math.PI / 180);
         }
-
 
         document.getElementById('sortBy').addEventListener('change', function () {
             const sortBy = this.value;
@@ -222,7 +205,7 @@
                     const dateB = parseDateString(b.getAttribute('data-date-time'));
                     return dateB - dateA;
                 });
-            } else if (sortBy === 'distanceAsc') {
+            } else if (sortBy === 'distanceAsc' || sortBy === 'distanceDesc') {
                 // Get user's current location
                 navigator.geolocation.getCurrentPosition(function (position) {
                     const userLat = position.coords.latitude;
@@ -239,34 +222,7 @@
                         const distanceA = calculateDistance(userLat, userLon, plantALat, plantALon);
                         const distanceB = calculateDistance(userLat, userLon, plantBLat, plantBLon);
 
-                        return distanceA - distanceB;
-                    });
-
-                    const plantList = document.getElementById('plant_list');
-                    plantList.innerHTML = '';
-                    plantCards.forEach(function (card) {
-                        plantList.appendChild(card);
-                    });
-                });
-                return;
-            } else if (sortBy === 'distanceDesc') {
-                // Get user's current location
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    const userLat = position.coords.latitude;
-                    const userLon = position.coords.longitude;
-
-                    plantCards.sort(function (a, b) {
-                        const plantALocation = a.getAttribute('data-location').split(',');
-                        const plantBLocation = b.getAttribute('data-location').split(',');
-                        const plantALat = parseFloat(plantALocation[0]);
-                        const plantALon = parseFloat(plantALocation[1]);
-                        const plantBLat = parseFloat(plantBLocation[0]);
-                        const plantBLon = parseFloat(plantBLocation[1]);
-
-                        const distanceA = calculateDistance(userLat, userLon, plantALat, plantALon);
-                        const distanceB = calculateDistance(userLat, userLon, plantBLat, plantBLon);
-
-                        return distanceB - distanceA;
+                        return sortBy === 'distanceAsc' ? distanceA - distanceB : distanceB - distanceA;
                     });
 
                     const plantList = document.getElementById('plant_list');
@@ -293,14 +249,13 @@
             plantCards.forEach(function (card) {
                 const plantName = card.getAttribute("plant-name").toLowerCase(); // Get the plant name and convert to lowercase
                 // Check if the plant name contains the search query
-                if (plantName.includes(query.toLowerCase())) {
+                if (plantName.includes(query)) {
                     card.style.display = 'block';
                 } else {
                     card.style.display = 'none';
                 }
             });
         });
-
 
         document.getElementById('filterSelect').addEventListener('change', function () {
             let filterValue = this.value;
@@ -328,7 +283,6 @@
         });
 
         window.addEventListener('load', function () {
-
             let filterValue = sessionStorage.getItem('plantFilter');
             if (filterValue) {
                 document.getElementById('filterSelect').value = filterValue;
@@ -336,6 +290,63 @@
             }
         });
 
+        // Register the service worker if not already registered
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(registration => {
+                    console.log('Service Worker registered with scope:', registration.scope);
+
+                    // Listen for messages from the service worker
+                    navigator.serviceWorker.addEventListener('message', event => {
+                        if (event.data && event.data.type === 'SYNC_COMPLETED') {
+                            console.log('Sync completed, refreshing plant list...');
+                            fetchMainPageData();
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Service Worker registration failed:', error);
+                });
+        }
+
+        // Function to fetch and update the main page data
+        function fetchMainPageData() {
+            fetch('/api/sightings')
+                .then(response => response.json())
+                .then(data => {
+                    // Update the UI with the new data
+                    updateSightingsList(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching sighting data:', error);
+                });
+        }
+
+        // Function to update the sightings list in the UI
+        function updateSightingsList(sightings) {
+            const sightingsList = document.getElementById('plant_list');
+            sightingsList.innerHTML = '';
+
+            sightings.forEach(sighting => {
+                const sightingItem = document.createElement('div');
+                sightingItem.className = 'plant_list';
+                sightingItem.setAttribute('data-date-time', sighting.date);
+                sightingItem.setAttribute('data-location', sighting.location);
+                sightingItem.setAttribute('data-has-flowers', sighting.flowering);
+                sightingItem.setAttribute('data-has-fruits', sighting.fruitBearing);
+                sightingItem.setAttribute('data-has-leaves', sighting.hasLeaves);
+                sightingItem.setAttribute('plant-name', sighting.name);
+                sightingItem.innerHTML = `
+            <h3>${sighting.name}</h3>
+            <p>${sighting.description}</p>
+            <img src="${sighting.uploadImage}" alt="${sighting.name}">
+        `;
+                sightingsList.appendChild(sightingItem);
+            });
+        }
+
+        // Initial fetch of the main page data
+        fetchMainPageData();
 
     </script>
 

@@ -3,7 +3,6 @@ importScripts('/javascripts/idb-utility.js');
 const staticCacheName = 'site-static-v1';
 const dynamicCacheName = 'site-dynamic-v1';
 
-// List of static assets to cache
 const staticAssets = [
     '/',
     '/addplant',
@@ -129,7 +128,7 @@ self.addEventListener('sync', event => {
                         formData.append(key, syncPlant[key]);
                     }
 
-                    fetch('http://localhost:3000/addplant', {
+                    fetch('/addplant', {
                         method: 'POST',
                         body: formData,
                     })
@@ -137,20 +136,11 @@ self.addEventListener('sync', event => {
                             console.log('Service Worker: Syncing new Plant:', syncPlant, 'done');
                             deleteSyncPlantFromIDB(syncPostDB, syncPlant.sightingId)
                                 .then(() => {
-                                    // After registration is completed, navigate clients
+                                    // Notify clients to refresh plant list
                                     clients.matchAll().then(clients => {
                                         clients.forEach(client => {
-                                            client
-                                                .navigate('/')
-                                                .then(() => {
-                                                    console.log("Client navigated to '/' route");
-                                                })
-                                                .catch(err => {
-                                                    console.log("Client navigation failed:", JSON.stringify(err));
-                                                });
+                                            client.postMessage({ type: 'SYNC_COMPLETED' });
                                         });
-                                    }).catch(err => {
-                                        console.log("Error matching clients:", JSON.stringify(err));
                                     });
                                 })
                                 .catch(err => {
