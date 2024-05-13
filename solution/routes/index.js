@@ -34,6 +34,7 @@ router.get('/', async (req, res, next)=> {
     const limit = 8; // Number of plants per page
 
     const plants = await getPlantsPagewise(page, limit);
+    console.log("Plants from route: ",plants)
     const totalPlants = await sightingModel.countDocuments();
     const totalPages = Math.ceil(totalPlants / limit);
 

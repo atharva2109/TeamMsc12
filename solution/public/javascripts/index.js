@@ -10,16 +10,6 @@ let currentMapIndex = 0;
      }
     if (plants.sightingId != null) {
         const topPlants = JSON.parse(document.getElementById("hiddenPlants").value);
-
-        // if (topPlants.length !== 0) {
-        //     if (!isTopFirstPlantAdded) {
-        //
-        //         isTopFirstPlantAdded = true;
-        //     } else {
-        //         addTopPlantToCarousel(plants);
-        //     }
-        // }
-
         if (!isFirstPlantAdded) {
             clearPlantList();
             addTopPlantToCarousel(plants);
@@ -187,11 +177,12 @@ function sendPlantData(sightingId) {
 
 
 function initMap() {
-    const topPlants = JSON.parse(document.getElementById("hiddenPlants").value);
-    console.log("Top plants in initMap: ",topPlants)
-    if(topPlants.length!=0) {
-        topPlants.forEach((plant, index) => {
-            createMapWithMarker(plant.location.split(",")[0], plant.location.split(",")[1], `map-${index}`);
+    const plantCards = document.querySelectorAll('.plant_list'); // Get all plant cards
+
+    if(plantCards.length!=0) {
+        plantCards.forEach((plant, index) => {
+            const location = plant.getAttribute("data-location").split(','); // Get the plant name and convert to lowercase
+            createMapWithMarker(location[0], location[1], `map-${index}`);
         })
     }
     else{
@@ -201,6 +192,7 @@ function initMap() {
 }
 
 function createMapWithMarker(latitude, longitude, mapElementId) {
+    console.log("Map id: ",mapElementId);
     let mapOptions = {
         zoom: 5,
         center: {lat: parseFloat(latitude), lng: parseFloat(longitude)}
@@ -298,6 +290,8 @@ window.onload = function () {
                         insertPlantInCarousel(plant)
                     }
                 }
+                API()
+                initMap();
             });
         });
 
