@@ -26,7 +26,7 @@ self.addEventListener('install', event => {
                 '/javascripts/local-storage.js',
                 '/javascripts/index.js',
                 '/javascripts/idb-utility.js',
-                'https://maps.googleapis.com/maps/api/js?key=AIzaSyARXO1sAXfsUdl_wxOfVJFFT3naSjyyoII&callback=initMap',
+                'https://maps.googleapis.com/maps/api/js?key=AIzaSyDvba_AADmYUKZcMBmOnZGD0xIxCYQxT1s&callback=initMap',
                 '/stylesheets/style.css',
                 '/stylesheets/partials/header_style.css',
                 '/stylesheets/contact-styles.css',
@@ -38,6 +38,8 @@ self.addEventListener('install', event => {
                 '/css/bootstrap.min.css',
                 '/images/logo/botanical-lens-logo.png',
                 '/images/contact-us.svg',
+                '/images/pink-rose.jpg',
+                '/images/lily.jpeg',
                 '/images/red-tick.jpg',
                 '/images/blue_tick.png',
                 '/images/add-plant.svg',
@@ -102,6 +104,7 @@ self.addEventListener('sync', event => {
                     }).then(() => {
                         console.log('Service Worker: Syncing new Plant: ', syncPlant, ' done');
                         deleteSyncPlantFromIDB(syncPostDB, syncPlant.sightingId).then(() => {
+                  // After registration is completed, navigate clients
                             clients.matchAll().then(clients => {
                                 clients.forEach(client => {
                                     client.navigate('/').then(() => {

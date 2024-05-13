@@ -34,31 +34,10 @@ router.get('/', async (req, res, next)=> {
     const limit = 8; // Number of plants per page
 
     const plants = await getPlantsPagewise(page, limit);
+    console.log("Plants from route: ",plants)
     const totalPlants = await sightingModel.countDocuments();
     const totalPages = Math.ceil(totalPlants / limit);
-
-    const topPlants = await Sighting.aggregate([
-        {
-            $addFields: {
-                dateObject: {
-                    $dateFromString: {
-                        dateString: "$date",
-                        format: "%d/%m/%Y, %H:%M:%S",
-                        timezone: "UTC"
-                    }
-                }
-            }
-        },
-        {
-            $sort: { dateObject: -1 }
-        },
-        {
-            $limit: 3
-        }
-    ]);
-
-    console.log("Top plants: ",topPlants)
-    res.render('index', {title: 'Botanical Lens', api: API_KEY, plants, currentPage: page, totalPages,topPlants});
+    res.render('index', {title: 'Botanical Lens', api: API_KEY, plants, currentPage: page, totalPages});
 });
 
 router.get('/contact-us', function (req, res, next) {

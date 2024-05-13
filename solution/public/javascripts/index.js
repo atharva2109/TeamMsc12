@@ -9,17 +9,6 @@ let currentMapIndex = 0;
           isVerified = await getPlantVerificationStatus(plants);
      }
     if (plants.sightingId != null) {
-        const topPlants = JSON.parse(document.getElementById("hiddenPlants").value);
-
-        if (topPlants.length !== 0) {
-            if (!isTopFirstPlantAdded) {
-                addTopPlantToCarousel(plants);
-                isTopFirstPlantAdded = true;
-            } else {
-                addTopPlantToCarousel(plants);
-            }
-        }
-
         if (!isFirstPlantAdded) {
             clearPlantList();
                 addPlantCard(plants,isVerified);
@@ -28,11 +17,12 @@ let currentMapIndex = 0;
         } else {
             addPlantCard(plants,isVerified);
         }
+        addPlantsToCarousel(plants);
     }
 };
 
 // Function to handle adding top plants to carousel
-function addTopPlantToCarousel(plants) {
+function addPlantsToCarousel(plants) {
     const carouselContainer = document.querySelector(".carousel-inner");
     const carouselItem = document.createElement('div');
     carouselItem.classList.add('carousel-item');
@@ -44,7 +34,7 @@ function addTopPlantToCarousel(plants) {
     }
     carouselItem.innerHTML = `
         <div class="row">
-            <div class="col-md-6 plantCarouselItem" style="background-image:url('${plants.uploadImage}'); background-size: cover; background-position: center;">
+            <div class="col-md-12 plantCarouselItem" style="background-image:url('${plants.uploadImage}'); background-size: cover; background-position: center;height: 400px">
                 <div class="map-info p-5">
                     <h4 class="display-7">${plants.name}</h4>
                     <p style="font-size: 18px">Family: ${plants.family || 'User not aware of it'}</p>
@@ -54,16 +44,7 @@ function addTopPlantToCarousel(plants) {
                     <p style="font-size: 18px">Creator: ${plants.username || 'User not aware of it'}</p>
                 </div>
             </div>
-            <div class="col-md-6" id="map-${mapIndex}">
-                <div class="map-container h-100">
-                    <div class="map-header">
-                        <h2>Map</h2>
-                    </div>
-                    <div class="map-body h-100">
-                        <div id="map-canvas" class="h-100"></div>
-                    </div>
-                </div>
-            </div>
+       
         </div>
     `;
 
@@ -72,6 +53,45 @@ function addTopPlantToCarousel(plants) {
 
 // Function to handle displaying no plants message
 function displayNoPlantsMessage() {
+    const carouselContainer = document.querySelector(".carousel-inner");
+    const carouselItem = document.createElement('div');
+    carouselItem.classList.add('carousel-item');
+    carouselItem.classList.add('active');
+    carouselItem.innerHTML = `
+        <div class="row">
+            <div class="col-md-12 plantCarouselItem" style="background-image:url('/images/pink-rose.jpg'); background-size: cover; background-position: center;height: 400px;">
+                <div class="map-info p-5">
+                    <h4 class="display-7">Rose</h4>
+                    <p style="font-size: 18px">Family: Rosaceae </p>
+                    <p style="font-size: 18px">Common Name: Rose</p>
+                    <p style="font-size: 18px">Genus: Rosa</p>
+                    <p style="font-size: 18px">Country:Sheffield</p>
+                    <p style="font-size: 18px">Creator: xyz</p>
+                </div>
+            </div>
+          
+        </div>
+    `;
+
+    const carouselSecondItem = document.createElement('div');
+    carouselSecondItem.classList.add('carousel-item');
+    carouselSecondItem.innerHTML = `
+        <div class="row">
+            <div class="col-md-12 plantCarouselItem" style="background-image:url('/images/lily.jpeg'); background-size: cover; background-position: center;height: 400px;">
+                <div class="map-info p-5">
+                    <h4 class="display-7">Lily</h4>
+                    <p style="font-size: 18px">Family: Liliaceae </p>
+                    <p style="font-size: 18px">Common Name: Lily</p>
+                    <p style="font-size: 18px">Genus: Lilium; L.</p>
+                    <p style="font-size: 18px">Country:London</p>
+                    <p style="font-size: 18px">Creator: abc</p>
+                </div>
+            </div>
+   
+        </div>
+    `;
+    carouselContainer.appendChild(carouselItem);
+    carouselContainer.appendChild(carouselSecondItem);
     const plantList = document.getElementById('plant_list');
     const displayPlants = document.createElement('div');
     displayPlants.classList.add('display-plants', 'd-flex', 'flex-column', 'justify-content-center', 'align-items-center', 'vh-100');
@@ -126,36 +146,6 @@ function sendPlantData(sightingId) {
     window.location.href = `/sightingdetails?sightingId=${sightingId}`;
 }
 
-
-function initMap() {
-    const topPlants = JSON.parse(document.getElementById("hiddenPlants").value);
-    topPlants.forEach((plant, index) => {
-        createMapWithMarker(plant.location.split(",")[0], plant.location.split(",")[1], `map-${index}`);
-    })
-}
-
-function createMapWithMarker(latitude, longitude, mapElementId) {
-    let mapOptions = {
-        zoom: 5,
-        center: {lat: parseFloat(latitude), lng: parseFloat(longitude)}
-    };
-    let map = new google.maps.Map(document.getElementById(mapElementId), mapOptions);
-
-    let markerOptions = {
-        position: new google.maps.LatLng(latitude, longitude),
-        map: map
-    };
-    let marker = new google.maps.Marker(markerOptions);
-}
-
-function API() {
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyARXO1sAXfsUdl_wxOfVJFFT3naSjyyoII&callback=initMap`;
-    script.defer = true;
-    document.head.appendChild(script);
-}
-
-
 window.onload = function () {
 
     if ('serviceWorker' in navigator) {
@@ -188,8 +178,8 @@ window.onload = function () {
                 if (permission === "granted") {
                     navigator.serviceWorker.ready
                         .then(function (serviceWorkerRegistration) {
-                            serviceWorkerRegistration.showNotification("Todo App",
-                                {body: "Notifications are enabled!"})
+                            serviceWorkerRegistration.showNotification("Plant Web Application",
+                                {body: "Notifications are enabled!", icon: '/images/logo/Squared_Logo.png'})
                                 .then(r =>
                                     console.log(r)
                                 );
@@ -213,8 +203,6 @@ window.onload = function () {
                 }
                 deleteAllPlantsFromIDB(db).then(() => {
                     addNewPlantsToPlantsIDB(db, newPlants).then(() => {
-                        API()
-                        initMap();
                     })
                 });
             });
@@ -232,6 +220,7 @@ window.onload = function () {
                         insertPlantInCarousel(plant)
                     }
                 }
+
             });
         });
 
