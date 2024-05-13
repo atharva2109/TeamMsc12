@@ -151,8 +151,8 @@
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <label for="sunexposure" class="form-label">Sun Exposure:</label>
-                                        <select id="sunexposure" name="sunexposure">
+                                        <label for="sunExposure" class="form-label">Sun Exposure:</label>
+                                        <select id="sunExposure" name="sunExposure">
                                             <option value="Shade">Shade</option>
                                             <option value="Partial Sun">Partial Sun</option>
                                             <option value="Full Sun">Full Sun</option>
@@ -225,8 +225,8 @@
             </div>
 
             <div class="col-sm-6 px-0 d-none d-sm-block" style="height: 100vh;">
-                <img src="../images/add-plant.svg"
-                     alt="Login image" class="w-100 vh-70"
+                <img src="/images/add-plant.svg"
+                     alt="Add Plant image" class="w-100 vh-70"
                      style="object-fit: cover; object-position: left;height: 80%">
             </div>
         </div>
@@ -239,31 +239,34 @@
 <script src="https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuidv4.min.js"></script>
 <script>
     function initMap() {
-        createMapWithMarker(15.380074, 78.983592, "map");
+        createMapWithMarker(15.380074, 78.983592, "map",true);
     }
 
-    function createMapWithMarker(latitude, longitude, mapElementId) {
+    function createMapWithMarker(latitude, longitude, mapElementId,draggable) {
         let mapOptions = {
             zoom: 5,
-            center: {lat: latitude, lng: longitude}
+            center: {lat: latitude, lng: longitude},
+            draggable: draggable
         };
         let map = new google.maps.Map(document.getElementById(mapElementId), mapOptions);
 
         let markerOptions = {
             position: new google.maps.LatLng(latitude, longitude),
-            map: map
+            map: map,
+
         };
         let marker = new google.maps.Marker(markerOptions);
 
-        map.addListener("click", (e) => {
-            if (marker) marker.setMap(null); // Remove the previous marker, if any-->
-
-            marker = new google.maps.Marker({
-                position: e.latLng,
-                map: map,
+        if(draggable) {
+            map.addListener("click", (e) => {
+                if (marker) marker.setMap(null);
+                marker = new google.maps.Marker({
+                    position: e.latLng,
+                    map: map,
+                });
+                document.getElementById("location").value = `${e.latLng.lat()},${e.latLng.lng()}`;
             });
-            document.getElementById("location").value = `${e.latLng.lat()},${e.latLng.lng()}`;
-        });
+        }
     }
 
     function updateRadioButttons() {
@@ -275,8 +278,6 @@
 
         const selectedFruits = document.querySelector('input[name="fruitBearing"]:checked');
         const fruitsValue = selectedFruits ? selectedFruits.value : null;
-
-        // Set the values to the hidden input fields
         document.getElementById('leavesValue').value = leavesValue == "Yes" ? true : false;
         document.getElementById('floweringValue').value = floweringValue == "Yes" ? true : false;
         document.getElementById('fruitValue').value = fruitsValue == "Yes" ? true : false;
@@ -290,6 +291,7 @@
         radio.addEventListener('change', updateRadioButttons);
     });
 
+    //Fetch Current Location Logic
     document.getElementById("fetchLocationBtn").addEventListener("click", function () {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
@@ -298,10 +300,8 @@
 
                 // Update the location input field with the retrieved latitude and longitude
                 document.getElementById("location").value = `${lat},${lng}`;
-
-                // Optionally, you can also update the map to center around the current location
                 const mapElementId = "map";
-                createMapWithMarker(lat, lng, mapElementId);
+                createMapWithMarker(lat, lng, mapElementId,false);
             }, function (error) {
                 console.error("Error fetching location: ", error);
                 alert("Unable to fetch current location. Please try again.");
@@ -311,6 +311,7 @@
         }
     });
 
+    //Sending Form Data to Database
     document.getElementById('addplantbtn').addEventListener('click', function(event) {
         const locationValue = document.getElementById('location').value;
         if (locationValue=="") {
@@ -351,9 +352,8 @@
                 hasLeaves:   document.getElementById('leavesValue').value,
                 flowering: document.getElementById('floweringValue').value,
                 fruitBearing:  document.getElementById('fruitValue').value,
-                sunExposure: document.getElementById("sunexposure").value,
+                sunExposure: document.getElementById("sunExposure").value,
                 flowerColor: document.getElementById("flowerColor").value,
-
                 date: localDateTimeString,
                 altitude: document.getElementById("altitude").value,
                 location:document.getElementById("location").value,

@@ -14,35 +14,33 @@
     color: #007bff !important;
 }
 
-/* Edit mode container */
 .edit-mode .d-flex {
     flex-grow: 1;
 }
 
 .edit-mode textarea {
-    flex-grow: 1; /* Let the textarea grow to fill available space */
-    width: 300px; /* Set the width to 100% */
-    margin-right: 10px; /* Optional: add margin between textarea and button container */
+    flex-grow: 1;
+    width: 300px;
+    margin-right: 10px;
 }
 
 .edit-button-container {
     display: none;
-    gap: 10px; /* Optional: gap between the buttons */
+    gap: 10px;
 }
 
-/* Style all textarea elements to have the same fixed height */
 textarea.form-control {
-    height: 40px; /* Adjust the value as necessary */
-    resize: none; /* Prevent resizing */
+    height: 40px;
+    resize: none;
 }
 .list-group-item .edit-button-container {
     display: flex;
     align-items: center;
-    justify-content: flex-end; /* Align items to the right */
+    justify-content: flex-end;
 }
 
 .list-group-item .edit-button-container .btn {
-    margin-left: 10px; /* Optional: Add spacing between buttons */
+    margin-left: 10px;
 }
 
 

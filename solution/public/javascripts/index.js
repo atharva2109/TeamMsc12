@@ -2,7 +2,6 @@ let isFirstPlantAdded = false;
 let isTopFirstPlantAdded = false;
 let currentMapIndex = 0;
 
-
  async function insertPlantInCarousel(plants) {
      let isVerified;
      if (navigator.onLine) {
@@ -21,7 +20,7 @@ let currentMapIndex = 0;
     }
 };
 
-// Function to handle adding top plants to carousel
+// Function to handle adding plants to carousel
 function addPlantsToCarousel(plants) {
     const carouselContainer = document.querySelector(".carousel-inner");
     const carouselItem = document.createElement('div');
@@ -51,7 +50,7 @@ function addPlantsToCarousel(plants) {
     carouselContainer.appendChild(carouselItem);
 }
 
-// Function to handle displaying no plants message
+// Function to handle no plants logic
 function displayNoPlantsMessage() {
     const carouselContainer = document.querySelector(".carousel-inner");
     const carouselItem = document.createElement('div');
@@ -172,9 +171,9 @@ window.onload = function () {
             });
         } else if (Notification.permission !== "denied") {
             // If the user hasn't been asked yet or has previously denied permission,
-            // you can request permission from the user
+            // request permission from the user
             Notification.requestPermission().then(function (permission) {
-                // If the user grants permission, you can proceed to create notifications
+                // If the user grants permission
                 if (permission === "granted") {
                     navigator.serviceWorker.ready
                         .then(function (serviceWorkerRegistration) {
@@ -212,7 +211,6 @@ window.onload = function () {
         console.log("Offline mode")
         openPlantsIDB().then((db) => {
             getAllPlants(db).then((plants) => {
-                console.log("Plants in plant: ", plants)
                 if (plants.length == 0) {
                     displayNoPlantsMessage();
                 } else {

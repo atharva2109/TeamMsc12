@@ -10,12 +10,15 @@ const addNewPlantsToSyncIDBInBothModes = (plantData) => {
                 console.log("Offline Mode - Added new plant to plantsIDB.");
             });
         });
+
     }
 
     // Add new plant sync IDB in both modes
     openSyncPlantsIDB().then((syncIDB) => {
         addNewPlantsToSyncIDB(syncIDB, plantData);
     });
+
+
 
 }
 
@@ -39,6 +42,7 @@ const addNewPlantsToSyncIDB = (syncTodoIDB, plantData) => {
                 sw.sync.register("sync-plant")
             }).then(() => {
                 console.log("Sync Registered - Adding new plant details");
+                window.location.href='/'
             }).catch((err) => {
                 console.log("Sync Registration Failed: " + JSON.stringify(err))
             })
@@ -46,6 +50,7 @@ const addNewPlantsToSyncIDB = (syncTodoIDB, plantData) => {
 
         })
     })
+
 
 }
 

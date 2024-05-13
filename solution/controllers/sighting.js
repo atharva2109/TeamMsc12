@@ -1,9 +1,6 @@
 // Import the sighting model
 const sightingModel = require('../models/sighting');
 
-// Helper Methods
-
-// Create new sightings or update existing ones
 // Create new sightings or update existing ones
 exports.create = function (req) {
     let sightingData = {
@@ -57,12 +54,10 @@ exports.create = function (req) {
 };
 
 
-// Fetch all sightings
+// Fetch all sightings pagewise for pagination
 exports.getPlantsPagewise = function (page, limit) {
     // Calculate skip value based on page number and limit
     const skip = (page - 1) * limit;
-
-    // Query the database to fetch sightings with pagination
     return sightingModel.find({}).skip(skip).limit(limit).then(sightings => {
         return sightings;
     }).catch(error => {
@@ -72,6 +67,7 @@ exports.getPlantsPagewise = function (page, limit) {
 
 };
 
+// Fetch all sightings
 exports.getAll = function (page, limit) {
     return sightingModel.find({}).then(sightings => {
         return JSON.stringify(sightings);
