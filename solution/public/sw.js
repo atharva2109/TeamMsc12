@@ -10,12 +10,6 @@ self.addEventListener('install', event => {
         console.log('Service Worker: Caching App Shell at the moment......');
         try {
             const cache = await caches.open("static");
-            const uploadsFolderUrl = `/api/uploads-list`;
-            const uploadsFolderResponse = await fetch(uploadsFolderUrl);
-            const uploadedFiles = await uploadsFolderResponse.json();
-
-            const imagesToCache = uploadedFiles
-                .map(file => `${self.location.origin}${file}`)
             cache.addAll([
                 '/',
                 '/addplant',
@@ -43,7 +37,6 @@ self.addEventListener('install', event => {
                 '/images/red-tick.jpg',
                 '/images/blue_tick.png',
                 '/images/add-plant.svg',
-                ...imagesToCache,
             ]);
             console.log('Service Worker: App Shell Cached');
         }
@@ -86,11 +79,9 @@ self.addEventListener('fetch', event => {
 
 self.addEventListener('sync', event => {
     if (event.tag === 'sync-plant') {
-        console.log('Service Worker: Syncing new Plants');
         openSyncPlantsIDB().then((syncPostDB) => {
             getAllSyncPlants(syncPostDB).then((syncPlants) => {
                 for (const syncPlant of syncPlants) {
-                    console.log('Service Worker: Syncing new Plant: ', syncPlant);
                     const formData = new FormData();
                     for (const key in syncPlant) {
                         formData.append(key, syncPlant[key]);
@@ -102,13 +93,11 @@ self.addEventListener('sync', event => {
 
 
                     }).then(() => {
-                        console.log('Service Worker: Syncing new Plant: ', syncPlant, ' done');
                         deleteSyncPlantFromIDB(syncPostDB, syncPlant.sightingId).then(() => {
-                  // After registration is completed, navigate clients
+                  // After registration is completed, navigate to home page
                             clients.matchAll().then(clients => {
                                 clients.forEach(client => {
                                     client.navigate('/').then(() => {
-                                        console.log("Client navigated to '/' route");
                                     }).catch(err => {
                                         console.log("Client navigation failed: " + JSON.stringify(err));
                                     });

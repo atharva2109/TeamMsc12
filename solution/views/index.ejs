@@ -5,17 +5,14 @@
     <link rel='stylesheet' href='/stylesheets/homepage/index.css'/>
     <%- include('./partials/base'); %>
     <script src="/javascripts/local-storage.js"></script>
-
     <script>
         getUserId();
     </script>
-
-
 </head>
 <body>
 <%- include('./partials/header', { title: 'Homepage',visibility:'visible' }); %>
 
-<!--Carousel -->
+<!-- Plant Carousel -->
 <div id="plantCarousel" class="carousel slide p-3 p-md-5 m-md-3 bg-light rounded" data-ride="carousel">
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#plantCarousel" data-bs-slide-to="0" class="active" aria-current="true"
@@ -38,10 +35,9 @@
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Next</span>
 </button>
-<!-- Main Section -->
-<div class="card" style="width: 100%;">
 
-    <!-- Marketing Banner -->
+<!-- Marketing Banner -->
+<div class="card" style="width: 100%;">
     <div class="card-body" style="background-color: #eaf3d8;color: #575757">
         <div class="row text-center">
             <div class="col-12">
@@ -99,7 +95,7 @@
 
     </div>
 
-    <!-- Filter and Sighting Listing -->
+    <!-- Filter and Plants Listing -->
     <div class="row">
         <div class="col-4 d-flex ">
             <div class="min-vh-50 mt-4 w-50 m-auto">
@@ -121,7 +117,7 @@
         <div class="col-4 d-flex">
             <div class="input-group ms-1 border rounded-2 w-20" style="margin-top: 5%; width: 100%; height: 60%;">
         <span class="input-group-text" id="search-icon">
-            <i class="fa fa-search"></i> <!-- FontAwesome search icon -->
+            <i class="fa fa-search"></i>
         </span>
                 <input class="form-control" id="searchbox" type="search" placeholder="Search for a Plant"
                        aria-label="Search" style="border-color: #3C1414;">
@@ -147,6 +143,7 @@
     </div>
 
 
+    <!--    Pagination Logic-->
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
             <% if (currentPage > 1) { %>
@@ -181,6 +178,7 @@
 
     <script>
 
+        // Helper Function for Sort By Distance Filter
         function calculateDistance(lat1, lon1, lat2, lon2) {
             const R = 6371; // Radius of the earth in km
             const dLat = deg2rad(lat2 - lat1);
@@ -194,11 +192,13 @@
             return distance;
         }
 
+        //Degree To Radians Conversion
         function deg2rad(deg) {
             return deg * (Math.PI / 180);
         }
 
 
+        //Sorting Logic
         document.getElementById('sortBy').addEventListener('change', function () {
             const sortBy = this.value;
             let plantCards = Array.from(document.querySelectorAll('.plant_list'));
@@ -210,34 +210,39 @@
                 return new Date(year, month - 1, day, hours, minutes, seconds);
             }
 
+            //By Date Ascending
             if (sortBy === 'dateAsc') {
                 plantCards.sort(function (a, b) {
                     const dateA = parseDateString(a.getAttribute('data-date-time'));
                     const dateB = parseDateString(b.getAttribute('data-date-time'));
                     return dateA - dateB;
                 });
-            } else if (sortBy === 'dateDesc') {
+            }
+            //By Date Descending
+            else if (sortBy === 'dateDesc') {
                 plantCards.sort(function (a, b) {
                     const dateA = parseDateString(a.getAttribute('data-date-time'));
                     const dateB = parseDateString(b.getAttribute('data-date-time'));
                     return dateB - dateA;
                 });
-            } else if (sortBy === 'distanceAsc') {
+            }
+            //By Distance Ascending
+            else if (sortBy === 'distanceAsc') {
                 // Get user's current location
                 navigator.geolocation.getCurrentPosition(function (position) {
-                    const userLat = position.coords.latitude;
-                    const userLon = position.coords.longitude;
+                    const userLatitude = position.coords.latitude;
+                    const userLongitude = position.coords.longitude;
 
                     plantCards.sort(function (a, b) {
                         const plantALocation = a.getAttribute('data-location').split(',');
                         const plantBLocation = b.getAttribute('data-location').split(',');
-                        const plantALat = parseFloat(plantALocation[0]);
-                        const plantALon = parseFloat(plantALocation[1]);
-                        const plantBLat = parseFloat(plantBLocation[0]);
-                        const plantBLon = parseFloat(plantBLocation[1]);
+                        const plantALatitude = parseFloat(plantALocation[0]);
+                        const plantALongitude = parseFloat(plantALocation[1]);
+                        const plantBLatitude = parseFloat(plantBLocation[0]);
+                        const plantBLongitude = parseFloat(plantBLocation[1]);
 
-                        const distanceA = calculateDistance(userLat, userLon, plantALat, plantALon);
-                        const distanceB = calculateDistance(userLat, userLon, plantBLat, plantBLon);
+                        const distanceA = calculateDistance(userLatitude, userLongitude, plantALatitude, plantALongitude);
+                        const distanceB = calculateDistance(userLatitude, userLongitude, plantBLatitude, plantBLongitude);
 
                         return distanceA - distanceB;
                     });
@@ -249,7 +254,9 @@
                     });
                 });
                 return;
-            } else if (sortBy === 'distanceDesc') {
+            }
+            //By Distance Descending
+            else if (sortBy === 'distanceDesc') {
                 // Get user's current location
                 navigator.geolocation.getCurrentPosition(function (position) {
                     const userLat = position.coords.latitude;
@@ -286,12 +293,13 @@
             });
         });
 
+        //Search Functionality
         document.getElementById('searchbox').addEventListener('input', function () {
-            const query = this.value.toLowerCase(); // Get the current search query and convert to lowercase
-            const plantCards = document.querySelectorAll('.plant_list'); // Get all plant cards
+            const query = this.value.toLowerCase();
+            const plantCards = document.querySelectorAll('.plant_list');
 
             plantCards.forEach(function (card) {
-                const plantName = card.getAttribute("plant-name").toLowerCase(); // Get the plant name and convert to lowercase
+                const plantName = card.getAttribute("plant-name").toLowerCase();
                 // Check if the plant name contains the search query
                 if (plantName.includes(query.toLowerCase())) {
                     card.style.display = 'block';
@@ -302,6 +310,7 @@
         });
 
 
+        //Filter Logic
         document.getElementById('filterSelect').addEventListener('change', function () {
             let filterValue = this.value;
             sessionStorage.setItem('plantFilter', filterValue);
@@ -327,8 +336,8 @@
             });
         });
 
-        window.addEventListener('load', function () {
 
+        window.addEventListener('load', function () {
             let filterValue = sessionStorage.getItem('plantFilter');
             if (filterValue) {
                 document.getElementById('filterSelect').value = filterValue;

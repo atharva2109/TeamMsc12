@@ -5,7 +5,8 @@
 }
 
 .container {
-    margin-top: 5%;
+    margin-top: 1%;
+    max-width: 1120px;
 }
 
 .contact-info__wrapper {
@@ -51,4 +52,10 @@
 
 .shadow-lg, .shadow-lg--on-hover:hover {
     box-shadow: 0 1rem 3rem rgba(132, 138, 163, 0.1) !important;
+}
+
+.contact-img{
+    object-fit: cover;
+    object-position: left;
+    height: 80%
 }

@@ -7,12 +7,11 @@ var bodyParser = require('body-parser');
 var http = require('http');
 var socketIo = require('socket.io');
 var Message = require('./models/message');
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
 
 var app = express();
 var server = require('http').createServer(app);
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
