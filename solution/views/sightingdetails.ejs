@@ -263,7 +263,7 @@
                 </div>
                 <br>
                 <label>Username: </label>
-                <input type="text" id="username" class="form-control" placeholder="Enter your username">
+                <input type="text" id="chatUsername" class="form-control" placeholder="Enter your username">
                 <br>
                 <label>Message: </label>
                 <textarea id="message" class="form-control" placeholder="Enter your message"></textarea>
@@ -295,8 +295,12 @@
 
         updateUI()
 
-        // Join the specific sighting chat room
-        socket.emit('join', { username: lastUsername || "Guest", sightingId });
+        // Ensure username is set before joining the chat room
+        document.getElementById("chatButton").addEventListener("click", function() {
+            let username = document.getElementById("chatUsername").value || "Guest";
+            lastUsername = username;
+            socket.emit('join', { username: lastUsername, sightingId });
+        });
 
         // Display chat history
         socket.on('chat history', function(messages) {
@@ -311,7 +315,7 @@
         document.getElementById("sendButton").addEventListener("click", sendMessage);
 
         function sendMessage() {
-            let username = document.getElementById("username").value;
+            let username = document.getElementById("chatUsername").value;
             const message = document.getElementById("message").value;
             const now = new Date();
             const timestamp = now.toISOString();
