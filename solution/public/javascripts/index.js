@@ -142,7 +142,11 @@ function addPlantCard(plants,isVerified) {
 }
 
 function sendPlantData(sightingId) {
-    window.location.href = `/sightingdetails?sightingId=${sightingId}`;
+    if (navigator.onLine) {
+        window.location.href = `/sightingdetails?sightingId=${sightingId}`;
+    } else {
+        alert("This page cannot be accessed while offline. Please connect to the internet and try again.");
+    }
 }
 
 window.onload = function () {
