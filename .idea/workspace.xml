@@ -6,9 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d41ff292-07c6-42c3-aac7-64083d22fb06" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeDocumentation.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/solution/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/solution/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/solution/views/sightingdetails.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/solution/views/sightingdetails.ejs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
