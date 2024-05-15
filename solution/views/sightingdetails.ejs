@@ -740,7 +740,7 @@
                     // Attach an event listener to the button
                     approveButton.onclick = () => approveSuggestion(suggestion.trim());
 
-                    if(getUserId() === sighting.sightingId) {
+                    if(getUserId() === sighting.userId) {
                         listItem.appendChild(approveButton);
                     }
 
